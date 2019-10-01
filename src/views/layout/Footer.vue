@@ -27,8 +27,7 @@
                         href="/about/friendly" target="_blank" title="友情链接">友情链接</a> </div>
                 <div class="footer-copyright">
                     <p><img draggable="false" class="moco-emoji" alt="©"
-                            src="https://www.imooc.com/static/moco/v1.0/images/face/36x36/a9.png">&nbsp;2019&nbsp;imooc.com&nbsp;&nbsp;京ICP备
-                        12003892号-11 YuanHong</p>
+                            src="https://www.imooc.com/static/moco/v1.0/images/face/36x36/a9.png">&nbsp;2019&nbsp;&nbsp;&nbsp;版权归属于 YuanHong</p>
                 </div>
             </div>
         </div>
@@ -168,7 +167,6 @@ export default {
 .moco-emoji {
     width: 18px;
     height: 18px;
-    display: inline !important;
     margin: 0 !important;
 }
 </style>
