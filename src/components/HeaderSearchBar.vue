@@ -28,7 +28,10 @@ export default {
 .sample-search-bar{
     width:300px;
     position: relative;
-    display: inline-block
+    display: inline-block;
+    height: 72px;
+    display: flex;
+    align-items: center;;
 }
 .input-search{
     outline:none;
@@ -36,7 +39,6 @@ export default {
     height:40px;
     border:none;
     box-sizing: border-box;
-    vertical-align: bottom;
     font-size:1.2em;
     padding:20px 20px;
     border-radius: 23px;
@@ -47,8 +49,8 @@ export default {
     cursor:pointer;
     outline:none;
     width:60px;
-    height:85px;
     right:0;
+    top: 25px;
     position: absolute;
     background: transparent;
     border:none;

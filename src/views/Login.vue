@@ -78,8 +78,8 @@
 </template>
 
 <script>
-    import dataStorage from '../util/dataStorage'
-    import axios from '../util/request'
+    import dataStorage from '@/util/dataStorage'
+    import axios from '@/util/request'
     import {login,register} from '@/util/api'
 
     export default {
@@ -170,7 +170,6 @@
 
 .user-login-box{
     overflow: hidden;
-    float: right;
     display: flex;
     justify-content: space-evenly;
     width: 200px;

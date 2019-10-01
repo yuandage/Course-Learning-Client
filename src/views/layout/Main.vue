@@ -1,52 +1,20 @@
 <template>
-    <div id="main">
-        <!-- 学科分类菜单和轮播图 -->
-        <Banner  />
+  <div id="main">
+    <!-- 学科分类菜单和轮播图 -->
+    <Banner />
 
-        <!-- 主页上的其他展示内容 -->
+    <!-- 主页上的其他展示内容 -->
+    <Container/>
 
-        <div class="other" v-if="this.$route.name!='subjectList'">
-            <div v-if="this.$store.state.isLogin">
-                登录之后显示内容
-                <br>
-                <br>
-                <br>
-                <br>
-            </div>
-            <div>
-                <br>
-                <br>
-                <br>
+    <!-- 主页上显示嵌套的二级路由视图 -->
+    <router-view></router-view>
 
-                主体区域的其他展示内容
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                主体区域的其他展示内容
-                <br>
-                <br>
-                <br>
-                <br>
-                主体区域的其他展示内容
-                <br>
-                <br>
-                <br>
-                <br>
-                主体区域的其他展示内容
-            </div>
-
-        </div>
-
-        <!-- 主页上显示嵌套的二级路由视图 -->
-        <router-view></router-view>
-
-    </div >
+  </div>
 </template>
 
 <script>
 import Banner from '@/views/Banner.vue'
+import Container from '@/views/Container.vue'
 
 export default {
      data () {
@@ -55,7 +23,8 @@ export default {
   },
   name: 'Main',
   components: {
-   Banner
+   Banner,
+   Container
   },
   methods:{
   }
@@ -70,7 +39,4 @@ export default {
   padding: 32px 0;
 }
 
-.other{
-  text-align: center;
-}
 </style>

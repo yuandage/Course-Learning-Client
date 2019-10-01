@@ -8,7 +8,9 @@
     </div>
 
     <ul class="nav-item">
-      <li><router-link to="/subject/-1/-1" target="_self">免费课程</router-link></li>
+      <li>
+        <router-link to="/subject/-1/-1" target="_self">免费课程</router-link>
+      </li>
       <li><a href="//coding.imooc.com" target="_self">实战课程</a></li>
       <li><a href="//class.imooc.com" target="_self">就业班</a></li>
       <li><a href="/read" target="_self">专栏<i class="icn-new"></i></a></li>
@@ -17,9 +19,13 @@
 
     </ul>
 
-    <HeaderSearchBar />
+    <div class="search-bar">
+      <HeaderSearchBar />
+    </div>
 
-    <Login />
+    <div class="log-box">
+      <Login />
+    </div>
 
   </div>
 </template>
@@ -50,11 +56,13 @@ export default {
   margin-top: 0;
   height: 72px;
   overflow: hidden;
-  box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.1);
+  box-shadow: 0px 4px 8px 0px rgba(7, 17, 27, 0.1);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .logo {
-  float: left;
   margin: 0 20px;
 }
 
@@ -79,7 +87,7 @@ margin:0; /* 将默认的外边距去掉 */
 }
 .nav-item li a {
  display:block;
- padding:8px 20px;
+ padding:0 20px;
  color:#4D555D;
  text-decoration:none;
 
@@ -90,11 +98,8 @@ margin:0; /* 将默认的外边距去掉 */
 
 }
 
-.login-register{
-  padding-left: 300px;
+.search-bar{
+  margin: 0 auto;
 }
 
-.login-register1 .a1:hover {
-   color:red;
-}
 </style>

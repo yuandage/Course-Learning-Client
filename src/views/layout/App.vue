@@ -1,21 +1,19 @@
 <template>
-  <div id="app">
-    <el-container>
-      <el-header style="height:72px;padding: 0;">
+<el-container id="app">
+      <el-header style="height:72px;">
         <Header />
       </el-header>
 
-      <el-main style=" padding: 0;">
+      <el-main>
            <Main/>
 
       </el-main>
 
-      <el-footer style="padding: 0;">
+      <el-footer>
         <Footer />
       </el-footer>
 
-    </el-container>
-  </div>
+</el-container>
 
 </template>
 
@@ -40,7 +38,11 @@ export default {
 html,body {
   margin: 0;
   padding: 0;
+  height:100%;
+  width: 100%;
+  min-width: 1200px;
 }
+
 
 ol,ul,p{
   list-style: none;
@@ -56,11 +58,13 @@ a{
 .el-header, .el-footer {
   text-align: center;
   line-height: 60px;
+  padding: 0;
 }
 
 
 .el-main {
   text-align: center;
+  padding: 0;
 }
 
 </style>

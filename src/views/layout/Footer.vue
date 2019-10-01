@@ -48,8 +48,8 @@ export default {
 
 .container {
     position: relative;
-        width: 1152px;
-         margin: 0 auto;
+    width: 1152px;
+    margin: 0 auto;
 }
 
 .footer .footer-wrap {
