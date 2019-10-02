@@ -85,8 +85,10 @@
     </div>
 
     <!-- 分页组件 -->
-    <el-pagination background layout="prev, pager, next" :total="100" class="pagination">
-    </el-pagination>
+        <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            :current-page="currentPage" :page-sizes="pageSizes" :page-size="pageSize"
+            layout="total, sizes,prev, pager, next, jumper" :total="totalCount">
+        </el-pagination>
 
 
 
@@ -105,7 +107,15 @@ export default {
             subjectIndex: 0,
             subject: this.$store.state.subject,
             allChildSubject: [],
-            course: []
+            course: [],
+             // 默认显示第几页
+            currentPage: 1,
+            // 总条数，根据接口获取数据长度(注意：这里不能为空)
+            totalCount: 12,
+            // 个数选择器（可修改）
+            pageSizes: [1, 2, 3, 4],
+            // 默认每页显示的条数（可修改）
+            pageSize: 2
         }
     },
     methods: {
@@ -114,17 +124,21 @@ export default {
             this.subItemOn = -1
             if (index >= 0) {
                 this.subjectIndex = index
-                getSubjectCourse(index + 1).then((res) => { //获取某个分类下的全部课程信息
+                getSubjectCourse(index + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                     if (res.data.code === 20000) {
                         console.log(res.data.data);
-                        this.course = res.data.data
+                        this.course = res.data.data.rows
+                        this.totalCount = res.data.data.total
+
                     }
                 })
             } else {
-                getAllCourse().then((res) => { //获取全部的课程信息
+                getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
                     if (res.data.code === 20000) {
                         console.log(res.data.data);
-                        this.course = res.data.data
+                        this.course = res.data.data.rows
+                        this.totalCount = res.data.data.total
+
                     }
                 })
             }
@@ -133,37 +147,45 @@ export default {
             this.subItemOn = index
             if (this.itemOn == -1) {
                 if (index == -1) {
-                    getAllCourse().then((res) => { //获取全部的课程信息
+                    getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
                         if (res.data.code === 20000) {
                             console.log(res.data.data);
-                            this.course = res.data.data
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+
                         }
                     })
                 } else {
                     let subId = this.allChildSubject[index].id
                     console.log("subId:" + subId);
-                    getCourse(subId).then((res) => {
+                    getCourse(subId,1,this.pageSize).then((res) => {
                         if (res.data.code === 20000) {
                             console.log(res.data.data)
-                            this.course = res.data.data
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+
                         }
                     })
                 }
             } else {
                 if (index == -1) {
-                    getSubjectCourse(this.itemOn + 1).then((res) => { //获取某个分类下的全部课程信息
+                    getSubjectCourse(this.itemOn + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                         if (res.data.code === 20000) {
                             console.log(res.data.data);
-                            this.course = res.data.data
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+
                         }
                     })
                 } else {
                     let parentId = this.subject[this.itemOn].subjectList[index].id
                     console.log(parentId);
-                    getCourse(parentId).then((res) => {
+                    getCourse(parentId,1,this.pageSize).then((res) => {
                         if (res.data.code === 20000) {
                             console.log(res.data.data)
-                            this.course = res.data.data
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+
                         }
                     })
                 }
@@ -176,22 +198,94 @@ export default {
         },
         getCourse(id, subId) {
             if (subId == -1) {
-                getSubjectCourse(id + 1).then((res) => { //获取某个分类下的全部课程信息
+                getSubjectCourse(id + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                     if (res.data.code === 20000) {
                         console.log(res.data.data);
-                        this.course = res.data.data
+                        this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+
                     }
                 })
             } else {
                 let parentId = this.subject[id].subjectList[subId].id
                 console.log(parentId);
-                getCourse(parentId).then((res) => {
+                getCourse(parentId,1,this.pageSize).then((res) => {
                     if (res.data.code === 20000) {
                         console.log(res.data.data)
-                        this.course = res.data.data
+                        this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+
                     }
                 })
             }
+            this.totalCount = this.course.length
+        },
+        // 将页码，及每页显示的条数以参数传递提交给后台
+        getData(currentPage, pageSize) {
+            // pageSize每页显示的条数
+            // currentPage显示第几页
+            if (this.itemOn == -1) {
+                if (this.subItemOn == -1) {
+                    getAllCourse(currentPage, pageSize).then((res) => { //获取全部的课程信息
+                        if (res.data.code === 20000) {
+                            console.log(res.data.data);
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+                        }
+                    })
+                } else {
+                    let subId = this.allChildSubject[this.subItemOn].id
+                    console.log("subId:" + subId);
+                    getCourse(subId,currentPage, pageSize).then((res) => {
+                        if (res.data.code === 20000) {
+                            console.log(res.data.data)
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+                            
+                        }
+                    })
+                }
+            } else {
+                if (this.subItemOn == -1) {
+                    getSubjectCourse(this.itemOn + 1,currentPage, pageSize).then((res) => { //获取某个分类下的全部课程信息
+                        if (res.data.code === 20000) {
+                            console.log(res.data.data);
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+                        }
+                    })
+                } else {
+                    let parentId = this.subject[this.itemOn].subjectList[this.subItemOn].id
+                    console.log(parentId);
+                    getCourse(parentId,currentPage, pageSize).then((res) => {
+                        if (res.data.code === 20000) {
+                            console.log(res.data.data)
+                            this.course = res.data.data.rows
+                            this.totalCount = res.data.data.total
+                        }
+                    })
+                }
+            }
+
+            // 将数据的长度赋值给totalCount
+         
+        },
+        // 分页
+        // 每页显示的条数
+        handleSizeChange(val) {
+            // 改变每页显示的条数 
+            this.pageSize = val
+            // 点击每页显示的条数时，显示第一页
+            this.getData(1, val)
+            // 注意：在改变每页显示的条数时，要将页码显示到第一页
+            this.currentPage = 1
+        },
+        // 显示第几页
+        handleCurrentChange(val) {
+            // 改变默认的页数
+            this.currentPage = val
+            // 切换页码时，要获取每页显示的条数
+            this.getData(val, this.pageSize)
         }
 
     },
@@ -210,17 +304,21 @@ export default {
 
         this.subjectIndex = subjectId
         if (subjectId == -1 && childSubjectId == -1) {
-            getAllCourse().then((res) => { //获取全部的课程信息
+            getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
                 if (res.data.code === 20000) {
                     console.log(res.data.data);
-                    this.course = res.data.data
+                    this.course = res.data.data.rows
+                    this.totalCount = res.data.data.total
+                    
                 }
             })
         } else if (subjectId != -1 && childSubjectId == -1) {
-            getSubjectCourse(subjectId + 1).then((res) => { //获取某个分类下的全部课程信息
+            getSubjectCourse(subjectId + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                 if (res.data.code === 20000) {
                     console.log(res.data.data);
-                    this.course = res.data.data
+                    this.course = res.data.data.rows
+                    this.totalCount = res.data.data.total
+
                 }
             })
         } else

@@ -13,13 +13,13 @@ export default new Vuex.Store({
       "name": "计算机等级考试",
       "parentId": null,
       "subjectList": [{
-        "id": 21,
-        "name": "二级Office",
-        "parentId": 1,
-        "subjectList": null
-      }, {
+          "id": 21,
+          "name": "二级C语言",
+          "parentId": 1,
+          "subjectList": null
+        },{
         "id": 22,
-        "name": "二级C语言",
+        "name": "二级Office",
         "parentId": 1,
         "subjectList": null
       }, {

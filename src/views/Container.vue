@@ -67,13 +67,21 @@
         <br>
         主体区域的其他展示内容
       </div>
+    
+
+    <Pagination/>
+
 
     </div>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination.vue'
+
 export default {
-    
+    components:{
+      Pagination
+    }
 }
 </script>
 
