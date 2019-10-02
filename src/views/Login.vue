@@ -1,27 +1,34 @@
 <template>
     <div class="user-login-box">
-        <div class="user-card-box" id="header-user-card" v-if="isLogin==true">
-            <a id="header-avator" class="user-card-item js-header-avator" action-type="my_menu"
-                href="/index/allcourses" target="_self">
-                <img width="40" height="40" src="@/assets/avatar.gif">
 
-            </a>
-            <div class="g-user-card">
-                <div class="card-inner">
-                    <div class="card-top clearfix"> 
-                        <a class="l" href="https://www.imooc.com/u/index/allcourses">
-                            <img src="@/assets/avatar.gif" alt="袁大哥4073105"></a>
-                        <div class="card-top-right-box l"> 
-                            <a href="https://www.imooc.com/u/index/allcourses">
-                            <span class="name text-ellipsis">{{this.username}}</span></a>
-                      
-                        </div>
-                    </div>
+        <div class="user-card-box" v-if="isLogin==true">
+
+            <el-popover placement="bottom"  width="300" trigger="hover">
+
+                <div class="user-info">
+                    <h3>{{this.username}}</h3>
+
+                    <div class="btg">
+                    <el-button class="bt" size="medium" round icon="el-icon-search">我的课程</el-button>
+                    <el-button class="bt" size="medium" round icon="el-icon-search">我的试题</el-button>
+                    <el-button class="bt" size="medium" round icon="el-icon-search">我的收藏</el-button>
                     
-                    <div class="card-sets clearfix">
-                        <a class="l" href="#" @click="logout">安全退出</a></div>
+                     <router-link to="/user">
+                     <el-button class="bt" size="medium" round icon="el-icon-search">个人中心</el-button>
+                    </router-link>
+                    </div>
+
+                    <el-button class="bt" size="medium" round icon="el-icon-search" @click="logout">安全退出</el-button>
+
                 </div>
-            </div>
+
+                <router-link  class="user-card-item" slot="reference" to="user">
+                    <img width="40" height="40" src="@/assets/avatar.gif">
+                    <span>{{this.username}}</span>
+                    <i class="el-icon-caret-bottom"></i>
+                </router-link>
+
+            </el-popover>
 
         </div>
 
@@ -191,110 +198,41 @@
     align-items: center;
 }
 
+.user-card-item{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
-.user-card-box a {
-    display: block;
-    width: 60px;
+.user-card-box a{
+    width: 120px;
     height: 72px;
-    line-height: 72px;
-    color: #787d82;
-    text-align: center;
-    transition: background-color 0.2s;
 }
 
 .user-card-box:hover .user-card-item img {
-    border: 2px solid #f01414 !important;
+    border: 1px solid #f01414 !important;
 }
 
-.user-card-box .user-card-item img {
-    width: 40px;
-    height: 40px;
+.user-card-item img {
+    width: 50px;
+    height: 50px;
     border-color: #4d5559;
-    margin-top: 16px;
     border-radius: 50%;
 }
 
+.user-info{
+    text-align: center;
 
-.user-card-box:hover .g-user-card {
-    visibility: visible;
 }
 
-.user-card-box .g-user-card {
-    visibility:hidden;
-    position: absolute;
-    right: 20px;
-    top: 72px;
-    z-index: 1000;
-    width: 306px;
-    padding: 24px;
-    background-color: #fff;
-    box-shadow: 0 8px 16px 0 rgba(7,17,27,0.2);
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    box-sizing: border-box;
+.btg{
+    /* display: flex;
+    justify-content: flex-start;
+    align-items: center; */
 }
 
-.user-card-box .g-user-card .card-top {
-    color: #93999f;
-    position: relative;
+.bt{
+    margin: 10px;
 }
-
-.user-card-box .g-user-card .card-top a {
-    display: inline-block;
-    color: #93999f;
-}
-
-.user-card-box .g-user-card .card-top a img {
-    float: left;
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    margin-right: 12px;
-}
-
-
-.l {
-    float: left;
-}
-
-.user-card-box .g-user-card .card-top a {
-    display: inline-block;
-    color: #93999f;
-}
-
-.user-card-box .g-user-card .card-top .name {
-    display: inline-block;
-    font-size: 16px;
-    color: #07111b;
-
-    line-height: 20px;
-}
-
-
-.user-card-box .g-user-card .user-center-box {
-    margin-top: 16px;
-    margin-bottom: 14px;
-}
-
-
-
-.user-card-box .g-user-card .card-sets {
-    margin-top: 16px;
-    font-size: 12px;
-    line-height: 12px;
-}
-
-.user-card-box .g-user-card .card-sets a {
-    color: #93999F;
-}
-
-.avatar{
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-}
-
 
 </style>

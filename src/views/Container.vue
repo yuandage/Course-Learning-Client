@@ -1,5 +1,5 @@
 <template>
-    <div class="other" v-if="this.$route.name!='subjectList'">
+    <div class="other" >
 
       <div>
         <h3 class="types-title clearfix"><span>快速学习</span><span class="intro">零基础快速就业</span></h3>

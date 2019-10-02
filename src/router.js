@@ -17,6 +17,11 @@ export default new Router({
           path: 'subject/:id/:subId',
           name: 'subjectList',
           component: () => import('@/views/SubjectList.vue')
+        },
+        {
+          path: 'user',
+          name: 'userInfo',
+          component: () => import('@/views/UserInfo.vue')
         }
       ]
 

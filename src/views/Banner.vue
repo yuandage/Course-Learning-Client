@@ -1,8 +1,7 @@
 <template>
     <div id="banner">
 
-        <div class="bk" :class="changeBk"></div>
-        <div class="banner-box" v-if="this.$route.name!='subjectList'">
+        <div class="banner-box" >
             <div class="aside-menu">
                 <div class="aside-menu-item" v-for="(item,index) in subject" :key="item.id">
                     <el-popover placement="right" width="500" trigger="hover">
@@ -57,15 +56,14 @@ import {
 export default {
     data() {
         return {
-            changeBk: 'bk',
              subject:this.$store.state.subject
-           
         };
     },
     methods: {
         changeBackground(val, oldVal) {
             val = val + 1
-            this.changeBk = 'bk' + val
+            this.$store.commit('setBk','bk' + val)
+            console.log('bk' + val);
         },
 
         findAllSubject() {
@@ -85,47 +83,6 @@ export default {
 </script>
 
 <style>
-.bk {
-    z-index: -10;
-    opacity: 0.3;
-    -webkit-filter: blur(100px);
-    -moz-filter: blur(100px);
-    -o-filter: blur(100px);
-    -ms-filter: blur(100px);
-    filter: blur(100px);
-    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='100');
-    width: 98%;
-    height: 490px;
-    position: absolute;
-    top: 0px;
-    background-image: url(../assets/carousel-1.jpg);
-    background-size: cover;
-    transition: all .3s;
-}
-
-.bk1{
-    background-image: url(../assets/carousel-1.jpg);
-}
-
-.bk2{
-    background-image: url(../assets/carousel-2.jpg);
-}
-
-.bk3{
-    background-image: url(../assets/carousel-3.jpg);
-}
-
-.bk4{
-    background-image: url(../assets/carousel-4.jpg);
-}
-
-.bk5{
-    background-image: url(../assets/carousel-5.jpg);
-}
-
-.bk6{
-    background-image: url(../assets/carousel-6.jpg);
-}
 
 .banner-box{
     display: flex;

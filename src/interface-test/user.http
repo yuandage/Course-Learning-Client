@@ -1,6 +1,10 @@
 @uri= http://localhost:9000
 @json=Content-Type: application/json
 
+###查询用户信息
+GET {{uri}}/user/1173422474768027648
+
+
 ###用户注册
 POST    {{uri}}/user/register
 {{json}}
