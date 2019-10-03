@@ -5,7 +5,7 @@
 
             <el-popover placement="bottom"  width="300" trigger="hover">
 
-                <div class="user-info">
+                <div class="user-popover">
                     <h3>{{this.username}}</h3>
 
                     <div class="btg">
@@ -23,7 +23,7 @@
                 </div>
 
                 <router-link  class="user-card-item" slot="reference" to="user">
-                    <img width="40" height="40" src="@/assets/avatar.gif">
+                    <img width="50" height="50" src="@/assets/avatar.gif">
                     <span>{{this.username}}</span>
                     <i class="el-icon-caret-bottom"></i>
                 </router-link>
@@ -114,7 +114,6 @@
                     username: this.loginForm.username,
                     password: this.loginForm.password
                 }).then(res => {
-                    console.log(res, '这是响应的结果')
                     if (res.data.code === 20000) {
                         this.$notify({
                             title: res.data.message,
@@ -142,7 +141,6 @@
                     password: this.registerForm.password,
                     role: this.role
                 }).then(res => {
-                    console.log(res, '这是响应的结果')
                     if (res.data.code === 20000) {
                         this.$notify({
                             title: res.data.message,
@@ -163,6 +161,8 @@
                 this.username=''
                 dataStorage.removeUserInfo(),
                 dataStorage.removeToken()
+                //跳转到首页
+                this.$router.push('/')
             },
 
             resetForm(formName) {
@@ -220,7 +220,7 @@
     border-radius: 50%;
 }
 
-.user-info{
+.user-popover{
     text-align: center;
 
 }

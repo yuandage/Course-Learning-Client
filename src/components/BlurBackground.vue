@@ -1,25 +1,8 @@
 <template>
- 
-    <div class="bk" :class="this.$store.state.bk"></div>
+
+    <div class="bk" :class="'bk'+this.$store.state.bk"></div>
 
 </template>
-
-<script>
-
-export default {
-     data () {
-    return {
-    }
-  },
- 
-  methods:{
-  }
- 
-
-}
-
-</script>
-
 
 <style>
 

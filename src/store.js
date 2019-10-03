@@ -135,7 +135,6 @@ export default new Vuex.Store({
   mutations: {
     setBk(state,val) {
       state.bk = val
-      console.log("store:"+val);
     },
     setUserInfo(state) {
       state.username = dataStorage.getUserInfo()

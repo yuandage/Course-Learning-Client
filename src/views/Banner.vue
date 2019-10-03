@@ -62,14 +62,13 @@ export default {
     methods: {
         changeBackground(val, oldVal) {
             val = val + 1
-            this.$store.commit('setBk','bk' + val)
-            console.log('bk' + val);
+            this.$store.commit('setBk', val)
+
         },
 
         findAllSubject() {
             findAllSubject().then(res => {
                 if (res.data.code === 20000) {
-                    console.log(res.data.data);
                     this.subject = res.data.data
                 }
             })

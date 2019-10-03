@@ -78,9 +78,6 @@
             </div>
 
 
-
-
-
         </div>
     </div>
 
@@ -111,7 +108,7 @@ export default {
              // 默认显示第几页
             currentPage: 1,
             // 总条数，根据接口获取数据长度(注意：这里不能为空)
-            totalCount: 12,
+            totalCount: 0,
             // 个数选择器（可修改）
             pageSizes: [1, 2, 3, 4],
             // 默认每页显示的条数（可修改）
@@ -126,7 +123,6 @@ export default {
                 this.subjectIndex = index
                 getSubjectCourse(index + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                     if (res.data.code === 20000) {
-                        console.log(res.data.data);
                         this.course = res.data.data.rows
                         this.totalCount = res.data.data.total
 
@@ -135,7 +131,6 @@ export default {
             } else {
                 getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
                     if (res.data.code === 20000) {
-                        console.log(res.data.data);
                         this.course = res.data.data.rows
                         this.totalCount = res.data.data.total
 
@@ -149,7 +144,6 @@ export default {
                 if (index == -1) {
                     getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
                         if (res.data.code === 20000) {
-                            console.log(res.data.data);
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
 
@@ -157,10 +151,8 @@ export default {
                     })
                 } else {
                     let subId = this.allChildSubject[index].id
-                    console.log("subId:" + subId);
                     getCourse(subId,1,this.pageSize).then((res) => {
                         if (res.data.code === 20000) {
-                            console.log(res.data.data)
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
 
@@ -171,7 +163,6 @@ export default {
                 if (index == -1) {
                     getSubjectCourse(this.itemOn + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                         if (res.data.code === 20000) {
-                            console.log(res.data.data);
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
 
@@ -182,7 +173,6 @@ export default {
                     console.log(parentId);
                     getCourse(parentId,1,this.pageSize).then((res) => {
                         if (res.data.code === 20000) {
-                            console.log(res.data.data)
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
 
@@ -200,20 +190,17 @@ export default {
             if (subId == -1) {
                 getSubjectCourse(id + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                     if (res.data.code === 20000) {
-                        console.log(res.data.data);
                         this.course = res.data.data.rows
-                            this.totalCount = res.data.data.total
+                        this.totalCount = res.data.data.total
 
                     }
                 })
             } else {
                 let parentId = this.subject[id].subjectList[subId].id
-                console.log(parentId);
                 getCourse(parentId,1,this.pageSize).then((res) => {
                     if (res.data.code === 20000) {
-                        console.log(res.data.data)
                         this.course = res.data.data.rows
-                            this.totalCount = res.data.data.total
+                        this.totalCount = res.data.data.total
 
                     }
                 })
@@ -228,17 +215,14 @@ export default {
                 if (this.subItemOn == -1) {
                     getAllCourse(currentPage, pageSize).then((res) => { //获取全部的课程信息
                         if (res.data.code === 20000) {
-                            console.log(res.data.data);
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
                         }
                     })
                 } else {
                     let subId = this.allChildSubject[this.subItemOn].id
-                    console.log("subId:" + subId);
                     getCourse(subId,currentPage, pageSize).then((res) => {
                         if (res.data.code === 20000) {
-                            console.log(res.data.data)
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
                             
@@ -249,17 +233,14 @@ export default {
                 if (this.subItemOn == -1) {
                     getSubjectCourse(this.itemOn + 1,currentPage, pageSize).then((res) => { //获取某个分类下的全部课程信息
                         if (res.data.code === 20000) {
-                            console.log(res.data.data);
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
                         }
                     })
                 } else {
                     let parentId = this.subject[this.itemOn].subjectList[this.subItemOn].id
-                    console.log(parentId);
                     getCourse(parentId,currentPage, pageSize).then((res) => {
                         if (res.data.code === 20000) {
-                            console.log(res.data.data)
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
                         }
@@ -306,7 +287,6 @@ export default {
         if (subjectId == -1 && childSubjectId == -1) {
             getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
                 if (res.data.code === 20000) {
-                    console.log(res.data.data);
                     this.course = res.data.data.rows
                     this.totalCount = res.data.data.total
                     
@@ -315,7 +295,6 @@ export default {
         } else if (subjectId != -1 && childSubjectId == -1) {
             getSubjectCourse(subjectId + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                 if (res.data.code === 20000) {
-                    console.log(res.data.data);
                     this.course = res.data.data.rows
                     this.totalCount = res.data.data.total
 
