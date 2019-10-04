@@ -225,12 +225,6 @@
 
 }
 
-.btg{
-    /* display: flex;
-    justify-content: flex-start;
-    align-items: center; */
-}
-
 .bt{
     margin: 10px;
 }

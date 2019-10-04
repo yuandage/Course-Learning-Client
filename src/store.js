@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    bk:"bk",//模糊背景
+    bk:1,//模糊背景
     isLogin: dataStorage.isLogin(),
     username: dataStorage.getUserInfo(),
     subject: [{
@@ -134,6 +134,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setBk(state,val) {
+      console.log(val);
       state.bk = val
     },
     setUserInfo(state) {
