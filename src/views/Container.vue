@@ -38,39 +38,22 @@
       </div>
 
       <div v-if="this.$store.state.isLogin">
-        登录之后显示内容
+        <h3> 登录之后显示内容</h3>
         <br>
         <br>
         <br>
         <br>
       </div>
-      <div>
-        <br>
-        <br>
-        <br>
 
-        主体区域的其他展示内容
+       <div v-else>
+        <h3> 未登录显示内容</h3>
         <br>
         <br>
         <br>
         <br>
-        <br>
-        主体区域的其他展示内容
-        <br>
-        <br>
-        <br>
-        <br>
-        主体区域的其他展示内容
-        <br>
-        <br>
-        <br>
-        <br>
-        主体区域的其他展示内容
       </div>
-    
-
+   
     <Pagination/>
-
 
     </div>
 </template>
@@ -90,6 +73,7 @@ export default {
 
 .other{
   text-align: center;
+  margin-top: 50px;
 }
 
 

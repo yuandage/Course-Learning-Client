@@ -8,16 +8,16 @@
                         <div class="submenu">
 
                             <el-divider content-position="left">
-                                <router-link class="divider" :to="'/subject/'+index+'/-1'">{{item.name}}</router-link>
+                                <router-link class="divider" :to="{name:'subjectList',params:{id:index,subId:-1}}">{{item.name}}</router-link>
                             </el-divider>
                             <div class="subItem">
-                                <router-link :to="'/subject/'+index+'/'+subIndex"
+                                <router-link :to="{name:'subjectList',params:{id:index,subId:subIndex}}"
                                     v-for="(subItem,subIndex) in item.subjectList" :key="subItem.id"
                                     class="subItemLink">
                                     {{subItem.name}} </router-link>
                             </div>
                         </div>
-                        <router-link class="popover-a" :to="'/subject/'+index+'/-1'" slot="reference">
+                        <router-link class="popover-a" :to="{name:'subjectList',params:{id:index,subId:-1}}" slot="reference">
                             <div class="mask"></div>
                             <span>{{item.name}}</span>
                             <i class="el-icon-caret-right"></i>
@@ -56,27 +56,28 @@ import {
 export default {
     data() {
         return {
-             subject:this.$store.state.subject
+             subject:[]
         };
     },
     methods: {
         changeBackground(val, oldVal) {
             val = val + 1
-            this.$store.commit('setBk', val)
-
+            this.$emit('changeBk',val)
         },
 
         findAllSubject() {
             findAllSubject().then(res => {
                 if (res.data.code === 20000) {
                     this.subject = res.data.data
+                    console.log(res.data.data);
+                    this.$store.commit('setSubject',this.subject)
+
                 }
             })
         }
     },
-    created() {
+    created(){
         this.findAllSubject()
-        // this.$store.commit('setSubject',this.subject)
     }
 }
 </script>
@@ -107,7 +108,7 @@ export default {
 }
 
 .aside-menu span{
-    font-size: 14px;
+    font-size: 16px;
     letter-spacing:1px;
 }
 

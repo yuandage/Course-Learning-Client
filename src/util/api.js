@@ -7,6 +7,7 @@ export const register = (params) => service.post('/user/register', params)
 export const findAllSubject = () => service.get('/subject')
 
 export const getAllCourse = (page,pageSize) => service.get('/course/'+page+'/'+pageSize)
+export const getCourseInfo = (courseId) => service.get('/course/'+courseId)
 export const getCourse = (parentId,page,pageSize) => service.get('/course/parentId/'+parentId+'/'+page+'/'+pageSize)
 export const getSubjectCourse = (subjectId,page,pageSize) => service.get('/course/subject/'+subjectId+'/'+page+'/'+pageSize)
 

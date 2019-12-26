@@ -3,17 +3,17 @@
 ###查询所有标签
 GET {{uri}}/label
 ###查询所有课程
-GET {{uri}}/course/1/5
+GET {{uri}}/course/
 
 ###查询某个分类下的所有课程
-GET {{uri}}/course/subject/1/1/5
+GET {{uri}}/course/subject/6/1/5
 
 ###查询某个课程
 POST {{uri}}/course/parentId
 {{json}}
 
 {
-    "parentId":"22"
+    "parentId":"71"
 }
 
 ###查询所有学科

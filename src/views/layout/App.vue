@@ -41,18 +41,28 @@ html,body {
   height:100%;
   width: 100%;
   min-width: 1200px;
+  font: 12px/1.5 Microsoft YaHei,tahoma,\5B8B\4F53,sans-serif;
 }
 
 
-ol,ul,p,h1,h2,h3,h4,h5,h6{
-  list-style: none;
+body, dd, div, dl, dt, form, h1, h2, h3, h4, h5, h6, 
+input, li, ol, p, td, textarea, th, ul{
   margin: 0;
   padding: 0;
 }
 
+ol, ul {
+  list-style: none;
+}
+
 a{
+  font-size: 16px;
   text-decoration: none;
   color: #1c1f21;
+}
+
+p,span{
+  font-size: 16px;
 }
 
 .el-header, .el-footer {

@@ -1,8 +1,45 @@
 <template>
 
-    <div class="bk" :class="'bk'+this.$store.state.bk"></div>
+    <div class="bk" :class="'bk'+this.bk1" ></div>
 
 </template>
+
+<script>
+export default {
+    props: ['bk'],
+    data() {
+        return {
+            timer: null, // 定时器名称  
+            bk1: 1,
+            bk2:this.bk
+        }
+    },
+    methods: {
+        getBk() {
+                this.bk1++;
+                console.log(this.bk1);
+          
+        }
+    },
+
+     watch: {
+            bk2: function(newVal,oldVal){
+                console.log(newVal);
+                 if(newVal==oldVal)
+                 {
+                     console.log('object');
+                    this.timer = setInterval(this.getBk, 100);
+                 }
+                else
+                     this.bk1 = newVal;  //newVal即是chartData
+            }
+    },
+    beforeDestroy() {
+        clearInterval(this.timer);
+        this.timer = null;
+    }
+}
+</script>
 
 <style>
 

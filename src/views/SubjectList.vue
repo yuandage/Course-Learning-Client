@@ -72,11 +72,12 @@
     <div class="course-container">
         <div class="course-card-container">
 
-            <div class="course-card-content" v-for="item in course" :key="item.id">
-                <h3 class="course-card-name">{{item.name}}</h3>
+            <router-link class="course-card-content" v-for="item in course" :key="item.id"
+                :to="{name:'courseInfo',params:{courseId:71}}">
+                <!-- 暂时设置所有的课程都跳转到微机原理与接口技术(id:71)的课程简介页面 -->
+                <h2 class="course-card-name">{{item.name}}</h2>
                 <p class="course-card-desc">{{item.summary}}</p>
-            </div>
-
+            </router-link>
 
         </div>
     </div>
@@ -94,7 +95,12 @@
 </template>
 
 <script>
-import {getAllCourse,getCourse,getSubjectCourse} from '@/util/api' 
+import {
+    getAllCourse,
+    getCourse,
+    getSubjectCourse,
+    findAllSubject
+} from '@/util/api'
 
 export default {
     data() {
@@ -105,7 +111,7 @@ export default {
             subject: this.$store.state.subject,
             allChildSubject: [],
             course: [],
-             // 默认显示第几页
+            // 默认显示第几页
             currentPage: 1,
             // 总条数，根据接口获取数据长度(注意：这里不能为空)
             totalCount: 0,
@@ -121,7 +127,7 @@ export default {
             this.subItemOn = -1
             if (index >= 0) {
                 this.subjectIndex = index
-                getSubjectCourse(index + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
+                getSubjectCourse(index + 1, 1, this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                     if (res.data.code === 20000) {
                         this.course = res.data.data.rows
                         this.totalCount = res.data.data.total
@@ -129,7 +135,7 @@ export default {
                     }
                 })
             } else {
-                getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
+                getAllCourse(1, this.pageSize).then((res) => { //获取全部的课程信息
                     if (res.data.code === 20000) {
                         this.course = res.data.data.rows
                         this.totalCount = res.data.data.total
@@ -142,7 +148,7 @@ export default {
             this.subItemOn = index
             if (this.itemOn == -1) {
                 if (index == -1) {
-                    getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
+                    getAllCourse(1, this.pageSize).then((res) => { //获取全部的课程信息
                         if (res.data.code === 20000) {
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
@@ -151,7 +157,7 @@ export default {
                     })
                 } else {
                     let subId = this.allChildSubject[index].id
-                    getCourse(subId,1,this.pageSize).then((res) => {
+                    getCourse(subId, 1, this.pageSize).then((res) => {
                         if (res.data.code === 20000) {
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
@@ -161,7 +167,7 @@ export default {
                 }
             } else {
                 if (index == -1) {
-                    getSubjectCourse(this.itemOn + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
+                    getSubjectCourse(this.itemOn + 1, 1, this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                         if (res.data.code === 20000) {
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
@@ -171,7 +177,7 @@ export default {
                 } else {
                     let parentId = this.subject[this.itemOn].subjectList[index].id
                     console.log(parentId);
-                    getCourse(parentId,1,this.pageSize).then((res) => {
+                    getCourse(parentId, 1, this.pageSize).then((res) => {
                         if (res.data.code === 20000) {
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
@@ -188,7 +194,7 @@ export default {
         },
         getCourse(id, subId) {
             if (subId == -1) {
-                getSubjectCourse(id + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
+                getSubjectCourse(id + 1, 1, this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                     if (res.data.code === 20000) {
                         this.course = res.data.data.rows
                         this.totalCount = res.data.data.total
@@ -197,7 +203,7 @@ export default {
                 })
             } else {
                 let parentId = this.subject[id].subjectList[subId].id
-                getCourse(parentId,1,this.pageSize).then((res) => {
+                getCourse(parentId, 1, this.pageSize).then((res) => {
                     if (res.data.code === 20000) {
                         this.course = res.data.data.rows
                         this.totalCount = res.data.data.total
@@ -221,17 +227,17 @@ export default {
                     })
                 } else {
                     let subId = this.allChildSubject[this.subItemOn].id
-                    getCourse(subId,currentPage, pageSize).then((res) => {
+                    getCourse(subId, currentPage, pageSize).then((res) => {
                         if (res.data.code === 20000) {
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
-                            
+
                         }
                     })
                 }
             } else {
                 if (this.subItemOn == -1) {
-                    getSubjectCourse(this.itemOn + 1,currentPage, pageSize).then((res) => { //获取某个分类下的全部课程信息
+                    getSubjectCourse(this.itemOn + 1, currentPage, pageSize).then((res) => { //获取某个分类下的全部课程信息
                         if (res.data.code === 20000) {
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
@@ -239,7 +245,7 @@ export default {
                     })
                 } else {
                     let parentId = this.subject[this.itemOn].subjectList[this.subItemOn].id
-                    getCourse(parentId,currentPage, pageSize).then((res) => {
+                    getCourse(parentId, currentPage, pageSize).then((res) => {
                         if (res.data.code === 20000) {
                             this.course = res.data.data.rows
                             this.totalCount = res.data.data.total
@@ -249,7 +255,7 @@ export default {
             }
 
             // 将数据的长度赋值给totalCount
-         
+
         },
         // 分页
         // 每页显示的条数
@@ -272,8 +278,8 @@ export default {
     },
     created() {
         this.getAllChildSubject()
-        let subjectId = parseInt(this.$route.path.split("/")[2])
-        let childSubjectId = parseInt(this.$route.path.split("/")[3])
+        let subjectId = this.$route.params.id
+        let childSubjectId = this.$route.params.subId
 
         if (subjectId < -1 || subjectId > this.subject.length)
             subjectId = -1
@@ -285,15 +291,15 @@ export default {
 
         this.subjectIndex = subjectId
         if (subjectId == -1 && childSubjectId == -1) {
-            getAllCourse(1,this.pageSize).then((res) => { //获取全部的课程信息
+            getAllCourse(1, this.pageSize).then((res) => { //获取全部的课程信息
                 if (res.data.code === 20000) {
                     this.course = res.data.data.rows
                     this.totalCount = res.data.data.total
-                    
+
                 }
             })
         } else if (subjectId != -1 && childSubjectId == -1) {
-            getSubjectCourse(subjectId + 1,1,this.pageSize).then((res) => { //获取某个分类下的全部课程信息
+            getSubjectCourse(subjectId + 1, 1, this.pageSize).then((res) => { //获取某个分类下的全部课程信息
                 if (res.data.code === 20000) {
                     this.course = res.data.data.rows
                     this.totalCount = res.data.data.total
@@ -367,7 +373,7 @@ export default {
     line-height: 14px;
     margin-bottom: 10px;
     padding: 10px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .course-nav-skills {
@@ -381,8 +387,10 @@ export default {
 
 
 .course-container{
-    margin: 0 auto;
-   padding: 20px 60px;;
+    max-width: 1386px;
+    margin: auto;
+    /* margin: 0 auto; */
+   padding: 20px 200px;;
 }
 
 .course-card-container{

@@ -2,27 +2,27 @@
   <div class="user">
 
     <div class="user-info">
-      <div class="user-avatar" >
+      <div class="user-avatar">
         <img width="120" height="120" src="@/assets/avatar.gif">
       </div>
 
       <div class="user-info-box">
-        <h2 style="width:30px">{{this.username}}</h2>
-        <p class="user-info-desc" >{{this.user.sex==1?'男':'女'}}</p> 
+        <h2>{{this.username}}</h2>
+        <p class="user-info-desc">{{this.user.sex==1?'男':'女'}}</p>
         <p class="user-info-desc">上次登录时间:{{this.user.lastDate}}</p>
         <p class="user-info-desc"> 个性签名：太懒了，什么都没有写 ~ </p>
       </div>
 
-      <div >
+      <div>
         <el-button size="medium" round icon="el-icon-search">个人设置</el-button>
       </div>
     </div>
 
     <div class="tabBox">
-      <el-tabs   class="tab" tab-position="left" type="card" style="height: 600px;">
-        <el-tab-pane class="tab-pane" label="我的课程">
-         
-          <el-tabs class="child-tab" type="card">
+      <el-tabs class="tab" value="myCourse" tab-position="left" type="card" style="height: 600px;">
+        <el-tab-pane class="tab-pane" label="我的课程" name="myCourse">
+
+          <el-tabs class="child-tab" type="card" value="first">
             <el-tab-pane label="全部" name="first">全部课程</el-tab-pane>
             <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
 
@@ -32,8 +32,36 @@
         <el-tab-pane class="tab-pane" label="我的试题">我的试题</el-tab-pane>
         <el-tab-pane class="tab-pane" label="我的收藏">我的收藏</el-tab-pane>
         <el-tab-pane class="tab-pane" label="个人设置">
-            <el-tabs class="child-tab" type="card">
-            <el-tab-pane label="全部" name="first">全部课程</el-tab-pane>
+          <el-tabs class="child-tab" value="first" type="card">
+            <el-tab-pane label="全部" name="first">
+             
+              <el-form ref="form" :model="user" label-width="80px" class="user-setting-form">
+                <el-form-item label="用户名">
+                     <span>{{user.username}}</span>
+                </el-form-item>
+              
+                <el-form-item label="昵称">
+                  <el-input v-model="user.nickname"></el-input>
+                </el-form-item>
+
+                <el-form-item label="手机">
+                  <span>{{user.mobile}}</span>
+                </el-form-item>
+                
+                   <el-form-item label="角色">
+                  <span>{{user.role==1?"学生":"教师"}}</span>
+                </el-form-item>
+
+                  <el-form-item label="性别">
+                  <span>{{user.sex==1?"男":"女"}}</span>
+                </el-form-item>
+
+                <el-form-item>
+                  <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                  <el-button>取消</el-button>
+                </el-form-item>
+              </el-form>
+            </el-tab-pane>
             <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
 
           </el-tabs>
@@ -60,7 +88,7 @@ import {getUserInfo} from '@/util/api'
 export default {
   data() {
     return {
-      username: dataStorage.getUserInfo(),
+      username: dataStorage.getUserInfo()?dataStorage.getUserInfo():'未登录!',
       user: {
         "id": "1173422474768027648",
         "username": "yh",
@@ -68,7 +96,7 @@ export default {
         "password": "$2a$10$H/f/AC.hGflPHFpWIEkUXepcHUnTgpEptd7WgmphYN3Lh58gQIV.6",
         "role": "1",
         "nickname": "小袁",
-        "sex": "2",
+        "sex": "1",
         "birthday": null,
         "avatar": null,
         "email": null,
@@ -148,6 +176,10 @@ export default {
 
 .child-tab .el-tabs__item {
   margin: 0px 40px;
+}
+
+.user-setting-form{
+  width: 400px;
 }
 
 </style>

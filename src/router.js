@@ -14,9 +14,18 @@ export default new Router({
       component: () => import('@/views/layout/App.vue'),
       children:[
         {
-          path: 'subject/:id/:subId',
+          path: 'subject',
           name: 'subjectList',
           component: () => import('@/views/SubjectList.vue')
+        },
+        {
+          path: 'course',
+          name: 'courseInfo',
+          component: () => import('@/views/CourseInfo.vue')
+        },{
+          path: 'video',
+          name: 'CourseVideo',
+          component: () => import('@/views/CourseVideo.vue')
         },
         {
           path: 'user',

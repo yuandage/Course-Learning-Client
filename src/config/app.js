@@ -11,7 +11,7 @@ export default {
   siteName: 'Course_Learning',
   minSiteMame: 'EUI',
   apiPrefix: '',
-  timeout: 500,
+  timeout: 2000,
   cookiesExpires: 7,
   requestRetry: 4,
   requestRetryDelay: 800,
