@@ -41,7 +41,7 @@ html,body {
   height:100%;
   width: 100%;
   min-width: 1200px;
-  font: 12px/1.5 Microsoft YaHei,tahoma,\5B8B\4F53,sans-serif;
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
 }
 
 

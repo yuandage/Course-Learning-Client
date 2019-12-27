@@ -2,6 +2,7 @@
     <div class="course">
         <div class="courseInfo">
             <h2>课程介绍</h2>
+            <br>
             <el-form class="courseInfoForm" ref="form" :model="course" label-width="80px" style="width:400px">
                 <el-form-item label="课程名称">
                     <span>{{course.name}}</span>
@@ -24,88 +25,106 @@
 
         <div class="course">
             <h2>在线学习</h2>
-             <div class="courseLearnTab">
-            <el-tabs type="border-card">
-            <el-tab-pane label="试题测试">
-                <el-button v-for="item in tableData.slice(0,2)" :key="item.id">{{item.title}}</el-button>
-             </el-tab-pane>
-            <el-tab-pane label="课程PPT"> 
-                <el-button v-for="item in tableData.slice(2,4)" :key="item.id">{{item.title}}</el-button>
-                </el-tab-pane>
-            <el-tab-pane label="课程视频">  
-                <el-button v-for="item in VideoData" :key="item.id" @click="playVideo(item.title)">{{item.title}}</el-button>
-                </el-tab-pane>
-         
-            </el-tabs>
+            <br>
+            <div class="courseLearnTab">
+
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>试题测试</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click="doTest('选择题.docx')">开始练习</el-button>
+                    </div>
+                    <div class="text item">
+                        <el-button v-for="item in tableData.slice(0,2)" :key="item.id" @click="doTest(item.title)">{{item.title}}</el-button>
+                    </div>
+                </el-card>
+
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>课程视频</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click="playVideo('微机原理与接口技术_1.0 教学安排.mp4')">观看视频</el-button>
+                    </div>
+                    <div  class="text item">
+                        <el-button v-for="item in VideoData" :key="item.id" @click="playVideo(item.title)">
+                            {{item.title}}</el-button>
+                    </div>
+                </el-card>
+
+             
             </div>
         </div>
 
         <div class="courseRes">
+            <br>
+
             <h2>课程资源</h2>
+             <br>
             <div class="courseResTab">
-                <el-tabs :v-model=0 type="card" tab-position="left" @tab-click="handleClick">
+                <el-tabs :v-model=0 type="card" tab-position="left" >
                     <el-tab-pane label="显示全部" name="0">
                         <el-table :data="tableData" style="width: 100%">
                             <el-table-column type="index" label="序号">
                             </el-table-column>
-                          
+
                             <el-table-column prop="title" label="标题">
                             </el-table-column>
                             <el-table-column prop="summary" label="简介">
                             </el-table-column>
-                              <el-table-column prop="fileSize" label="文件大小">
+                            <el-table-column prop="fileSize" label="文件大小">
                             </el-table-column>
-                              <el-table-column prop="uploadName" label="上传人">
+                            <el-table-column prop="uploadName" label="上传人">
                             </el-table-column>
-                              <el-table-column prop="updateTime" label="更新时间">
+                            <el-table-column prop="updateTime" label="更新时间">
                             </el-table-column>
-                             <el-table-column label="操作">
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
+                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">
+                                        下载</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="课程试题" name="1">
-                         <el-table :data="tableData.slice(0,2)" style="width: 100%">
+                        <el-table :data="tableData.slice(0,2)" style="width: 100%">
                             <el-table-column type="index" label="序号">
                             </el-table-column>
-                          
+
                             <el-table-column prop="title" label="标题">
                             </el-table-column>
                             <el-table-column prop="summary" label="简介">
                             </el-table-column>
-                              <el-table-column prop="fileSize" label="文件大小">
+                            <el-table-column prop="fileSize" label="文件大小">
                             </el-table-column>
-                              <el-table-column prop="uploadName" label="上传人">
+                            <el-table-column prop="uploadName" label="上传人">
                             </el-table-column>
-                              <el-table-column prop="updateTime" label="更新时间">
+                            <el-table-column prop="updateTime" label="更新时间">
                             </el-table-column>
-                             <el-table-column label="操作">
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
+                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">
+                                        下载</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="课程PPT" name="2">
-                         <el-table :data="tableData.slice(2,4)" style="width: 100%">
+                        <el-table :data="tableData.slice(2,4)" style="width: 100%">
                             <el-table-column type="index" label="序号">
                             </el-table-column>
-                          
+
                             <el-table-column prop="title" label="标题">
                             </el-table-column>
                             <el-table-column prop="summary" label="简介">
                             </el-table-column>
-                              <el-table-column prop="fileSize" label="文件大小">
+                            <el-table-column prop="fileSize" label="文件大小">
                             </el-table-column>
-                              <el-table-column prop="uploadName" label="上传人">
+                            <el-table-column prop="uploadName" label="上传人">
                             </el-table-column>
-                              <el-table-column prop="updateTime" label="更新时间">
+                            <el-table-column prop="updateTime" label="更新时间">
                             </el-table-column>
-                             <el-table-column label="操作">
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
+                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">
+                                        下载</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -114,42 +133,44 @@
                         <el-table :data="tableData.slice(4,6)" style="width: 100%">
                             <el-table-column type="index" label="序号">
                             </el-table-column>
-                          
+
                             <el-table-column prop="title" label="标题">
                             </el-table-column>
                             <el-table-column prop="summary" label="简介">
                             </el-table-column>
-                              <el-table-column prop="fileSize" label="文件大小">
+                            <el-table-column prop="fileSize" label="文件大小">
                             </el-table-column>
-                              <el-table-column prop="uploadName" label="上传人">
+                            <el-table-column prop="uploadName" label="上传人">
                             </el-table-column>
-                              <el-table-column prop="updateTime" label="更新时间">
+                            <el-table-column prop="updateTime" label="更新时间">
                             </el-table-column>
-                             <el-table-column label="操作">
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
+                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">
+                                        下载</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
-                     <el-tab-pane label="其它资料" name="4">
-                         <el-table :data="tableData.slice(6,8)" style="width: 100%">
+                    <el-tab-pane label="其它资料" name="4">
+                        <el-table :data="tableData.slice(6,8)" style="width: 100%">
                             <el-table-column type="index" label="序号">
                             </el-table-column>
-                          
+
                             <el-table-column prop="title" label="标题">
                             </el-table-column>
                             <el-table-column prop="summary" label="简介">
                             </el-table-column>
-                              <el-table-column prop="fileSize" label="文件大小">
+                            <el-table-column prop="fileSize" label="文件大小">
                             </el-table-column>
-                              <el-table-column prop="uploadName" label="上传人">
+                            <el-table-column prop="uploadName" label="上传人">
                             </el-table-column>
-                              <el-table-column prop="updateTime" label="更新时间">
+                            <el-table-column prop="updateTime" label="更新时间">
                             </el-table-column>
-                             <el-table-column label="操作">
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
+                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">
+                                        下载</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -163,156 +184,199 @@
 </template>
 
 <script>
-import {getCourseInfo} from '@/util/api'
-export default {
-    data() {
-        return {
-            course: {},
-            tableData: [{
-                id: 1,
-                title: '选择题.docx',
-                summary: '微机接口选择题',
-                fileSize: '30KB',
-                uploadName: 'YH',
-                updateTime: '2019-12-9'
-            }, {
-                id: 2,
-                title: '每章填空判断简答题.docx',
-                summary: '微机接口的每章填空判断简答题',
-                fileSize: '35KB',
-                uploadName: 'YH',
-                updateTime: '2019-12-10'
-            }, {
-                id: 3,
-                title: '第01章 接口概述.pptx',
-                summary: '第01章接口概述2019',
-                fileSize: '5MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-4'
-            }, {
-                id: 4,
-                title: '第02章 处理器结构.pptx',
-                summary: '第02章处理器结构2019',
-                fileSize: '5MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-1'
-            }, {
-                id: 5,
-                title: '微机原理与接口技术_1.1 发展概况.mp4',
-                summary: '第1章 微型计算机基础-1.1 发展概况',
-                fileSize: '200MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-10'
-            }, {
-                id: 6,
-                title: '微机原理与接口技术_1.2 硬件结构.mp4',
-                summary: '第1章 微型计算机基础-1.2 硬件结构',
-                fileSize: '205MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-16'
-            }, {
-                id: 7,
-                title: '微机接口其它资料文件1.rar',
-                summary: '微机接口其它资料文件1',
-                fileSize: '45MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-11'
-            }, {
-                id: 8,
-                title: '微机接口其它资料文件2.rar',
-                summary: '微机接口其它资料文件2',
-                fileSize: '25MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-12'
-            }],
-             VideoData: [ {
-                id: 0,
-                title: '微机原理与接口技术_1.0 教学安排.mp4',
-                summary: '第1章 微型计算机基础-1.0 教学安排',
-                fileSize: '75MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-10'
-            },
-               {
-                id: 1,
-                title: '微机原理与接口技术_1.1 发展概况.mp4',
-                summary: '第1章 微型计算机基础-1.1 发展概况',
-                fileSize: '86MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-10'
-            }, {
-                id: 2,
-                title: '微机原理与接口技术_1.2 硬件结构.mp4',
-                summary: '第1章 微型计算机基础-1.2 硬件结构',
-                fileSize: '48MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-16'
-            }, {
-                id: 3,
-                title: '微机原理与接口技术_1.3 数据表示.mp4',
-                summary: '微机原理与接口技术_1.3 数据表示',
-                fileSize: '88MB',
-                uploadName: 'YH',
-                updateTime: '2019-12-11'
-            }]
-        }
-    },
-     filters: {
-         formatDate (value) {
-             let date = new Date(value);
-             let y = date.getFullYear();
-             let MM = date.getMonth() + 1;
-             MM = MM < 10 ? ('0' + MM) : MM;
-             let d = date.getDate();
-             d = d < 10 ? ('0' + d) : d;
-             let h = date.getHours();
-             h = h < 10 ? ('0' + h) : h;
-             let m = date.getMinutes();
-             m = m < 10 ? ('0' + m) : m;
-             let s = date.getSeconds();
-             s = s < 10 ? ('0' + s) : s;
-             return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
-         }
-     },
-    methods: {
-        getCourseInfo() {
-            getCourseInfo(this.$route.params.courseId).then(res => {
-                if (res.data.code === 20000) {
-                    this.course = res.data.data
-                }
-            })
+    import {
+        getCourseInfo
+    } from '@/util/api'
+    export default {
+        data() {
+            return {
+                course: {},
+                tableData: [{
+                    id: 1,
+                    title: '选择题.docx',
+                    summary: '微机接口的选择题',
+                    fileSize: '30KB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-9'
+                }, {
+                    id: 2,
+                    title: '判断题.docx',
+                    summary: '微机接口的判断题',
+                    fileSize: '35KB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-10'
+                }, {
+                    id: 3,
+                    title: '第01章 接口概述.pptx',
+                    summary: '第01章接口概述2019',
+                    fileSize: '5MB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-4'
+                }, {
+                    id: 4,
+                    title: '第02章 处理器结构.pptx',
+                    summary: '第02章处理器结构2019',
+                    fileSize: '5MB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-1'
+                }, {
+                    id: 5,
+                    title: '微机原理与接口技术_1.1 发展概况.mp4',
+                    summary: '第1章 微型计算机基础-1.1 发展概况',
+                    fileSize: '200MB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-10'
+                }, {
+                    id: 6,
+                    title: '微机原理与接口技术_1.2 硬件结构.mp4',
+                    summary: '第1章 微型计算机基础-1.2 硬件结构',
+                    fileSize: '205MB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-16'
+                }, {
+                    id: 7,
+                    title: '微机接口其它资料文件1.rar',
+                    summary: '微机接口其它资料文件1',
+                    fileSize: '45MB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-11'
+                }, {
+                    id: 8,
+                    title: '微机接口其它资料文件2.rar',
+                    summary: '微机接口其它资料文件2',
+                    fileSize: '25MB',
+                    uploadName: 'YH',
+                    updateTime: '2019-12-12'
+                }],
+                VideoData: [{
+                        id: 0,
+                        title: '微机原理与接口技术_1.0 教学安排.mp4',
+                        summary: '第1章 微型计算机基础-1.0 教学安排',
+                        fileSize: '75MB',
+                        uploadName: 'YH',
+                        updateTime: '2019-12-10'
+                    },
+                    {
+                        id: 1,
+                        title: '微机原理与接口技术_1.1 发展概况.mp4',
+                        summary: '第1章 微型计算机基础-1.1 发展概况',
+                        fileSize: '86MB',
+                        uploadName: 'YH',
+                        updateTime: '2019-12-10'
+                    }, {
+                        id: 2,
+                        title: '微机原理与接口技术_1.2 硬件结构.mp4',
+                        summary: '第1章 微型计算机基础-1.2 硬件结构',
+                        fileSize: '48MB',
+                        uploadName: 'YH',
+                        updateTime: '2019-12-16'
+                    }, {
+                        id: 3,
+                        title: '微机原理与接口技术_1.3 数据表示.mp4',
+                        summary: '微机原理与接口技术_1.3 数据表示',
+                        fileSize: '88MB',
+                        uploadName: 'YH',
+                        updateTime: '2019-12-11'
+                    }
+                ]
+            }
         },
-        playVideo(videoName){
-            this.$router.push({ name: 'CourseVideo', params: { videoName: videoName }})
-        }
-    },
-    created() {
-        this.getCourseInfo()
-    },
-   
-}
+        filters: {
+            formatDate(value) {
+                let date = new Date(value);
+                let y = date.getFullYear();
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? ('0' + MM) : MM;
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                let h = date.getHours();
+                h = h < 10 ? ('0' + h) : h;
+                let m = date.getMinutes();
+                m = m < 10 ? ('0' + m) : m;
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+                return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+            }
+        },
+        methods: {
+            getCourseInfo() {
+                getCourseInfo(this.$route.params.courseId).then(res => {
+                    if (res.data.code === 20000) {
+                        this.course = res.data.data
+                    }
+                })
+            },
+            playVideo(videoName) {
+                this.$router.push({
+                    name: 'CourseVideo',
+                    params: {
+                        videoName: videoName
+                    }
+                })
+            },
+            doTest(testName){
+                 this.$router.push({
+                    name: 'CourseTest',
+                    params: {
+                        testName: testName
+                    }
+                })
+            }
+        },
+        created() {
+            this.getCourseInfo()
+        },
+
+    }
 </script>
 
 <style>
-    .course{
+    .course {
         /* max-width: 1386px; */
     }
-    .courseInfo{
+
+    .courseInfo {
         /* margin: 0 200px; */
     }
+
     .courseInfoForm {
         margin: 0 auto;
     }
-    span{
+
+    span {
         font-size: 18px;
     }
 
-    .courseLearnTab{
+
+    .text {
+        font-size: 14px;
+    }
+
+    .item {
+        margin-bottom: 18px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+
+    .clearfix:after {
+        clear: both
+    }
+
+    .box-card {
+        width: 800px;
+    }
+
+    .courseLearnTab {
         width: 800px;
         margin: 0 auto;
     }
-    .courseResTab{
-        width:800px;
+
+    .courseResTab {
+        width: 800px;
         margin: 0 auto;
     }
 </style>

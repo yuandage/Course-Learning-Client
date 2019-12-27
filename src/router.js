@@ -26,6 +26,10 @@ export default new Router({
           path: 'video',
           name: 'CourseVideo',
           component: () => import('@/views/CourseVideo.vue')
+        },{
+          path: 'test',
+          name: 'CourseTest',
+          component: () => import('@/views/CourseTest.vue')
         },
         {
           path: 'user',
