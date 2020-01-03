@@ -23,3 +23,8 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+router.beforeEach((to, from, next) => {
+  document.title = to.name;
+  next();
+})

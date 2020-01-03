@@ -1,14 +1,14 @@
 <template>
   <div id="main">
 
-    <BlurBackground :bk="this.bk" />
+    <BlurBackground />
 
     <!-- 主页上显示嵌套的二级路由视图 -->
     <router-view v-if="this.$route.name!='home'"></router-view>
 
     <div v-else>
     <!-- 学科分类菜单和轮播图 -->
-    <Banner @changeBk="change" />
+    <Banner />
 
     <!-- 主页上的其他展示内容 -->
     <Container/>
@@ -26,7 +26,6 @@ import BlurBackground from '@/components/BlurBackground.vue'
 export default {
   data() {
     return {
-      bk:1
     }
   },
   name: 'Main',
@@ -36,11 +35,7 @@ export default {
     BlurBackground
   },
   methods: {
-      change(val){
-        if(val==null)
-          
-          this.bk=val
-    }
+      
   }
 }
 

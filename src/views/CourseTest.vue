@@ -4,15 +4,31 @@
         <br>
         <br>
         <div class="question-detail">
+            <div v-if="this.$route.params.testName=='选择题.docx'">
+                <h3>单选题，请选择你认为正确的答案！</h3>
+                <div>
+                    <p>{{currentTopic+1}}/{{questionList.length}}、{{questionList[currentTopic].title}}</p>
+                    <div class="option-radio">
+                        <el-radio v-model="questionList[currentTopic].checkedOption" @change="radioChange"
+                            @click="check(item.optionName)" :label="item.optionName"
+                            v-for="(item,index) in questionList[currentTopic].option" :key="index">
+                            {{item.optionName+'、'+item.optionText}}</el-radio>
 
-            <h3>单选题，请选择你认为正确的答案！</h3>
-            <div>
-                <p>{{currentTopic+1}}/{{questionList.length}}、{{questionList[currentTopic].title}}</p>
-                <div class="option-radio">
-                    <el-radio v-model="questionList[currentTopic].checkedOption" @change="radioChange"
-                        :label="item.optionName" v-for="(item,index) in questionList[currentTopic].option" :key="index">
-                        {{item.optionName+'、'+item.optionText}}</el-radio>
+                    </div>
+                </div>
+            </div>
 
+            <div v-else-if="this.$route.params.testName=='判断题.docx'">
+                <h3>判断题，请选择你认为正确的答案！</h3>
+                <div>
+                    <p>{{currentTopic+1}}/{{TrueOrFalseList.length}}、{{TrueOrFalseList[currentTopic].title}}</p>
+                    <div class="option-radio">
+                        <el-radio v-model="TrueOrFalseList[currentTopic].checkedOption" @change="radioChange"
+                            @click="check" :label="item.optionName"
+                            v-for="(item,index) in TrueOrFalseList[currentTopic].option" :key="index">
+                            {{item.optionName+'、'+item.optionText}}</el-radio>
+
+                    </div>
                 </div>
             </div>
 
@@ -21,18 +37,37 @@
                     <el-button type="primary" @click="next(-1)">上一题</el-button>
                     <el-button type="primary" @click="next(1)">下一题</el-button>
                 </div>
+                <el-button type="warning" @click="reset">重做</el-button>
                 <div>
-                    <el-button>显示详情</el-button>
-                    <el-button>显示答题卡</el-button>
+                    <el-button @click="showDetail=!showDetail">{{this.showDetail?'收起':'显示'}}详解</el-button>
+                    <el-button @click="answerSheet=!answerSheet">{{this.answerSheet?'收起':'显示'}}答题卡</el-button>
                 </div>
+            </div>
+
+            <div class="" style="margin-top:40px;" v-if="answerSheet">
+                <!-- <el-radio-group v-model="currentTopic" size="medium">
+                    <el-radio-button :class="class1" :label="index"
+                        v-for="(item, index) in this.$route.params.testName=='选择题.docx'? this.questionList.length:this.TrueOrFalseList.length"
+                        :key="index">{{item}}</el-radio-button>
+                </el-radio-group> -->
+                <br><br>
+                <el-button :type="a[index]" @click="currentTopic=index" size="small" v-for="(item, index) in 10"
+                    :key="index">{{item}}</el-button>
+            </div>
+
+            <div class="" style="margin-top:40px;" v-if="showDetail">
+                <p style="margin:0;">试题详解</p>
+                <el-divider></el-divider>
+                <p style="font-size:14px;">这是每道题的解析。<br>解析内容有很多。</p>
             </div>
 
             <div class="msg-bar">
                 <el-checkbox v-model="checked">答对自动下一题</el-checkbox>
-                <span class="left">答对：0 题</span>
-                <span class="left">答错：0 题</span>
+                <span class="left">答对：{{rightCount}} 题</span>
+                <span class="left">答错：{{wrongCount}}</span>
 
-                <span class="gray">正确率：0%</span>
+                <span
+                    class="gray">正确率：{{Math.round(rightCount/((rightCount+wrongCount)==0?1:(rightCount+wrongCount))*100)}}%</span>
                 <a class="right blue2" ref="loadYundata">云同步做题进度</a>
 
             </div>
@@ -45,10 +80,13 @@
     export default {
         data() {
             return {
-                option: '',
+                a: [],
+                rightCount: 0,
+                wrongCount: 0,
+                showDetail: false,
+                answerSheet: false,
                 checked: true,
                 currentTopic: 0,
-                resetFlag: 0,
                 questionList: [{
                     id: 1,
                     type: '选择题',
@@ -66,7 +104,6 @@
                         optionName: 'D',
                         optionText: '20条'
                     }, ],
-                    optionCount: 4,
                     answer: 'C',
                     checkedOption: ''
                 }, {
@@ -240,74 +277,251 @@
                     }, ],
                     answer: 'B',
                     checkedOption: ''
-                }, ]
+                }, ],
+                TrueOrFalseList: [{
+                    id: 1,
+                    type: '判断题',
+                    title: '软件与硬件的等价性原理说明软硬件在功能、性能和成本等方面是等价的。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'B',
+                    checkedOption: ''
+                }, {
+                    id: 2,
+                    type: '判断题',
+                    title: 'IA-64结构是IA-32结构的64位扩展，也就是Intel 64结构。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'B',
+                    checkedOption: ''
+                }, {
+                    id: 3,
+                    type: '判断题',
+                    title: '8086的数据总线为16位，也就是说8086的数据总线的个数或者说条数、位数是16。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'A',
+                    checkedOption: ''
+                }, {
+                    id: 4,
+                    type: '判断题',
+                    title: '微机主存只要使用RAM芯片就可以了。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'B',
+                    checkedOption: ''
+                }, {
+                    id: 5,
+                    type: '判断题',
+                    title: '处理器并不直接连接外设，而是通过I/O接口电路与外设连接。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'A',
+                    checkedOption: ''
+                }, {
+                    id: 6,
+                    type: '判断题',
+                    title: '处理器是微机的控制中心，内部只包括5大功能部件的控制器。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'B',
+                    checkedOption: ''
+                }, {
+                    id: 7,
+                    type: '判断题',
+                    title: 'Windows的模拟DOS环境与控制台环境是一样的。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'B',
+                    checkedOption: ''
+                }, {
+                    id: 8,
+                    type: '判断题',
+                    title: '16位IBM PC/AT采用ISA系统总线。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'A',
+                    checkedOption: ''
+                }, {
+                    id: 9,
+                    type: '判断题',
+                    title: 'IA-32处理器吸取了RISC技术特长。RISC是指复杂指令集计算机。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'B',
+                    checkedOption: ''
+                }, {
+                    id: 10,
+                    type: '判断题',
+                    title: '处理器进行读操作，就是把数据从处理器内部读出传送给主存或外设。',
+                    option: [{
+                        optionName: 'A',
+                        optionText: '正确'
+                    }, {
+                        optionName: 'B',
+                        optionText: '错误'
+                    }],
+                    answer: 'B',
+                    checkedOption: ''
+                }]
             }
         },
         methods: {
             radioChange(val) {
-                console.log(val);
-                if (val == this.questionList[this.currentTopic].answer) {
-                    this.$message({
-                        message: '回答正确',
-                        center: true,
-                        type: 'success',
-                        offset: 400
-                    });
-                    if (this.checked && this.currentTopic < this.questionList.length - 1) {
-                        this.questionList[this.currentTopic].checkedOption = val
+                if (this.$route.params.testName == '选择题.docx') {
+                    this.questionList[this.currentTopic].checkedOption = val
+                    this.check()
+                    this.checkAccuracy()
+                    if (this.a[this.currentTopic]=='success'&&this.checked && (this.currentTopic < this.questionList.length - 1)) {
                         this.next(1)
                     }
-                } else {
-                    this.$message({
-                        message: '回答错误',
-                        center: true,
-                        type: 'error',
-                        offset: 400
-                    });
-                }
-
-            },
-            next(val) {
-                if (this.resetFlag == 3) {
-                    this.reset()
-                    this.resetFlag = 0
-                }
-                if ((this.currentTopic + val) == -1) {
-                    this.resetFlag++;
-                    this.$message({
-                        message: '已经到第一题了哦',
-                        center: true,
-                        type: 'warning',
-                        offset: 400
-                    });
-
-                } else if ((this.currentTopic + val) == this.questionList.length) {
-                    this.$message({
-                        message: '已经到最后一题了哦',
-                        center: true,
-                        type: 'warning',
-                        offset: 400
-                    });
-                    this.resetFlag++;
-                } else {
-                    this.currentTopic = this.currentTopic + val
-
-                }
-            },
-            reset() {
-                for (let index = 0; index < this.questionList.length; index++) {
-                    if (this.questionList[index].checkedOption != '') {
-                        this.questionList[index].checkedOption = ''
+                } else if (this.$route.params.testName == '判断题.docx') {
+                    this.TrueOrFalseList[this.currentTopic].checkedOption = val
+                    this.check()
+                    this.checkAccuracy()
+                    if (this.a[this.currentTopic]=='success'&&this.checked && (this.currentTopic < this.TrueOrFalseList.length - 1)) {
+                        this.next(1)
                     }
                 }
+            },
+            next(val) {
+                this.checkAccuracy()
+                if (this.$route.params.testName == '选择题.docx') {
+                    if ((this.currentTopic + val) == -1) {
+                        this.$message({
+                            message: '已经到第一题了哦',
+                            center: true,
+                            type: 'warning',
+                            offset: 200
+                        });
+                    } else if ((this.currentTopic + val) == this.questionList.length) {
+                        this.$message({
+                            message: '已经到最后一题了哦',
+                            center: true,
+                            type: 'warning',
+                            offset: 200
+                        });
+                    } else {
+                        this.currentTopic = this.currentTopic + val
+                    }
+                } else if (this.$route.params.testName == '判断题.docx') {
+                    if ((this.currentTopic + val) == -1) {
+                        this.$message({
+                            message: '已经到第一题了哦',
+                            center: true,
+                            type: 'warning',
+                            offset: 200
+                        });
+                    } else if ((this.currentTopic + val) == this.TrueOrFalseList.length) {
+                        this.$message({
+                            message: '已经到最后一题了哦',
+                            center: true,
+                            type: 'warning',
+                            offset: 200
+                        });
+                    } else {
+                        this.currentTopic = this.currentTopic + val
+                    }
+                }
+
+            },
+            reset() {
+                this.currentTopic = 0;
+                this.rightCount = 0;
+                this.wrongCount = 0;
+                if (this.$route.params.testName == '选择题.docx') {
+                    for (let index = 0; index < this.questionList.length; index++) {
+                        if (this.questionList[index].checkedOption != '') {
+                            this.questionList[index].checkedOption = ''
+                        }
+                    }
+                } else if (this.$route.params.testName == '判断题.docx') {
+                    for (let index = 0; index < this.TrueOrFalseList.length; index++) {
+                        if (this.TrueOrFalseList[index].checkedOption != '') {
+                            this.TrueOrFalseList[index].checkedOption = ''
+                        }
+                    }
+                }
+                this.a = []
                 this.$message({
-                        message: '习题状态已重置！',
-                        center: true,
-                        type: 'success',
-                        offset: 300
-                    });
+                    message: '习题状态已重置！',
+                    center: true,
+                    type: 'success',
+                    offset: 300
+                });
+            },
+            check() {
+                if (this.$route.params.testName == '选择题.docx') {
+                    if (this.questionList[this.currentTopic].checkedOption == this.questionList[this.currentTopic]
+                        .answer) {
+                        this.a[this.currentTopic] = 'success'
+                    } else {
+                        this.a[this.currentTopic] = 'danger'
+                    }
+                } else if (this.$route.params.testName == '判断题.docx') {
+                    if (this.TrueOrFalseList[this.currentTopic].checkedOption == this.TrueOrFalseList[this.currentTopic]
+                        .answer) {
+                        this.a[this.currentTopic] = 'success'
+                    } else {
+                        this.a[this.currentTopic] = 'danger'
+                    }
+                }
+
+ 
+            },
+            checkAccuracy() {
+                const countOccurences = (arr, value) => arr.reduce((a, v) => v === value ? a + 1 : a + 0, 0);
+                this.rightCount = countOccurences(this.a, 'success')
+                this.wrongCount = countOccurences(this.a, 'danger')
             }
+
         }
+
     }
 </script>
 
@@ -328,7 +542,6 @@
     }
 
     .el-radio {
-        /* display: block; */
         margin: 10px;
     }
 
@@ -340,6 +553,12 @@
     .el-radio .el-radio__inner {
         width: 18px;
         height: 18px;
+    }
+
+    .green .el-radio-button .el-radio-button__inner span {
+        color: #FFF;
+        background-color: green;
+        border-color: green;
     }
 
     .switch-bt {

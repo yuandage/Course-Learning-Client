@@ -9,16 +9,16 @@
                     <h3>{{this.username}}</h3>
 
                     <div class="btg">
-                    <el-button class="bt" size="medium" round icon="el-icon-search">我的课程</el-button>
-                    <el-button class="bt" size="medium" round icon="el-icon-search">我的试题</el-button>
-                    <el-button class="bt" size="medium" round icon="el-icon-search">我的收藏</el-button>
+                    <el-button class="bt" size="small" round icon="el-icon-search">我的课程</el-button>
+                    <el-button class="bt" size="small" round icon="el-icon-search">我的试题</el-button>
+                    <el-button class="bt" size="small" round icon="el-icon-search">我的收藏</el-button>
                     
                      <router-link to="/user">
-                     <el-button class="bt" size="medium" round icon="el-icon-search">个人中心</el-button>
+                     <el-button class="bt" size="small" round icon="el-icon-search">个人中心</el-button>
                     </router-link>
                     </div>
 
-                    <el-button class="bt" size="medium" round icon="el-icon-search" @click="logout">安全退出</el-button>
+                    <el-button class="bt" size="small" round icon="el-icon-search" @click="logout">安全退出</el-button>
 
                 </div>
 

@@ -37,14 +37,14 @@
                         <el-button v-for="item in tableData.slice(0,2)" :key="item.id" @click="doTest(item.title)">{{item.title}}</el-button>
                     </div>
                 </el-card>
-
+                <br>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>课程视频</span>
                         <el-button style="float: right; padding: 3px 0" type="text" @click="playVideo('微机原理与接口技术_1.0 教学安排.mp4')">观看视频</el-button>
                     </div>
                     <div  class="text item">
-                        <el-button v-for="item in VideoData" :key="item.id" @click="playVideo(item.title)">
+                        <el-button v-for="item in VideoData" :key="item.id" @click="playVideo(item.title)" style="margin:10px;">
                             {{item.title}}</el-button>
                     </div>
                 </el-card>

@@ -119,7 +119,7 @@ export default {
 
 .submenu{
     width: 500px;
-    height: 400px;
+    height: 100px;
 }
 
 .divider{
