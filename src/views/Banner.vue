@@ -1,50 +1,38 @@
 <template>
     <div id="banner">
-
         <div class="banner-box" >
             <div class="aside-menu">
                 <div class="aside-menu-item" v-for="(item,index) in subject" :key="item.id">
                     <el-popover placement="right" width="500" trigger="hover">
                         <div class="submenu">
-
                             <el-divider content-position="left">
-                                <router-link class="divider" :to="{name:'subjectList',params:{id:index,subId:-1}}">{{item.name}}</router-link>
+                                <router-link class="divider" :to="{name:'subjectList',query:{id:index,subId:-1}}">{{item.name}}</router-link>
                             </el-divider>
                             <div class="subItem">
-                                <router-link :to="{name:'subjectList',params:{id:index,subId:subIndex}}"
+                                <router-link :to="{name:'subjectList',query:{id:index,subId:subIndex}}"
                                     v-for="(subItem,subIndex) in item.subjectList" :key="subItem.id"
                                     class="subItemLink">
                                     {{subItem.name}} </router-link>
                             </div>
                         </div>
-                        <router-link class="popover-a" :to="{name:'subjectList',params:{id:index,subId:-1}}" slot="reference">
+                        <router-link class="popover-a" :to="{name:'subjectList',query:{id:index,subId:-1}}" slot="reference">
                             <div class="mask"></div>
                             <span>{{item.name}}</span>
                             <i class="el-icon-caret-right"></i>
                         </router-link>
                     </el-popover>
                 </div>
-
-
             </div>
-
             <div class="banner-content">
                 <div class="carousel">
-
-                    <el-carousel trigger="click" height="382px" @change="changeBackground">
+                    <el-carousel trigger="click" height="382px">
                         <el-carousel-item v-for="item in 6" :key="item">
                             <img :src="require('@/assets/carousel-'+item+'.jpg')" alt="">
                         </el-carousel-item>
                     </el-carousel>
                 </div>
-
             </div>
-
-
         </div>
-
- 
-
     </div>
 </template>
 
@@ -60,18 +48,10 @@ export default {
         };
     },
     methods: {
-        changeBackground(val, oldVal) {
-            val = val + 1
-            this.$emit('changeBk',val)
-        },
-
         findAllSubject() {
             findAllSubject().then(res => {
                 if (res.data.code === 20000) {
                     this.subject = res.data.data
-                    console.log(res.data.data);
-                    this.$store.commit('setSubject',this.subject)
-
                 }
             })
         }
@@ -186,6 +166,7 @@ export default {
 
 .el-carousel__item,.el-carousel{
     border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .el-carousel__item h3 {

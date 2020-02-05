@@ -19,7 +19,6 @@
                     <span>{{course.updateDate | formatDate}}</span>
                 </el-form-item>
 
-
             </el-form>
         </div>
 
@@ -28,28 +27,34 @@
             <br>
             <div class="courseLearnTab">
 
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>试题测试</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="doTest('选择题.docx')">开始练习</el-button>
-                    </div>
-                    <div class="text item">
-                        <el-button v-for="item in tableData.slice(0,2)" :key="item.id" @click="doTest(item.title)">{{item.title}}</el-button>
-                    </div>
-                </el-card>
-                <br>
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>课程视频</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="playVideo('微机原理与接口技术_1.0 教学安排.mp4')">观看视频</el-button>
-                    </div>
-                    <div  class="text item">
-                        <el-button v-for="item in VideoData" :key="item.id" @click="playVideo(item.title)" style="margin:10px;">
-                            {{item.title}}</el-button>
-                    </div>
-                </el-card>
+                <div>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span>试题测试</span>
+                            <el-button style="float: right; padding: 3px 0" type="text" @click="doTest('选择题.docx')">开始练习
+                            </el-button>
+                        </div>
+                        <div class="text item">
+                            <el-button v-for="item in tableData.slice(0,2)" :key="item.id" @click="doTest(item.title)">
+                                {{item.title}}</el-button>
+                        </div>
+                    </el-card>
+                </div>
+                <div>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span>课程视频</span>
+                            <el-button style="float: right; padding: 3px 0" type="text"
+                                @click="playVideo('微机原理与接口技术_1.0 教学安排.mp4')">观看视频</el-button>
+                        </div>
+                        <div class="text item">
+                            <el-button v-for="item in VideoData" :key="item.id" @click="playVideo(item.title)"
+                                style="margin:10px;">
+                                {{item.title}}</el-button>
+                        </div>
+                    </el-card>
+                </div>
 
-             
             </div>
         </div>
 
@@ -57,9 +62,9 @@
             <br>
 
             <h2>课程资源</h2>
-             <br>
+            <br>
             <div class="courseResTab">
-                <el-tabs :v-model=0 type="card" tab-position="left" >
+                <el-tabs :v-model=0 type="card" tab-position="left">
                     <el-tab-pane label="显示全部" name="0">
                         <el-table :data="tableData" style="width: 100%">
                             <el-table-column type="index" label="序号">
@@ -178,8 +183,6 @@
                 </el-tabs>
             </div>
         </div>
-
-
     </div>
 </template>
 
@@ -300,9 +303,10 @@
         },
         methods: {
             getCourseInfo() {
-                getCourseInfo(this.$route.params.courseId).then(res => {
+                getCourseInfo(this.$route.params.id).then(res => {
                     if (res.data.code === 20000) {
                         this.course = res.data.data
+                        this.$route.meta.title = this.course.name
                     }
                 })
             },
@@ -314,8 +318,8 @@
                     }
                 })
             },
-            doTest(testName){
-                 this.$router.push({
+            doTest(testName) {
+                this.$router.push({
                     name: 'CourseTest',
                     params: {
                         testName: testName
@@ -326,7 +330,9 @@
         created() {
             this.getCourseInfo()
         },
-
+        mounted() {
+            document.querySelector(".el-scrollbar__wrap").scrollTop=0 //回到顶部
+        }
     }
 </script>
 
@@ -356,22 +362,16 @@
         margin-bottom: 18px;
     }
 
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-
-    .clearfix:after {
-        clear: both
-    }
-
     .box-card {
-        width: 800px;
+        width: 400px;
+        height: 400px;
     }
 
     .courseLearnTab {
-        width: 800px;
+
+        display: flex;
+        justify-content: space-around;
+        width: 1000px;
         margin: 0 auto;
     }
 

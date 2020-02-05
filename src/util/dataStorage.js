@@ -1,32 +1,31 @@
-import storage from 'good-storage'
+import Cookies from 'js-cookie'
 import config from '../config/app.js'
 
 export function getUserInfo (key = null) {
-  let userInfo = storage.session.get(config.userInfoKey)
+  let userInfo = Cookies.get(config.userInfoKey)
   if (key) return userInfo.hasOwnProperty(key) ? userInfo[key] : null
   return userInfo
 }
 
 export function setUserInfo (user) {
-  storage.session.set(config.userInfoKey, user)
+  Cookies.set(config.userInfoKey, user ,{ expires: config.cookiesExpires })
   return user
 }
 
 export function removeUserInfo () {
-  return storage.session.remove(config.userInfoKey)
+  return Cookies.remove(config.userInfoKey)
 }
 
 export function getToken () {
-  return storage.session.get(config.tokenKey)
+  return Cookies.get(config.tokenKey)
 }
 
 export function setToken (token) {
-  return storage.session.set(config.tokenKey, token)
-  // return Cookies.set(config.tokenKey, token ,{ expires: config.cookiesExpires })
+  return Cookies.set(config.tokenKey, token ,{ expires: config.cookiesExpires })
 }
 
 export function removeToken () {
-  return storage.session.remove(config.tokenKey)
+  return Cookies.remove(config.tokenKey)
 }
 
 export function isLogin () {

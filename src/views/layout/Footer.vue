@@ -25,8 +25,7 @@
                         target="_blank">慕课大学</a> <a href="https://github.com/yuandage/Course-Learning-Client"
                         target="_blank">代码托管</a> <a href="/about/friendly" target="_blank" title="友情链接">友情链接</a> </div>
                 <div class="footer-copyright">
-                    <p><img draggable="false" class="moco-emoji" alt="©"
-                            src="https://www.imooc.com/static/moco/v1.0/images/face/36x36/a9.png">&nbsp;2019&nbsp;&nbsp;&nbsp;版权归属于
+                    <p>©&nbsp;2019&nbsp;&nbsp;&nbsp;版权归属于
                         YuanHong</p>
                 </div>
             </div>
