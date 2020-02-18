@@ -47,7 +47,7 @@
         top: 0px;
         background-image: url(../assets/carousel-1.jpg);
         background-size: cover;
-        transition: all .3s;
+        transition: all 1s;
     }
 
     .bk1 {

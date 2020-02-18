@@ -9,13 +9,13 @@
 
     <ul class="nav-item">
       <li>
-        <router-link :to="{name:'subjectList',query:{id:-1,subId:-1}}">课程</router-link>
+        <router-link :to="{name:'Subject',params:{id:-1,subId:-1}}">课程</router-link>
       </li>
       <li>
-        <router-link :to="{name:'subjectList',params:{id:-1,subId:-1}}">试题</router-link>
+        <router-link to="/test">试题</router-link>
       </li>
       <li>
-        <router-link :to="{name:'subjectList',params:{id:-1,subId:-1}}">视频</router-link>
+        <router-link :to="{name:'Subject',params:{id:-1,subId:-1}}">视频</router-link>
       </li>
 
     </ul>
@@ -36,7 +36,7 @@
   import HeaderSearchBar from '@/components/HeaderSearchBar.vue'
 
   export default {
-
+    name:'Header',
     data() {
       return {
 

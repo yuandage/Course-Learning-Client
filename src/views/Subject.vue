@@ -1,5 +1,5 @@
 <template>
-    <div id="subjectList">
+    <div id="Subject">
         <div class="wrap ">
             <div class="top">
                 <div class="course-content">
@@ -10,11 +10,11 @@
                                 <ul class="">
                                     <li class="course-nav-item">
                                         <router-link :class="{courseNavItem:itemOn==-1}"
-                                            :to="{name:'subjectList',query:{id:-1,subId:-1}}">全部</router-link>
+                                            :to="{name:'Subject',params:{id:-1,subId:-1}}">全部</router-link>
                                     </li>
                                     <li class="course-nav-item" v-for="(item,index) in subject" :key="index">
                                         <router-link :class="{courseNavItem:itemOn==index}"
-                                            :to="{name:'subjectList',query:{id:index,subId:-1}}">{{item.name}}
+                                            :to="{name:'Subject',params:{id:index,subId:-1}}">{{item.name}}
                                         </router-link>
                                     </li>
                                 </ul>
@@ -27,14 +27,14 @@
                                     <ul class="">
                                         <li class="course-nav-item on">
                                             <router-link :class="{courseNavItem:subItemOn==-1}"
-                                                :to="{name:'subjectList',query:{id:itemOn,subId:-1}}">全部</router-link>
+                                                :to="{name:'Subject',params:{id:itemOn,subId:-1}}">全部</router-link>
                                         </li>
 
                                         <li class="course-nav-item"
                                             v-for="(item,index) in itemOn==-1?allChildSubject:subject[itemOn].subjectList"
                                             :key="index">
                                             <router-link :class="{courseNavItem:subItemOn==index}"
-                                                :to="{name:'subjectList',query:{id:itemOn,subId:index}}">
+                                                :to="{name:'Subject',params:{id:itemOn,subId:index}}">
                                                 {{item.name}}</router-link>
                                         </li>
                                     </ul>
@@ -47,12 +47,11 @@
         </div>
 
         <!-- 课程展示信息 -->
-        <div class="course">
+        <div class="subject-course">
             <div class="course-list">
-                <!-- 暂时设置所有的课程都跳转到微机原理与接口技术(id:71)的课程简介页面 -->
                 <router-link v-for="item in course" :key="item.id" :to="'/course/'+item.id">
                     <div class="course-list-top">
-                        <img class="course-cover" :src="item.url">
+                        <img class="course-cover" :src="item.coverUrl">
                     </div>
                     <div class="course-list-content">
                         <h3 class="course-list-name">{{item.name}}</h3>
@@ -63,9 +62,11 @@
         </div>
 
         <!-- 分页组件 -->
+        <div class="pagination">
         <el-pagination background @current-change="handleCurrentChange" :current-page="currentPage"
             :page-size="pageSize" layout="prev, pager, next, total, jumper" :total="totalCount">
         </el-pagination>
+        </div>
 
     </div>
 </template>
@@ -76,10 +77,11 @@
         getCourse,
         getSubjectCourse,
         findAllSubject,
-        findChildSubject
+        findChildSubject,findByNameLike
     } from '@/util/api'
 
     export default {
+        name:'Subject',
         data() {
             return {
                 itemOn: -1, //方向索引
@@ -87,6 +89,7 @@
                 subject: [], //学科分类树
                 allChildSubject: [], //所有二级学科分类
                 course: [], //课程
+                courseNameA:'',
                 // 默认显示第几页
                 currentPage: 1,
                 // 总条数，根据接口获取数据长度(注意：这里不能为空)
@@ -97,8 +100,8 @@
         },
         methods: {
             checkArg(route) { //检查查询参数
-                this.itemOn = parseInt(route.query.id)
-                this.subItemOn = parseInt(route.query.subId)
+                this.itemOn = parseInt(route.params.id)
+                this.subItemOn = parseInt(route.params.subId)
                 if (this.itemOn < -1 || this.itemOn > this.subject.length)
                     this.itemOn = -1
                 if (this.subItemOn < -1)
@@ -152,6 +155,26 @@
                 // 改变默认的页数
                 this.currentPage = val
                 this.getCourse(this.itemOn, this.subItemOn)
+            }
+        },
+        computed:{
+            courseName(){
+                         if (this.$store.state.searchText!=null&&this.$store.state.searchText!='') {
+                     findByNameLike(this.$store.state.searchText).then(res=>{
+                    if(res.data.code==20000){
+                        this.course=res.data.data
+                        console.log(res.data.data);
+                    }
+                })
+                }
+                this.courseNameA=this.$store.state.searchText
+                return this.$store.state.searchText
+            }
+        },
+        watch:{
+            courseName(n,o){
+   
+                 
             }
         },
         async created() {

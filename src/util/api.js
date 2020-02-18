@@ -21,3 +21,23 @@ export const getUserInfo = (params) => service.post('/user', params)
 export const findPopularCourse = () => service.get('/course/popular')
 //查询二级学科分类
 export const findChildSubject = () => service.get('/subject/child')
+
+//查询课程父章节
+export const findParentChapter = (courseId) => service.get('/chapter/parentChapter/'+courseId)
+//查询课程子章节
+export const findSubChapter = (courseId,parentId) => service.get('/chapter/subChapter/'+courseId+'/'+parentId)
+//查询所有评论
+export const findAllComment = () => service.get('/comment')
+//添加评论
+export const addComment = (comment) => service.post('/comment',comment)
+
+//查询课程题目
+export const findByCourseIdAndType = (courseId,type) => service.get('/question/'+courseId+'/'+type)
+
+//查询课程题目类型
+export const findQuestionType = (courseId) => service.get('/question/questionType/'+courseId)
+//查询课程资料
+export const findCourseResource = (courseId) => service.get('/resource/course/'+courseId)
+
+//通过课程名查询课程
+export const findByNameLike = (courseName) => service.get('/course/name',{params: {name: courseName  }})

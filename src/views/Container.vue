@@ -47,90 +47,39 @@
     <div class="container-types container-recommend course-card">
       <h3 class="types-title "> <span>热门课程</span></h3>
       <div class="course-card-container">
-        <router-link to="/course/71"
-          target="_self">
+        <router-link :to="'/course/'+item.id" v-for="item in popularCourse" :key="item.id">
           <div class="course-card-top">
-            <img class="course-banner" src="//img2.sycdn.imooc.com/szimg/5c18d2d8000141c506000338-360-202.jpg">
+            <img class="course-banner" :src="item.coverUrl">
           </div>
           <div class="course-card-content">
-            <h3 class="course-card-name">剑指Java面试-Offer直通车</h3>
+            <h3 class="course-card-name">{{item.name}}</h3>
           </div>
         </router-link>
-
-        <a href="https://class.imooc.com/sale/javafullstack?mc_marking=53bac465973c096055bae2d7a383fde5&amp;mc_channel=syzcjj2"
-          target="_blank">
-          <div class="course-card-top">
-            <img class="course-banner" src="https://img4.sycdn.imooc.com/szimg/5dc9047a09bae31e12000676-360-202.png">
-          </div>
-          <div class="course-card-content">
-            <h3 class="course-card-name">Vue Element+Node.js开发企业通用管理后台系统</h3>
-          </div>
-        </a>
-
-        <a href="https://class.imooc.com/sale/javafullstack?mc_marking=53bac465973c096055bae2d7a383fde5&amp;mc_channel=syzcjj2"
-          target="_blank">
-          <div class="course-card-top">
-            <img class="course-banner" src="https://img1.sycdn.imooc.com/szimg/5df1deec09ba554712000676-360-202.png">
-          </div>
-          <div class="course-card-content">
-            <h3 class="course-card-name">全流程开发 TP6.0实战高并发电商服务系统</h3>
-          </div>
-        </a>
-
-        <a href="https://class.imooc.com/sale/javafullstack?mc_marking=53bac465973c096055bae2d7a383fde5&amp;mc_channel=syzcjj2"
-          target="_blank">
-          <div class="course-card-top">
-            <img class="course-banner" src="https://img3.sycdn.imooc.com/szimg/5dde5881088dd8da06000338-360-202.jpg">
-          </div>
-          <div class="course-card-content">
-            <h3 class="course-card-name">全方位深入解析最新版SpringBoot源码</h3>
-          </div>
-        </a>
-
-        <a href="https://class.imooc.com/sale/javafullstack?mc_marking=53bac465973c096055bae2d7a383fde5&amp;mc_channel=syzcjj2"
-          target="_blank">
-          <div class="course-card-top">
-            <img class="course-banner" src="https://img1.sycdn.imooc.com/szimg/5ad05dc00001eae705400300-360-202.jpg">
-          </div>
-          <div class="course-card-content">
-            <h3 class="course-card-name">玩转算法系列--数据结构精讲 更适合0算法基础入门到进阶（java版）</h3>
-          </div>
-        </a>
-        <a href="https://class.imooc.com/sale/javafullstack?mc_marking=53bac465973c096055bae2d7a383fde5&amp;mc_channel=syzcjj2"
-          target="_blank">
-          <div class="course-card-top">
-            <img class="course-banner" src="https://img3.sycdn.imooc.com/szimg/5d25400a08fa408c06000338-360-202.jpg">
-          </div>
-          <div class="course-card-content">
-            <h3 class="course-card-name">Java主流技术栈SSM+SpringBoot商铺系统</h3>
-          </div>
-        </a>
-        <a href="https://class.imooc.com/sale/javafullstack?mc_marking=53bac465973c096055bae2d7a383fde5&amp;mc_channel=syzcjj2"
-          target="_blank">
-          <div class="course-card-top">
-            <img class="course-banner" src="https://img2.sycdn.imooc.com/szimg/5dce41e70819b56b06000338-360-202.jpg">
-          </div>
-          <div class="course-card-content">
-            <h3 class="course-card-name">Java通用型支付+电商平台双系统实战</h3>
-          </div>
-        </a>
-        <a href="https://class.imooc.com/sale/javafullstack?mc_marking=53bac465973c096055bae2d7a383fde5&amp;mc_channel=syzcjj2"
-          target="_blank">
-          <div class="course-card-top">
-            <img class="course-banner" src="https://img3.sycdn.imooc.com/szimg/5a39cd3f0001c09805400300-360-202.jpg">
-          </div>
-          <div class="course-card-content">
-            <h3 class="course-card-name">Python3入门机器学习 经典算法与应用 轻松入行人工智能</h3>
-          </div>
-        </a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {findPopularCourse} from '@/util/api'
   export default {
-
+    name:'Container',
+    data(){
+      return{
+        popularCourse:[]
+      }
+    },
+    methods:{
+      getPopularCourse(){
+        findPopularCourse().then(res=>{
+          if(res.data.code===20000)
+            this.popularCourse=res.data.data
+        })
+      }
+    },
+    created(){
+      this.getPopularCourse()
+    }
   }
 </script>
 
@@ -268,7 +217,7 @@
 
   .boder {
     height: 20px;
-    box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.06);
+    box-shadow: 0 10px 8px 0 rgba(7, 17, 27, 0.06);
   }
 
   .course-card {

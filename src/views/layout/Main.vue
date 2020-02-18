@@ -1,5 +1,5 @@
 <template>
-  <div id="main" class="main">
+  <div class="main">
     <BlurBackground />
     <!-- 主页上显示嵌套的二级路由视图 -->
     <router-view v-if="this.$route.name!='home'"></router-view>
@@ -38,7 +38,7 @@
 
 
 <style>
-  #main {
+  .main {
     padding: 32px 0;
     min-height: 500px;
   }

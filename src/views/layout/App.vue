@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     <el-scrollbar style="height:100%">
       <template>
         <el-backtop target=".el-scrollbar__wrap" :bottom="60">
@@ -41,7 +41,8 @@
 </script>
 
 <style>
-  #app {
+  .app {
+    overflow-y: hidden;
     height: 100vh;
   }
 
@@ -62,19 +63,18 @@
 
   .el-header,
   .el-footer {
-    text-align: center;
     line-height: 60px;
     padding: 0;
   }
 
   .el-main {
-    text-align: center;
     padding: 0;
   }
 
   /*全局样式*/
   html,
   body {
+    overflow: hidden;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -89,14 +89,8 @@
   }
 
   a {
-    font-size: 16px;
     text-decoration: none;
     color: #1c1f21;
-  }
-
-  p,
-  span {
-    font-size: 16px;
   }
 
   body,

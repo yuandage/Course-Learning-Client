@@ -6,16 +6,16 @@
                     <el-popover placement="right" width="500" trigger="hover">
                         <div class="submenu">
                             <el-divider content-position="left">
-                                <router-link class="divider" :to="{name:'subjectList',query:{id:index,subId:-1}}">{{item.name}}</router-link>
+                                <router-link class="divider" :to="{name:'Subject',params:{id:index,subId:-1}}">{{item.name}}</router-link>
                             </el-divider>
                             <div class="subItem">
-                                <router-link :to="{name:'subjectList',query:{id:index,subId:subIndex}}"
+                                <router-link :to="{name:'Subject',params:{id:index,subId:subIndex}}"
                                     v-for="(subItem,subIndex) in item.subjectList" :key="subItem.id"
                                     class="subItemLink">
                                     {{subItem.name}} </router-link>
                             </div>
                         </div>
-                        <router-link class="popover-a" :to="{name:'subjectList',query:{id:index,subId:-1}}" slot="reference">
+                        <router-link class="popover-a" :to="{name:'Subject',params:{id:index,subId:-1}}" slot="reference">
                             <div class="mask"></div>
                             <span>{{item.name}}</span>
                             <i class="el-icon-caret-right"></i>
@@ -42,6 +42,7 @@ import {
 } from '@/util/api'
 
 export default {
+    name:'Banner',
     data() {
         return {
              subject:[]

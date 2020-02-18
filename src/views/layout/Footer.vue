@@ -25,7 +25,7 @@
                         target="_blank">慕课大学</a> <a href="https://github.com/yuandage/Course-Learning-Client"
                         target="_blank">代码托管</a> <a href="/about/friendly" target="_blank" title="友情链接">友情链接</a> </div>
                 <div class="footer-copyright">
-                    <p>©&nbsp;2019&nbsp;&nbsp;&nbsp;版权归属于
+                    <p>©&nbsp;2020&nbsp;&nbsp;&nbsp;版权归属于
                         YuanHong</p>
                 </div>
             </div>
@@ -35,7 +35,7 @@
 
 <script>
     export default {
-
+       name:'Footer',
     }
 </script>
 

@@ -1,36 +1,19 @@
 <template>
-    <div>
-        <h2>微机原理与接口技术课程的{{this.$route.params.testName}}</h2>
+    <div class="course-test">
+        <h2>微机原理与接口技术课程的{{this.$route.params.testType}}</h2>
         <br>
         <br>
         <div class="question-detail">
-            <div v-if="this.$route.params.testName=='选择题.docx'">
-                <h3>单选题，请选择你认为正确的答案！</h3>
+                <h3>{{this.$route.params.testType}}，请选择你认为正确的答案！</h3>
                 <div>
-                    <p>{{currentTopic+1}}/{{questionList.length}}、{{questionList[currentTopic].title}}</p>
-                    <div class="option-radio">
-                        <el-radio v-model="questionList[currentTopic].checkedOption" @change="radioChange"
-                            @click="check(item.optionName)" :label="item.optionName"
-                            v-for="(item,index) in questionList[currentTopic].option" :key="index">
-                            {{item.optionName+'、'+item.optionText}}</el-radio>
-
+                    <p v-if="question.length">{{currentTopic+1}}/{{question.length}}、{{this.question[currentTopic].content}}</p>
+                    <div class="option-radio" v-if="question.length">
+                        <el-radio v-model="question[currentTopic].checkedOption" @change="radioChange"
+                            @click="check(index+1)" :label="index+1"
+                            v-for="(item,index) in question[currentTopic].optionContent.split('#')" :key="index">
+                            {{item}}</el-radio>
                     </div>
                 </div>
-            </div>
-
-            <div v-else-if="this.$route.params.testName=='判断题.docx'">
-                <h3>判断题，请选择你认为正确的答案！</h3>
-                <div>
-                    <p>{{currentTopic+1}}/{{TrueOrFalseList.length}}、{{TrueOrFalseList[currentTopic].title}}</p>
-                    <div class="option-radio">
-                        <el-radio v-model="TrueOrFalseList[currentTopic].checkedOption" @change="radioChange"
-                            @click="check" :label="item.optionName"
-                            v-for="(item,index) in TrueOrFalseList[currentTopic].option" :key="index">
-                            {{item.optionName+'、'+item.optionText}}</el-radio>
-
-                    </div>
-                </div>
-            </div>
 
             <div class="switch-bt">
                 <div>
@@ -47,11 +30,11 @@
             <div class="" style="margin-top:40px;" v-if="answerSheet">
                 <!-- <el-radio-group v-model="currentTopic" size="medium">
                     <el-radio-button :class="class1" :label="index"
-                        v-for="(item, index) in this.$route.params.testName=='选择题.docx'? this.questionList.length:this.TrueOrFalseList.length"
+                        v-for="(item, index) in this.$route.params.testType=='选择题.docx'? this.questionList.length:this.TrueOrFalseList.length"
                         :key="index">{{item}}</el-radio-button>
                 </el-radio-group> -->
                 <br><br>
-                <el-button :type="a[index]" @click="currentTopic=index" size="small" v-for="(item, index) in 10"
+                <el-button :type="a[index]" @click="currentTopic=index" size="small" v-for="(item, index) in question.length"
                     :key="index">{{item}}</el-button>
             </div>
 
@@ -77,7 +60,11 @@
 </template>
 
 <script>
+    import {
+        findByCourseIdAndType
+    } from '@/util/api'
     export default {
+        name: 'CourseTest',
         data() {
             return {
                 a: [],
@@ -87,6 +74,7 @@
                 answerSheet: false,
                 checked: true,
                 currentTopic: 0,
+                question: [],
                 questionList: [{
                     id: 1,
                     type: '选择题',
@@ -412,26 +400,27 @@
             }
         },
         methods: {
+            findByCourseIdAndType() {
+                findByCourseIdAndType(this.$route.params.courseId, this.$route.params.testType).then(res => {
+                    if (res.data.code == 20000) {
+                        this.question = res.data.data
+                        for (let i = 0; i < this.question.length; i++) {
+                            this.$set(this.question[i], "checkedOption", "")
+                        }
+                    }
+                })
+            },
             radioChange(val) {
-                if (this.$route.params.testName == '选择题.docx') {
-                    this.questionList[this.currentTopic].checkedOption = val
+                    this.question[this.currentTopic].checkedOption = val
                     this.check()
                     this.checkAccuracy()
-                    if (this.a[this.currentTopic]=='success'&&this.checked && (this.currentTopic < this.questionList.length - 1)) {
+                    if (this.a[this.currentTopic] == 'success' && this.checked && (this.currentTopic < this.question
+                            .length - 1)) {
                         this.next(1)
                     }
-                } else if (this.$route.params.testName == '判断题.docx') {
-                    this.TrueOrFalseList[this.currentTopic].checkedOption = val
-                    this.check()
-                    this.checkAccuracy()
-                    if (this.a[this.currentTopic]=='success'&&this.checked && (this.currentTopic < this.TrueOrFalseList.length - 1)) {
-                        this.next(1)
-                    }
-                }
             },
             next(val) {
                 this.checkAccuracy()
-                if (this.$route.params.testName == '选择题.docx') {
                     if ((this.currentTopic + val) == -1) {
                         this.$message({
                             message: '已经到第一题了哦',
@@ -439,7 +428,7 @@
                             type: 'warning',
                             offset: 200
                         });
-                    } else if ((this.currentTopic + val) == this.questionList.length) {
+                    } else if ((this.currentTopic + val) == this.question.length) {
                         this.$message({
                             message: '已经到最后一题了哦',
                             center: true,
@@ -449,44 +438,16 @@
                     } else {
                         this.currentTopic = this.currentTopic + val
                     }
-                } else if (this.$route.params.testName == '判断题.docx') {
-                    if ((this.currentTopic + val) == -1) {
-                        this.$message({
-                            message: '已经到第一题了哦',
-                            center: true,
-                            type: 'warning',
-                            offset: 200
-                        });
-                    } else if ((this.currentTopic + val) == this.TrueOrFalseList.length) {
-                        this.$message({
-                            message: '已经到最后一题了哦',
-                            center: true,
-                            type: 'warning',
-                            offset: 200
-                        });
-                    } else {
-                        this.currentTopic = this.currentTopic + val
-                    }
-                }
-
             },
             reset() {
                 this.currentTopic = 0;
                 this.rightCount = 0;
                 this.wrongCount = 0;
-                if (this.$route.params.testName == '选择题.docx') {
-                    for (let index = 0; index < this.questionList.length; index++) {
-                        if (this.questionList[index].checkedOption != '') {
-                            this.questionList[index].checkedOption = ''
+                    for (let index = 0; index < this.question.length; index++) {
+                        if (this.question[index].checkedOption != '') {
+                            this.question[index].checkedOption = ''
                         }
                     }
-                } else if (this.$route.params.testName == '判断题.docx') {
-                    for (let index = 0; index < this.TrueOrFalseList.length; index++) {
-                        if (this.TrueOrFalseList[index].checkedOption != '') {
-                            this.TrueOrFalseList[index].checkedOption = ''
-                        }
-                    }
-                }
                 this.a = []
                 this.$message({
                     message: '习题状态已重置！',
@@ -496,23 +457,12 @@
                 });
             },
             check() {
-                if (this.$route.params.testName == '选择题.docx') {
-                    if (this.questionList[this.currentTopic].checkedOption == this.questionList[this.currentTopic]
+                    if (this.question[this.currentTopic].checkedOption == this.question[this.currentTopic]
                         .answer) {
                         this.a[this.currentTopic] = 'success'
                     } else {
                         this.a[this.currentTopic] = 'danger'
                     }
-                } else if (this.$route.params.testName == '判断题.docx') {
-                    if (this.TrueOrFalseList[this.currentTopic].checkedOption == this.TrueOrFalseList[this.currentTopic]
-                        .answer) {
-                        this.a[this.currentTopic] = 'success'
-                    } else {
-                        this.a[this.currentTopic] = 'danger'
-                    }
-                }
-
- 
             },
             checkAccuracy() {
                 const countOccurences = (arr, value) => arr.reduce((a, v) => v === value ? a + 1 : a + 0, 0);
@@ -520,12 +470,19 @@
                 this.wrongCount = countOccurences(this.a, 'danger')
             }
 
+        },
+        created() {
+            this.findByCourseIdAndType()
         }
-
     }
 </script>
 
 <style>
+    .course-test {
+        width: 1000px;
+        margin: 0 auto;
+    }
+
     p {
         font-size: 20px;
         margin: 10px 0;

@@ -1,19 +1,62 @@
 <template>
-    <div>
-        <h2>正在学习视频:{{this.$route.params.videoName}}</h2>
+    <div class="video">
+        <h2>正在学习视频:{{chapterTitle}}</h2>
 
-        <div class='demo'>
+        <div class='video-box'>
             <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsinline="true"
                 :options="playerOptions">
             </video-player>
+            <div class="video-chapter">
+                <div class="course-chapter">
+                    <div class="chapter" v-for="(item,index) in chapter" :key="item.id">
+                        <h3>{{item.title}}</h3>
+
+                        <ul class="video-ul">
+                            <li v-for="subItem in subChapter[index] " :key="subItem.id">
+                                <router-link :to="'/video/'+subItem.id">
+                                    <svg t="1581056346451" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                        xmlns="http://www.w3.org/2000/svg" p-id="2331" width="25" height="25">
+                                        <path
+                                            d="M512 78.8c-239.3 0-433.2 194-433.2 433.2 0 239.3 194 433.2 433.2 433.2 239.3 0 433.2-194 433.2-433.2 0.1-239.2-193.9-433.2-433.2-433.2z m183.3 447.9L455.1 720c-12.3 9.9-30.5 1.1-30.5-14.6V318.7c0-15.7 18.2-24.5 30.5-14.6l240.2 193.4c9.4 7.5 9.4 21.7 0 29.2z"
+                                            p-id="2332"></path>
+                                    </svg>
+                                    <span> {{subItem.title}} ({{subItem.time}})</span>
+                                </router-link>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="video-comment">
+            <div class="course-info-menu">
+                <el-tabs value="first" class="menu-tab">
+                    <el-tab-pane label="评论" name="first">
+                        <CourseComment />
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import CourseComment from '@/views/CourseComment.vue'
+    import {
+        findParentChapter,
+        findSubChapter,addComment
+    } from '@/util/api'
     export default {
+        name: 'CourseVideo',
+        components: {
+            CourseComment
+        },
         data() {
             return {
+                chapter: [],
+                subChapter:[],
+                chapterTitle: '1-1 Java简介',
                 playerOptions: {
                     //播放速度
                     playbackRates: [0.5, 1.0, 1.5, 2.0],
@@ -34,7 +77,7 @@
                         //类型
                         type: "video/mp4",
                         //url地址
-                        src: require('@/assets/' + this.$route.params.videoName)
+                        src: require('@/assets/微机原理与接口技术_1.0 教学安排.mp4')
                     }],
                     //你的封面地址
                     poster: '',
@@ -50,27 +93,97 @@
                 }
 
             }
+        },
+        methods: {
+            getCourseChapter() {
+                findParentChapter(6).then(res => {
+                    if (res.data.code === 20000) {
+                        this.chapter = res.data.data
+                        for (let i = 0; i < this.chapter.length; i++) {
+                            findSubChapter(6, this.chapter[i].id).then(res => {
+                                if (res.data.code === 20000) {
+                                    this.subChapter.push(res.data.data)
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        },
+
+        created() {
+            this.getCourseChapter()
         }
     }
 </script>
 
-<style scoped>
-    .demo {
-        display: inline-block;
-        width: 896px;
-        height: 504px;
-        text-align: center;
-        line-height: 100px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        overflow: hidden;
-        background: #fff;
-        position: relative;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
-        margin-right: 4px;
+<style>
+    .video {
+        width: 1200px;
+        margin: 0 auto;
     }
 
-    /* .demo:hover {
-        display: block;
-    } */
+    .video-box {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .video-player {
+        width: 800px;
+        border-radius: 4px;
+        margin: 20px 0;
+    }
+
+    .video-chapter {
+        width: 350px;
+    }
+
+    .chapter {
+        margin: 0 5px 20px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px 0 rgba(7, 17, 27, .1);
+    }
+
+    .video-ul li {
+        margin: 5px 0;
+    }
+
+    .video-ul li a {
+        display: flex;
+        align-items: center;
+    }
+
+    .video-ul li a .icon {
+        width: 50px;
+    }
+
+    .video-ul li a span {
+        width: 300px;
+    }
+
+    .video-comment {
+        width: 800px;
+        overflow: hidden;
+    }
+
+    .course-info-menu .el-tabs__item {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .course-info-menu .el-tabs__item.is-active,
+    .course-info-menu .el-tabs__item:hover {
+        color: #f20d0d;
+    }
+
+    .course-info-menu .el-tabs__active-bar {
+        background-color: #f20d0d;
+    }
+
+    .course-info-menu .el-tabs__nav-wrap::after {
+        content: none;
+    }
+
 </style>

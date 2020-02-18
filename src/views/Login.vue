@@ -90,6 +90,7 @@
     import {login,register} from '@/util/api'
 
     export default {
+        name:'Login',
         data() {
             return {
                 username:dataStorage.getUserInfo(),

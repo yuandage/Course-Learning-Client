@@ -86,6 +86,7 @@ import dataStorage from '@/util/dataStorage'
 import {getUserInfo} from '@/util/api'
 
 export default {
+  name:'UserInfo',
   data() {
     return {
       username: dataStorage.getUserInfo()?dataStorage.getUserInfo():'未登录!',
