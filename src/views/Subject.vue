@@ -49,7 +49,7 @@
         <!-- 课程展示信息 -->
         <div class="subject-course">
             <div class="course-list">
-                <router-link v-for="item in course" :key="item.id" :to="'/course/'+item.id">
+                <router-link v-for="item in ($route.query.courseName != null && $route.query.courseName != '')?course.slice((currentPage-1)*pageSize,currentPage*pageSize):course" :key="item.id" :to="'/course/'+item.id">
                     <div class="course-list-top">
                         <img class="course-cover" :src="item.coverUrl">
                     </div>
@@ -63,9 +63,9 @@
 
         <!-- 分页组件 -->
         <div class="pagination">
-        <el-pagination background @current-change="handleCurrentChange" :current-page="currentPage"
-            :page-size="pageSize" layout="prev, pager, next, total, jumper" :total="totalCount">
-        </el-pagination>
+            <el-pagination background @current-change="handleCurrentChange" :current-page="currentPage"
+                :page-size="pageSize" layout="prev, pager, next, total, jumper" :total="totalCount">
+            </el-pagination>
         </div>
 
     </div>
@@ -74,14 +74,17 @@
 <script>
     import {
         getAllCourse,
-        getCourse,
+        findByNameLike
+    } from '@/api/course'
+    import {
         getSubjectCourse,
+        getCourse,
         findAllSubject,
-        findChildSubject,findByNameLike
-    } from '@/util/api'
+        findChildSubject
+    } from '@/api/subject'
 
     export default {
-        name:'Subject',
+        name: 'Subject',
         data() {
             return {
                 itemOn: -1, //方向索引
@@ -89,7 +92,6 @@
                 subject: [], //学科分类树
                 allChildSubject: [], //所有二级学科分类
                 course: [], //课程
-                courseNameA:'',
                 // 默认显示第几页
                 currentPage: 1,
                 // 总条数，根据接口获取数据长度(注意：这里不能为空)
@@ -117,64 +119,54 @@
                     this.allChildSubject = res.data.data
                 }
             },
-            getCourse(id, subId) {
-                if (id === -1 && subId == -1) {
-                    getAllCourse(this.currentPage, this.pageSize).then((res) => { //获取全部的课程信息
-                        if (res.data.code === 20000) {
-                            this.course = res.data.data.rows
-                            this.totalCount = res.data.data.total
-                        }
-                    })
-                } else if (id === -1 && subId != -1) {
-                    let parentId = this.allChildSubject[subId].id
-                    getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
-                        if (res.data.code === 20000) {
-                            this.course = res.data.data.rows
-                            this.totalCount = res.data.data.total
-                        }
-                    })
-                } else if (id != -1 && subId === -1) {
-                    getSubjectCourse(id + 1, this.currentPage, this.pageSize).then((res) => { //获取一级分类下的全部课程信息
-                        if (res.data.code === 20000) {
-                            this.course = res.data.data.rows
-                            this.totalCount = res.data.data.total
+            getCourse(id, subId, courseName) {
+                if (courseName != null && courseName != '') {
+                    findByNameLike(courseName).then(res => {
+                        if (res.data.code == 20000) {
+                            this.course = res.data.data
+                            this.totalCount = this.course.length
                         }
                     })
                 } else {
-                    let parentId = this.subject[id].subjectList[subId].id
-                    getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
-                        if (res.data.code === 20000) {
-                            this.course = res.data.data.rows
-                            this.totalCount = res.data.data.total
-                        }
-                    })
+                    if (id === -1 && subId == -1) {
+                        getAllCourse(this.currentPage, this.pageSize).then((res) => { //获取全部的课程信息
+                            if (res.data.code === 20000) {
+                                this.course = res.data.data.rows
+                                this.totalCount = res.data.data.total
+                            }
+                        })
+                    } else if (id === -1 && subId != -1) {
+                        let parentId = this.allChildSubject[subId].id
+                        getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
+                            if (res.data.code === 20000) {
+                                this.course = res.data.data.rows
+                                this.totalCount = res.data.data.total
+                            }
+                        })
+                    } else if (id != -1 && subId === -1) {
+                        getSubjectCourse(id + 1, this.currentPage, this.pageSize).then((res) => { //获取一级分类下的全部课程信息
+                            if (res.data.code === 20000) {
+                                this.course = res.data.data.rows
+                                this.totalCount = res.data.data.total
+                            }
+                        })
+                    } else {
+                        let parentId = this.subject[id].subjectList[subId].id
+                        getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
+                            if (res.data.code === 20000) {
+                                this.course = res.data.data.rows
+                                this.totalCount = res.data.data.total
+                            }
+                        })
+                    }
                 }
             },
             // 显示第几页
             handleCurrentChange(val) {
                 // 改变默认的页数
                 this.currentPage = val
-                this.getCourse(this.itemOn, this.subItemOn)
-            }
-        },
-        computed:{
-            courseName(){
-                         if (this.$store.state.searchText!=null&&this.$store.state.searchText!='') {
-                     findByNameLike(this.$store.state.searchText).then(res=>{
-                    if(res.data.code==20000){
-                        this.course=res.data.data
-                        console.log(res.data.data);
-                    }
-                })
-                }
-                this.courseNameA=this.$store.state.searchText
-                return this.$store.state.searchText
-            }
-        },
-        watch:{
-            courseName(n,o){
-   
-                 
+                if(this.$route.query.courseName==null||this.$route.query.courseName=="")
+                    this.getCourse(this.itemOn, this.subItemOn)
             }
         },
         async created() {
@@ -183,9 +175,9 @@
             this.getCourse(this.itemOn, this.subItemOn)
         },
         beforeRouteUpdate(to, from, next) {
-            this.checkArg(to)
             this.currentPage = 1
-            this.getCourse(this.itemOn, this.subItemOn)
+            this.checkArg(to)
+            this.getCourse(this.itemOn, this.subItemOn, to.query.courseName)
             next();
         }
     }

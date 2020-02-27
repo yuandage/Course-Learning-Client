@@ -9,7 +9,7 @@ import dataStorage from '@/util/dataStorage'
 
 let loadingInstance = null // 加载全局的loading
 
-const instance = axios.create({ //创建axios实例，在这里可以设置请求的默认配置
+const service = axios.create({ //创建axios实例，在这里可以设置请求的默认配置
   baseURL: Config.apiUrl + '/' + Config.apiPrefix,
   timeout: Config.timeout,
   headers: {
@@ -17,11 +17,11 @@ const instance = axios.create({ //创建axios实例，在这里可以设置请�
   }
 })
 // 文档中的统一设置post请求头。下面会说到post请求的几种'Content-Type'
-// instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 
 /** 添加请求拦截器 **/
-instance.interceptors.request.use(config => {
+service.interceptors.request.use(config => {
   loadingInstance = Loading.service({ // 发起请求时加载全局loading，请求失败或有响应时会关闭
     spinner: 'el-icon-loading',
     text: '拼命加载中...',
@@ -42,7 +42,7 @@ instance.interceptors.request.use(config => {
 })
 
 /** 添加响应拦截器  **/
-instance.interceptors.response.use(response => {
+service.interceptors.response.use(response => {
   loadingInstance.close()
   if (response.data.code === 20000) { // 响应结果里的status: ok是我与后台的约定，大家可以根据实际情况去做对应的判断
     return Promise.resolve(response)
@@ -87,4 +87,4 @@ instance.interceptors.response.use(response => {
   }
 })
 
-export default instance
+export default service

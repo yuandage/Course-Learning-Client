@@ -1,0 +1,38 @@
+.course-item {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+}
+
+.course-item-info {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #d9dde1;
+    text-align: left;
+}
+
+.course-magrin {
+    margin: 5px 0;
+}
+
+.course-title {}
+
+.study-info {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.study-info .i-left {
+    color: #f20d0d;
+}
+
+.span-common{
+    margin-right: 20px;
+}
+
+.course-option {
+    text-align: right;
+}

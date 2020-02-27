@@ -1,6 +1,6 @@
 <template>
   <div class="sample-search-bar">
-    <input v-model="searchText" class="input-search" @keydown.enter="doSearch" @input="doSearch">
+    <input v-model="searchText" class="input-search" @keydown.enter="doSearch">
     <button class="btn-search" @click="doSearch">
       <img class="icon-search" src="@/assets/icon_search.svg">
     </button>
@@ -16,7 +16,7 @@
     },
     methods: {
       doSearch() {
-        this.$store.commit('setSearchText', this.searchText)
+          this.$router.push({name:'Subject',params:{id:-1,subId:-1},query:{courseName:this.searchText}})
       }
     }
   }

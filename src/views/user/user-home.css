@@ -1,0 +1,78 @@
+.user-home {
+    padding: 50px 20px 0;
+    width: 789px;
+
+}
+
+.home-info {
+    padding-bottom: 40px;
+    border-bottom: 1px solid #e5e9ef;
+    display: flex;
+    justify-content: center;
+}
+
+.home-head {
+    position: relative;
+    cursor: pointer;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.update-avator {
+    width: 100%;
+    position: absolute;
+    bottom: -30px;
+    transition: bottom .3s;
+
+}
+
+.update-avator p {
+    background: rgba(0, 0, 0, .6);
+    color: #fff;
+    font-size: 12px;
+    line-height: 30px;
+}
+
+.home-head:hover .update-avator {
+    bottom: 0px;
+}
+
+.avatar-uploader .el-upload {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+}
+
+.home-right {
+    margin-left: 16px;
+    width: 684px;
+    text-align: left;
+}
+
+.home-right span {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fb7299;
+    padding: 10px;
+}

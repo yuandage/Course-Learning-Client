@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import {findPopularCourse} from '@/util/api'
+import {getPopularCourse} from '@/api/course'
   export default {
     name:'Container',
     data(){
@@ -71,7 +71,7 @@ import {findPopularCourse} from '@/util/api'
     },
     methods:{
       getPopularCourse(){
-        findPopularCourse().then(res=>{
+        getPopularCourse().then(res=>{
           if(res.data.code===20000)
             this.popularCourse=res.data.data
         })

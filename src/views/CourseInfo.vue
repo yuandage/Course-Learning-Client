@@ -136,14 +136,14 @@
                         </ul>
                     </div>
                     <div v-else>
-                         <ul>
+                        <ul>
                             <li>
                                 <i class="el-icon-document"></i>
                                 <span style="margin-left: 10px">暂无试题资源</span>
                                 <el-button type="primary" size="mini">上传</el-button>
                             </li>
                         </ul>
-                         </div>
+                    </div>
 
                 </div>
 
@@ -171,19 +171,19 @@
                 </div>
             </div>
         </div>
-      
+
     </div>
 </template>
 
 <script>
-    import {
-        getCourseInfo,
-        findParentChapter,
-        findSubChapter,
-        findQuestionType,
-        findCourseResource
-    } from '@/util/api'
     import CourseComment from '@/views/CourseComment.vue'
+    import {getCourseInfo} from '@/api/course'
+    import {
+        findParentChapter,
+        findSubChapter
+    } from '@/api/course_chapter'
+    import {findQuestionType} from '@/api/question'
+    import {findCourseResource} from '@/api/resource'
 
     export default {
         name: 'CourseInfo',
@@ -195,102 +195,7 @@
                 course: {},
                 chapter: [],
                 subChapter: [],
-                questionType: [],
-                testData: [{
-                    id: 1,
-                    title: '单选题'
-                }, {
-                    id: 2,
-                    title: '判断题'
-                }],
-                tableData: [{
-                    id: 1,
-                    title: '选择题.docx',
-                    summary: '微机接口的选择题',
-                    fileSize: '30KB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-9'
-                }, {
-                    id: 2,
-                    title: '判断题.docx',
-                    summary: '微机接口的判断题',
-                    fileSize: '35KB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-10'
-                }, {
-                    id: 3,
-                    title: '第01章 接口概述.pptx',
-                    summary: '第01章接口概述2019',
-                    fileSize: '5MB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-4'
-                }, {
-                    id: 4,
-                    title: '第02章 处理器结构.pptx',
-                    summary: '第02章处理器结构2019',
-                    fileSize: '5MB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-1'
-                }, {
-                    id: 5,
-                    title: '微机原理与接口技术_1.1 发展概况.mp4',
-                    summary: '第1章 微型计算机基础-1.1 发展概况',
-                    fileSize: '200MB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-10'
-                }, {
-                    id: 6,
-                    title: '微机原理与接口技术_1.2 硬件结构.mp4',
-                    summary: '第1章 微型计算机基础-1.2 硬件结构',
-                    fileSize: '205MB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-16'
-                }, {
-                    id: 7,
-                    title: '微机接口其它资料文件1.rar',
-                    summary: '微机接口其它资料文件1',
-                    fileSize: '45MB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-11'
-                }, {
-                    id: 8,
-                    title: '微机接口其它资料文件2.rar',
-                    summary: '微机接口其它资料文件2',
-                    fileSize: '25MB',
-                    uploadName: 'YH',
-                    updateTime: '2019-12-12'
-                }],
-                VideoData: [{
-                        id: 0,
-                        title: '微机原理与接口技术_1.0 教学安排.mp4',
-                        summary: '第1章 微型计算机基础-1.0 教学安排',
-                        fileSize: '75MB',
-                        uploadName: 'YH',
-                        updateTime: '2019-12-10'
-                    },
-                    {
-                        id: 1,
-                        title: '微机原理与接口技术_1.1 发展概况.mp4',
-                        summary: '第1章 微型计算机基础-1.1 发展概况',
-                        fileSize: '86MB',
-                        uploadName: 'YH',
-                        updateTime: '2019-12-10'
-                    }, {
-                        id: 2,
-                        title: '微机原理与接口技术_1.2 硬件结构.mp4',
-                        summary: '第1章 微型计算机基础-1.2 硬件结构',
-                        fileSize: '48MB',
-                        uploadName: 'YH',
-                        updateTime: '2019-12-16'
-                    }, {
-                        id: 3,
-                        title: '微机原理与接口技术_1.3 数据表示.mp4',
-                        summary: '微机原理与接口技术_1.3 数据表示',
-                        fileSize: '88MB',
-                        uploadName: 'YH',
-                        updateTime: '2019-12-11'
-                    }
-                ]
+                questionType: []
             }
         },
         filters: {
@@ -343,9 +248,9 @@
                     }
                 })
             },
-            getCourseResource(){
-                findCourseResource(this.$route.params.id).then(res=>{
-                      if (res.data.code == 20000) {
+            getCourseResource() {
+                findCourseResource(this.$route.params.id).then(res => {
+                    if (res.data.code == 20000) {
                         this.tableData = res.data.data
                     }
                 })
@@ -389,19 +294,14 @@
     .course-info {
         text-align: left;
         height: 200px;
-
+        position: relative;
+        overflow: hidden;
     }
 
     .box-shadow {
         height: 68px;
         margin-bottom: -68px;
         box-shadow: 0 10px 8px rgba(7, 17, 27, .06);
-    }
-
-    .course-info {
-        height: 200px;
-        position: relative;
-        overflow: hidden;
     }
 
     .course-info::before {
@@ -567,7 +467,7 @@
         padding: 0 20px;
     }
 
-    .course-info-btn {}
+    /* .course-info-btn {} */
 
     .course-info-btn .el-button {
         width: 200px;
@@ -584,12 +484,12 @@
         margin: 5px 0;
     }
 
-  .course-info-test li{
-     padding: 10px 20px ;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-  }
+    .course-info-test li {
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
     .course-info-res {
         height: 200px;
@@ -601,9 +501,9 @@
         margin: 5px 0;
     }
 
-    .courseInfo {
-        /* margin: 0 200px; */
-    }
+    /* .courseInfo {
+        margin: 0 200px;
+    } */
 
     .courseInfoForm {
         margin: 0 auto;

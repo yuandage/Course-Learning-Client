@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    
     <el-scrollbar style="height:100%">
       <template>
         <el-backtop target=".el-scrollbar__wrap" :bottom="60">
@@ -26,9 +27,9 @@
 </template>
 
 <script>
-  import Header from '@/views/layout/Header.vue'
-  import Main from '@/views/layout/Main.vue'
-  import Footer from '@/views/layout/Footer.vue'
+  import Header from '@/layout/Header.vue'
+  import Main from '@/layout/Main.vue'
+  import Footer from '@/layout/Footer.vue'
 
   export default {
     name: 'app',
@@ -42,12 +43,7 @@
 
 <style>
   .app {
-    overflow-y: hidden;
     height: 100vh;
-  }
-
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
   }
 
   .backtop {
@@ -61,6 +57,10 @@
     border-radius: 5px;
   }
 
+  .el-container {
+    min-width: 1200px;
+  }
+
   .el-header,
   .el-footer {
     line-height: 60px;
@@ -71,15 +71,13 @@
     padding: 0;
   }
 
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   /*全局样式*/
   html,
   body {
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    min-width: 1200px;
     font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif
   }
 

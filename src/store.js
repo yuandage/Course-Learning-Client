@@ -8,12 +8,6 @@ export default new Vuex.Store({
   state: {
     isLogin: dataStorage.isLogin(),
     username: dataStorage.getUserInfo(),
-    searchText:''
-  },
-  getters:{
-    // getSearchText(state){
-    //   return state.searchText
-    // }
   },
   mutations: {
     setUserInfo(state) {
@@ -21,9 +15,6 @@ export default new Vuex.Store({
     },
     setIsLogin(state) {
       state.isLogin = dataStorage.isLogin()
-    },
-    setSearchText(state,val){
-      state.searchText=val.trim()
     }
   },
   actions: {

@@ -45,8 +45,12 @@
     import CourseComment from '@/views/CourseComment.vue'
     import {
         findParentChapter,
-        findSubChapter,addComment
-    } from '@/util/api'
+        findSubChapter
+    } from '@/api/course_chapter'
+    import {
+        addComment
+    } from '@/api/course_comment'
+    
     export default {
         name: 'CourseVideo',
         components: {
@@ -55,7 +59,7 @@
         data() {
             return {
                 chapter: [],
-                subChapter:[],
+                subChapter: [],
                 chapterTitle: '1-1 Java简介',
                 playerOptions: {
                     //播放速度
@@ -185,5 +189,4 @@
     .course-info-menu .el-tabs__nav-wrap::after {
         content: none;
     }
-
 </style>

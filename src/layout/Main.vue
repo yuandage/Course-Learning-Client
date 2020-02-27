@@ -4,7 +4,7 @@
     <!-- 主页上显示嵌套的二级路由视图 -->
     <router-view v-if="this.$route.name!='home'"></router-view>
 
-    <div v-else>
+    <div class="main-other" v-else>
       <!-- 学科分类菜单和轮播图 -->
       <Banner />
 
@@ -40,6 +40,5 @@
 <style>
   .main {
     padding: 32px 0;
-    min-height: 500px;
   }
 </style>

@@ -1,35 +1,19 @@
 <template>
     <div class="user-login-box">
-
         <div class="user-card-box" v-if="isLogin==true">
-
-            <el-popover placement="bottom"  width="300" trigger="hover">
-
-                <div class="user-popover">
-                    <h3>{{this.username}}</h3>
-
-                    <div class="btg">
-                    <el-button class="bt" size="small" round icon="el-icon-search">我的课程</el-button>
-                    <el-button class="bt" size="small" round icon="el-icon-search">我的试题</el-button>
-                    <el-button class="bt" size="small" round icon="el-icon-search">我的收藏</el-button>
-                    
-                     <router-link to="/user">
-                     <el-button class="bt" size="small" round icon="el-icon-search">个人中心</el-button>
-                    </router-link>
-                    </div>
-
-                    <el-button class="bt" size="small" round icon="el-icon-search" @click="logout">安全退出</el-button>
-
-                </div>
-
-                <router-link  class="user-card-item" slot="reference" to="user">
+            <el-dropdown @command="handleCommand" class="user-dropdown">
+                <span class="user-card-item">
                     <img width="50" height="50" src="@/assets/avatar.gif">
-                    <span>{{this.username}}</span>
-                    <i class="el-icon-caret-bottom"></i>
-                </router-link>
-
-            </el-popover>
-
+                </span>
+                <el-dropdown-menu slot="dropdown" class="user-popover">
+                    <h3>{{this.username}}</h3>
+                    <el-dropdown-item icon="el-icon-plus" command="home">个人中心</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-circle-plus" command="course">我的课程</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-check" command="favorites">我的收藏</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-check" command="setting">我的设置</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-circle-check" divided command="exit">安全退出</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </div>
 
         <div class="loginBox" v-else>
@@ -39,11 +23,9 @@
                     <el-form-item label="用户名" :label-width="formLabelWidth">
                         <el-input v-model="loginForm.username" autocomplete="off" clearable></el-input>
                     </el-form-item>
-
                     <el-form-item label="密码" :label-width="formLabelWidth">
                         <el-input v-model="loginForm.password" autocomplete="off" show-password clearable></el-input>
                     </el-form-item>
-
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="login">确 定</el-button>
@@ -57,7 +39,6 @@
                     <el-form-item label="用户名" :label-width="formLabelWidth">
                         <el-input v-model="registerForm.username" autocomplete="off" clearable></el-input>
                     </el-form-item>
-
                     <el-form-item label="密码" :label-width="formLabelWidth">
                         <el-input v-model="registerForm.password" autocomplete="off" show-password clearable></el-input>
                     </el-form-item>
@@ -65,7 +46,6 @@
                         <el-radio v-model="role" label="1">学生</el-radio>
                         <el-radio v-model="role" label="2">教师</el-radio>
                     </el-form-item>
-
                     <el-form-item label="说明" :label-width="formLabelWidth" v-if="role=='2'">
                         <p>需管理员审核通过, 请联系管理员:</p>
                         <p>电话:18608212510</p>
@@ -77,23 +57,23 @@
                     <el-button @click="registerFormVisible = false">取 消</el-button>
                 </div>
             </el-dialog>
-
         </div>
-
     </div>
-
 </template>
 
 <script>
     import dataStorage from '@/util/dataStorage'
     import axios from '@/util/request'
-    import {login,register} from '@/util/api'
+    import {
+        login,
+        register
+    } from '@/api/user'
 
     export default {
-        name:'Login',
+        name: 'Login',
         data() {
             return {
-                username:dataStorage.getUserInfo(),
+                username: dataStorage.getUserInfo(),
                 isLogin: dataStorage.isLogin(),
                 role: '1',
                 loginFormVisible: false,
@@ -110,6 +90,22 @@
             };
         },
         methods: {
+            handleCommand(command) {
+                if (command === 'exit')
+                    this.logout()
+                else {
+                    if (this.$route.params.userNav != command) {
+                        this.$router.push({
+                            name: 'userInfo',
+                            params: {
+                                username: this.username,
+                                userNav: command
+                            }
+                        })
+                    }
+                }
+
+            },
             login() {
                 login({
                     username: this.loginForm.username,
@@ -129,13 +125,11 @@
                         this.$store.commit('setIsLogin')
                         this.loginFormVisible = false
                         this.isLogin = true
-                        this.username=res.data.data.username
+                        this.username = res.data.data.username
                     }
                 })
 
             },
-
-
             register() {
                 register({
                     username: this.registerForm.username,
@@ -154,80 +148,83 @@
                         this.registerFormVisible = false
                     }
                 })
-
             },
-
-            logout(){
-                this.isLogin=false
-                this.username=''
+            logout() {
+                this.isLogin = false
+                this.username = ''
                 dataStorage.removeUserInfo(),
-                dataStorage.removeToken()
+                    dataStorage.removeToken()
                 //跳转到首页
-                this.$router.push('/')
+                // this.$router.push('/')
             },
-
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             }
         }
-
     };
 </script>
 
 <style>
+    .user-login-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 72px;
+    }
 
-.user-login-box{
-    overflow: hidden;
-    display: flex;
-    justify-content: space-evenly;
-    width: 200px;
-    height: 72px;;
-}
+    .user-login-box a {
+        color: #4D555D;
+    }
 
-.user-login-box a{
-    color: #4D555D;
-}
+    .user-login-box a:hover {
+        color: #fb7299;
+    }
 
-.user-login-box a:hover{
-    color: red;
-}
+    .loginBox {
+        width: 150px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
 
-.loginBox{
-    width: 150px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
+    .user-card-box {
+        height: 50px;
+    }
 
-.user-card-item{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
+    .user-card-item {
+        cursor: pointer;
+    }
 
-.user-card-box a{
-    width: 120px;
-    height: 72px;
-}
+    .user-card-box a {
+        width: 120px;
+        height: 72px;
+    }
 
-.user-card-box:hover .user-card-item img {
-    border: 1px solid #f01414 !important;
-}
+    .user-card-box .user-card-item:hover img {
+        width: 55px;
+        height: 55px;
+    }
 
-.user-card-item img {
-    width: 50px;
-    height: 50px;
-    border-color: #4d5559;
-    border-radius: 50%;
-}
+    .user-card-item img {
+        width: 50px;
+        height: 50px;
+        border-color: #4d5559;
+        border-radius: 50%;
+    }
 
-.user-popover{
-    text-align: center;
+    .user-popover {
+        width: 200px;
+        text-align: center;
+    }
 
-}
+    .user-dropdown {
+        height: 49px;
+    }
 
-.bt{
-    margin: 10px;
-}
-
+    .user-popover h3 {
+        font-size: 16px;
+        color: #fb7299;
+        padding: 10px;
+    }
 </style>

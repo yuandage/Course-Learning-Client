@@ -27,7 +27,7 @@
 <script>
     import {
         getAllCourse
-    } from '@/util/api'
+    } from '@/api/course'
     export default {
         name: 'CourseAllTest',
         data() {

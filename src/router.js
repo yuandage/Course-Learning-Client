@@ -11,7 +11,7 @@ export default new Router({
       path: '/',
       name: 'home',
       meta: { title: '在线教育学习平台', icon: 'example' },
-      component: () => import('@/views/layout/App.vue'),
+      component: () => import('@/layout/App.vue'),
       children:[
         {
           path: 'subject/:id/:subId',
@@ -41,10 +41,10 @@ export default new Router({
           component: () => import('@/views/CourseAllTest.vue')
         },
         {
-          path: 'user',
+          path: 'user/:username/:userNav',
           name: 'userInfo',
           meta: { title: '个人中心-在线教育学习平台', icon: 'example' },
-          component: () => import('@/views/UserInfo.vue')
+          component: () => import('@/views/user/UserInfo.vue')
         }
       ]
     }

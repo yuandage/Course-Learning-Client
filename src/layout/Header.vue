@@ -11,13 +11,6 @@
       <li>
         <router-link :to="{name:'Subject',params:{id:-1,subId:-1}}">课程</router-link>
       </li>
-      <li>
-        <router-link to="/test">试题</router-link>
-      </li>
-      <li>
-        <router-link :to="{name:'Subject',params:{id:-1,subId:-1}}">视频</router-link>
-      </li>
-
     </ul>
 
     <div class="search-bar">

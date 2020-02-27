@@ -34,7 +34,7 @@
     import {
         addComment,
         findAllComment
-    } from '@/util/api'
+    } from '@/api/course_comment'
     export default {
         name: 'CourseComment',
         data() {
