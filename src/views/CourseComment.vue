@@ -14,12 +14,14 @@
         </div>
         <div class="comment-box" v-for="item in comment" :key="item.id">
             <div class="profile-picture">
-                <a href="">
+                <router-link :to="{  name: 'userInfo',params: {username: item.username,userNav: 'home'}}">
                     <img width="50" height="50" src="@/assets/avatar.gif">
-                </a>
+                </router-link>
             </div>
             <div class="comment-info">
-                <a href="" class="mg">{{item.username}}</a>
+                <router-link class="mg" :to="{  name: 'userInfo',params: {username: item.username,userNav: 'home'}}">
+                    {{item.username}}
+                </router-link>
                 <p class="mg">{{item.content}}</p>
                 <span class="mg">6小时前</span>
             </div>

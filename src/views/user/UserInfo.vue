@@ -52,59 +52,15 @@
         </div>
         <div v-if="currentUserNav===1" class="user-course">
           <div class="course-content">
-            <div class="course-item">
+            <div class="course-item" v-for="(item,index) in course" :key="index">
               <div class="course-img">
-                <router-link to="/course/71"><img width="200" height="116"
-                    src="https://img3.sycdn.imooc.com/57035ff200014b8a06000338-360-202.jpg" alt=""> </router-link>
+                <router-link :to="'/course/'+item.id">
+                  <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
               </div>
               <div class="course-item-info">
                 <div class="course-title course-magrin">
-                  <router-link to="/course/71">
-                    <h3>Java入门第一季</h3>
-                  </router-link>
-                </div>
-                <div class="study-info course-magrin">
-                  <span class="i-left span-common">已学19%</span>
-                  <span class="i-mid span-common">用时 1小时25分</span>
-                  <span class="i-right span-common">学习至1.04 练习的题 </span>
-                </div>
-                <div class="course-option course-magrin">
-                  <el-button>删除课程</el-button>
-                  <el-button type="danger">继续学习</el-button>
-                </div>
-              </div>
-            </div>
-            <div class="course-item">
-              <div class="course-img">
-                <router-link to="/course/71"><img width="200" height="116"
-                    src="https://img3.sycdn.imooc.com/57035ff200014b8a06000338-360-202.jpg" alt=""> </router-link>
-              </div>
-              <div class="course-item-info">
-                <div class="course-title course-magrin">
-                  <router-link to="/course/71">
-                    <h3>Java入门第一季</h3>
-                  </router-link>
-                </div>
-                <div class="study-info course-magrin">
-                  <span class="i-left span-common">已学19%</span>
-                  <span class="i-mid span-common">用时 1小时25分</span>
-                  <span class="i-right span-common">学习至1.04 练习的题 </span>
-                </div>
-                <div class="course-option course-magrin">
-                  <el-button>删除课程</el-button>
-                  <el-button type="danger">继续学习</el-button>
-                </div>
-              </div>
-            </div>
-            <div class="course-item">
-              <div class="course-img">
-                <router-link to="/course/71"><img width="200" height="116"
-                    src="https://img3.sycdn.imooc.com/57035ff200014b8a06000338-360-202.jpg" alt=""> </router-link>
-              </div>
-              <div class="course-item-info">
-                <div class="course-title course-magrin">
-                  <router-link to="/course/71">
-                    <h3>Java入门第一季</h3>
+                  <router-link :to="'/course/'+item.id">
+                    <h3>{{item.name}}</h3>
                   </router-link>
                 </div>
                 <div class="study-info course-magrin">
@@ -121,9 +77,47 @@
 
           </div>
         </div>
-      
-        <div v-if="currentUserNav===2" class="user-favorites">
 
+        <div v-if="currentUserNav===2" class="user-favorites">
+          <div class="course-content">
+            <div class="course-item" v-for="(item,index) in courseFavorite" :key="index">
+              <div class="course-img">
+                <router-link :to="'/course/'+item.id">
+                  <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
+              </div>
+              <div class="course-item-info">
+                <div class="course-title course-magrin">
+                  <router-link :to="'/course/'+item.id">
+                    <h3>{{item.name}}</h3>
+                  </router-link>
+                </div>
+                <div class="study-info course-magrin">
+                  <span class="i-left span-common">已学19%</span>
+                  <span class="i-mid span-common">用时 1小时25分</span>
+                  <span class="i-right span-common">学习至1.04 练习的题 </span>
+                </div>
+                <div class="course-option course-magrin">
+                  <el-button>删除课程</el-button>
+                  <el-button type="danger">继续学习</el-button>
+                </div>
+              </div>
+            </div>
+            <div class="course-item" v-for="item in questionFavorite" :key="item.id">
+
+              <div class="course-item-info" style="width:770px">
+                <div class="course-title course-magrin">
+                  <h3>{{item.content}}</h3>
+                </div>
+
+                <div class="course-option course-magrin">
+                  <el-button>删除试题</el-button>
+                  <el-button type="danger">继续做题</el-button>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
         </div>
         <div v-if="currentUserNav===3" class="user-setting">
           <el-form ref="form" :model="user" label-width="80px" class="user-setting-form">
@@ -167,6 +161,18 @@
   import {
     getUserInfo
   } from '@/api/user'
+  import {
+    getCourseInfo
+  } from '@/api/course'
+  import {
+    getUserCourse
+  } from '@/api/user_course'
+  import {
+    getUserFavorite
+  } from '@/api/user_favorite'
+  import {
+    getQuestion
+  } from '@/api/question'
 
   export default {
     name: 'UserInfo',
@@ -198,17 +204,35 @@
           },
         ],
         currentUserNav: 0,
-        dialogVisible: false
+        dialogVisible: false,
+        userCourse: [],
+        course: [],
+        userFavorite: [],
+        courseFavorite: [],
+        questionFavorite: []
       }
+    },
+    created() {
+      this.getUserInfo(this.username)
+      this.changeRouteUserNav(this.$route)
+    },
+    beforeRouteUpdate(to, from, next) {
+      this.changeRouteUserNav(to)
+      this.getUserNavData()
+      next();
     },
     methods: {
       getUserInfo(username) {
+        if(this.$route.params.username){
+          this.username=this.$route.params.username
+        }
         if (username != null) {
           getUserInfo({
             username
           }).then((res) => {
             if (res.data.code == 20000) {
               this.user = res.data.data
+              this.getUserNavData()
             }
           })
         }
@@ -231,15 +255,57 @@
           }
 
         }
+      },
+      getUserNavData() {
+        if (this.userNav[this.currentUserNav].text === 'course') {
+          this.getUserCourse()
+        } else if (this.userNav[this.currentUserNav].text === 'favorites') {
+          this.getUserFavorite()
+        }
+      },
+      getUserCourse() {
+        getUserCourse(this.user.id).then((res) => {
+          if (res.data.code == 20000) {
+            this.userCourse = res.data.data
+          }
+          let course = []
+          for (let i = 0; i < this.userCourse.length; i++) {
+            getCourseInfo(this.userCourse[i].courseId).then(res => {
+              if (res.data.code == 20000) {
+                course.push(res.data.data)
+              }
+            })
+          }
+          this.course = course
+        })
+      },
+      getUserFavorite() {
+        getUserFavorite(this.user.id).then((res) => {
+          if (res.data.code == 20000) {
+            this.userFavorite = res.data.data
+          }
+          let courseFavorite = []
+          let questionFavorite = []
+          for (let i = 0; i < this.userFavorite.length; i++) {
+            if (this.userFavorite[i].type === '课程') {
+              getCourseInfo(this.userFavorite[i].courseId).then(res => {
+                if (res.data.code == 20000) {
+                  courseFavorite.push(res.data.data)
+                }
+              })
+            } else if (this.userFavorite[i].type === '试题') {
+              getQuestion(this.userFavorite[i].questionId).then(res => {
+                if (res.data.code == 20000) {
+                  questionFavorite.push(res.data.data)
+                }
+              })
+            }
+
+          }
+          this.courseFavorite = courseFavorite
+          this.questionFavorite = questionFavorite
+        })
       }
-    },
-    created() {
-      this.getUserInfo(this.username)
-      this.changeRouteUserNav(this.$route)
-    },
-    beforeRouteUpdate(to, from, next) {
-      this.changeRouteUserNav(to)
-      next();
     }
   }
 </script>

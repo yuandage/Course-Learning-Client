@@ -195,7 +195,8 @@
                 course: {},
                 chapter: [],
                 subChapter: [],
-                questionType: []
+                questionType: [],
+                tableData:[]
             }
         },
         filters: {

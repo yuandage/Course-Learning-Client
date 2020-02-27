@@ -157,7 +157,7 @@
         margin: 0 auto;
     }
 
-    p {
+    .question-detail p {
         font-size: 20px;
         margin: 10px 0;
     }

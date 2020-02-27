@@ -2,9 +2,10 @@
     <div class="user-login-box">
         <div class="user-card-box" v-if="isLogin==true">
             <el-dropdown @command="handleCommand" class="user-dropdown">
-                <span class="user-card-item">
+                <router-link class="user-card-item"
+                    :to="{  name: 'userInfo',params: {username: this.username,userNav: 'home'}}">
                     <img width="50" height="50" src="@/assets/avatar.gif">
-                </span>
+                </router-link>
                 <el-dropdown-menu slot="dropdown" class="user-popover">
                     <h3>{{this.username}}</h3>
                     <el-dropdown-item icon="el-icon-plus" command="home">个人中心</el-dropdown-item>
@@ -190,10 +191,6 @@
 
     .user-card-box {
         height: 50px;
-    }
-
-    .user-card-item {
-        cursor: pointer;
     }
 
     .user-card-box a {
