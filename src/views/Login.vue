@@ -3,11 +3,11 @@
         <div class="user-card-box" v-if="isLogin==true">
             <el-dropdown @command="handleCommand" class="user-dropdown">
                 <router-link class="user-card-item"
-                    :to="{  name: 'userInfo',params: {username: this.username,userNav: 'home'}}">
+                    :to="{  name: 'userInfo',params: {username: this.user.username,userNav: 'home'}}">
                     <img width="50" height="50" src="@/assets/avatar.gif">
                 </router-link>
                 <el-dropdown-menu slot="dropdown" class="user-popover">
-                    <h3>{{this.username}}</h3>
+                    <h3>{{this.user.username}}</h3>
                     <el-dropdown-item icon="el-icon-plus" command="home">个人中心</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-circle-plus" command="course">我的课程</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-check" command="favorites">我的收藏</el-dropdown-item>
@@ -74,7 +74,7 @@
         name: 'Login',
         data() {
             return {
-                username: dataStorage.getUserInfo(),
+                user: dataStorage.getUserInfo(),
                 isLogin: dataStorage.isLogin(),
                 role: '1',
                 loginFormVisible: false,
@@ -96,10 +96,10 @@
                     this.logout()
                 else {
                     if (this.$route.params.userNav != command) {
-                        this.$router.push({
+                       this.$router.push({
                             name: 'userInfo',
                             params: {
-                                username: this.username,
+                                username: this.user.username,
                                 userNav: command
                             }
                         })
@@ -121,12 +121,12 @@
                             offset: 50
                         })
                         dataStorage.setToken("Bearer " + res.data.data.token)
-                        dataStorage.setUserInfo(res.data.data.username)
+                        dataStorage.setUserInfo(res.data.data.user)
                         this.$store.commit('setUserInfo')
                         this.$store.commit('setIsLogin')
                         this.loginFormVisible = false
                         this.isLogin = true
-                        this.username = res.data.data.username
+                        this.user=res.data.data.user
                     }
                 })
 
@@ -152,11 +152,12 @@
             },
             logout() {
                 this.isLogin = false
-                this.username = ''
+                this.user = ''
                 dataStorage.removeUserInfo(),
-                    dataStorage.removeToken()
+                dataStorage.removeToken()
+                this.$store.commit('removeUserInfo')
                 //跳转到首页
-                // this.$router.push('/')
+                this.$router.push('/')
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();

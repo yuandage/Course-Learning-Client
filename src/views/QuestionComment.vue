@@ -1,5 +1,5 @@
 <template>
-    <div class="course-comment">
+    <div class="question-comment">
         <div class="sendComment">
             <div class="profile-picture">
                 <img width="50" height="50" src="@/assets/avatar.gif">
@@ -39,29 +39,39 @@
         Notification
     } from 'element-ui'
 
-    import {getUserInfo} from '@/util/dataStorage'
+    import {
+        getUserInfo
+    } from '@/util/dataStorage'
 
     import {
         addComment,
-        findByCourseId
-    } from '@/api/course_comment'
+        findByQuestionId
+    } from '@/api/question_comment'
     export default {
-        name: 'CourseComment',
+        name: 'QuestionComment',
         props: {
+            questionId: String,
             courseId: String
         },
         data() {
             return {
                 textarea: '',
-                user:getUserInfo(),
+                user: getUserInfo(),
                 comment: []
+            }
+        },
+        computed: {
+            id() {
+                this.getComment(this.questionId)
+                return this.questionId
             }
         },
         methods: {
             sendComment() {
                 let comment = {
-                    userId:this.user.id,
+                    userId: this.user.id,
                     courseId: this.courseId,
+                    questionId: this.questionId,
                     username: this.user.username,
                     content: this.textarea
                 }
@@ -79,8 +89,8 @@
                     }
                 })
             },
-            getComment() {
-                findByCourseId(this.courseId).then(res => {
+            getComment(id) {
+                findByQuestionId(id).then(res => {
                     if (res.data.code === 20000) {
                         this.comment = res.data.data
                     }
@@ -88,7 +98,7 @@
             }
         },
         created() {
-            this.getComment()
+            this.getComment(this.questionId)
         }
     }
 </script>

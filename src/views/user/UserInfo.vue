@@ -52,7 +52,7 @@
         </div>
         <div v-if="currentUserNav===1" class="user-course">
           <div class="course-content">
-            <div class="course-item" v-for="(item,index) in course" :key="index">
+            <div class="course-item" v-for="(item,index) in course" :key="item.id">
               <div class="course-img">
                 <router-link :to="'/course/'+item.id">
                   <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
@@ -69,7 +69,7 @@
                   <span class="i-right span-common">学习至1.04 练习的题 </span>
                 </div>
                 <div class="course-option course-magrin">
-                  <el-button>删除课程</el-button>
+                  <el-button @click="delCourse(item.userCourseId,index)">删除课程</el-button>
                   <el-button type="danger">继续学习</el-button>
                 </div>
               </div>
@@ -80,7 +80,7 @@
 
         <div v-if="currentUserNav===2" class="user-favorites">
           <div class="course-content">
-            <div class="course-item" v-for="(item,index) in courseFavorite" :key="index">
+            <div class="course-item" v-for="(item,index) in courseFavorite" :key="item.name">
               <div class="course-img">
                 <router-link :to="'/course/'+item.id">
                   <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
@@ -97,12 +97,13 @@
                   <span class="i-right span-common">学习至1.04 练习的题 </span>
                 </div>
                 <div class="course-option course-magrin">
-                  <el-button>删除课程</el-button>
+                  <el-button @click="delFavorite(item.userFavoriteId,index,'课程')">取消收藏</el-button>
                   <el-button type="danger">继续学习</el-button>
                 </div>
               </div>
             </div>
-            <div class="course-item" v-for="item in questionFavorite" :key="item.id">
+
+            <div class="course-item" v-for="(item,index) in questionFavorite" :key="item.content">
 
               <div class="course-item-info" style="width:770px">
                 <div class="course-title course-magrin">
@@ -110,7 +111,7 @@
                 </div>
 
                 <div class="course-option course-magrin">
-                  <el-button>删除试题</el-button>
+                  <el-button @click="delFavorite(item.userFavoriteId,index,'试题')">取消收藏</el-button>
                   <el-button type="danger">继续做题</el-button>
                 </div>
               </div>
@@ -165,10 +166,12 @@
     getCourseInfo
   } from '@/api/course'
   import {
-    getUserCourse
+    getUserCourse,
+    delUserCourse
   } from '@/api/user_course'
   import {
-    getUserFavorite
+    getUserFavorite,
+    delUserFavorite
   } from '@/api/user_favorite'
   import {
     getQuestion
@@ -178,8 +181,7 @@
     name: 'UserInfo',
     data() {
       return {
-        username: dataStorage.getUserInfo() ? dataStorage.getUserInfo() : '未登录!',
-        user: {},
+        user: dataStorage.getUserInfo(),
         userNav: [{
             id: 1,
             title: '首页',
@@ -213,8 +215,8 @@
       }
     },
     created() {
-      this.getUserInfo(this.username)
       this.changeRouteUserNav(this.$route)
+      this.getUserNavData()
     },
     beforeRouteUpdate(to, from, next) {
       this.changeRouteUserNav(to)
@@ -222,27 +224,12 @@
       next();
     },
     methods: {
-      getUserInfo(username) {
-        if(this.$route.params.username){
-          this.username=this.$route.params.username
-        }
-        if (username != null) {
-          getUserInfo({
-            username
-          }).then((res) => {
-            if (res.data.code == 20000) {
-              this.user = res.data.data
-              this.getUserNavData()
-            }
-          })
-        }
-      },
       changeUserNav(index) {
         if (this.$route.params.userNav != this.userNav[index].text) {
           this.$router.push({
             name: 'userInfo',
             params: {
-              username: this.username,
+              username: this.user.username,
               userNav: this.userNav[index].text
             }
           })
@@ -272,7 +259,11 @@
           for (let i = 0; i < this.userCourse.length; i++) {
             getCourseInfo(this.userCourse[i].courseId).then(res => {
               if (res.data.code == 20000) {
-                course.push(res.data.data)
+                let c = {
+                  ...res.data.data,
+                  userCourseId: this.userCourse[i].id
+                }
+                course.push(c)
               }
             })
           }
@@ -290,13 +281,21 @@
             if (this.userFavorite[i].type === '课程') {
               getCourseInfo(this.userFavorite[i].courseId).then(res => {
                 if (res.data.code == 20000) {
-                  courseFavorite.push(res.data.data)
+                  let cF = {
+                    ...res.data.data,
+                    userFavoriteId: this.userFavorite[i].id
+                  }
+                  courseFavorite.push(cF)
                 }
               })
             } else if (this.userFavorite[i].type === '试题') {
               getQuestion(this.userFavorite[i].questionId).then(res => {
                 if (res.data.code == 20000) {
-                  questionFavorite.push(res.data.data)
+                  let cF = {
+                    ...res.data.data,
+                    userFavoriteId: this.userFavorite[i].id
+                  }
+                  questionFavorite.push(cF)
                 }
               })
             }
@@ -304,6 +303,38 @@
           }
           this.courseFavorite = courseFavorite
           this.questionFavorite = questionFavorite
+        })
+      },
+      delFavorite(id, index, type) {
+        delUserFavorite(id).then(res => {
+          if (res.data.code === 20000) {
+            this.$notify({
+              title: '取消收藏成功',
+              message: '已取消收藏',
+              type: 'success',
+              duration: 2000,
+              offset: 50
+            })
+          }
+          if (type === '课程')
+            this.courseFavorite.splice(index, 1);
+          else if (type === '试题')
+            this.questionFavorite.splice(index, 1);
+
+        })
+      },
+      delCourse(id, index) {
+        delUserCourse(id).then(res => {
+          if (res.data.code === 20000) {
+            this.$notify({
+              title: '删除成功',
+              message: '不再学习该课程',
+              type: 'success',
+              duration: 2000,
+              offset: 50
+            })
+          }
+          this.course.splice(index, 1);
         })
       }
     }

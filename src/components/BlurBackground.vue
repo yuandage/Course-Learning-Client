@@ -1,7 +1,5 @@
 <template>
-
-    <div class="bk" :class="'bk'+this.bk"></div>
-
+    <div class="bk" :style="{backgroundImage:bg }"></div>
 </template>
 
 <script>
@@ -10,6 +8,11 @@
             return {
                 timer: null, // 定时器名称  
                 bk: 1,
+            }
+        },
+        computed:{
+            bg(){
+                return 'url(' + require('@/assets/carousel-'+this.bk+'.jpg') + ')' 
             }
         },
         methods: {
@@ -21,7 +24,7 @@
             }
         },
         created() {
-            this.timer = setInterval(this.getBk, 2000);
+           this.timer = setInterval(this.getBk, 4000);
         },
         beforeDestroy() {
             clearInterval(this.timer);
@@ -45,32 +48,8 @@
         height: 100%;
         position: absolute;
         top: 0px;
-        background-image: url(../assets/carousel-1.jpg);
         background-size: cover;
         transition: all 1s;
     }
 
-    .bk1 {
-        background-image: url(../assets/carousel-1.jpg);
-    }
-
-    .bk2 {
-        background-image: url(../assets/carousel-2.jpg);
-    }
-
-    .bk3 {
-        background-image: url(../assets/carousel-3.jpg);
-    }
-
-    .bk4 {
-        background-image: url(../assets/carousel-4.jpg);
-    }
-
-    .bk5 {
-        background-image: url(../assets/carousel-5.jpg);
-    }
-
-    .bk6 {
-        background-image: url(../assets/carousel-6.jpg);
-    }
 </style>

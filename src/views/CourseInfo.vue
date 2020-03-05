@@ -5,15 +5,13 @@
             <div class="info-bg">
                 <div class="course-info-box">
                     <div class="share">
-                        <a href="" title="收藏">
-                            <svg t="1581001958905" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                                xmlns="http://www.w3.org/2000/svg" p-id="9720" width="35" height="35">
-                                <path
-                                    d="M707.584 93.184c-77.312 0-148.992 38.912-196.608 102.912-47.104-64-119.296-102.912-196.608-102.912-139.264 0-252.416 123.904-252.416 275.968 0 90.624 40.448 154.624 73.216 205.824C229.888 723.968 468.48 908.8 478.72 916.48c9.728 7.68 20.992 11.264 32.256 11.264s22.528-3.584 32.256-11.264c10.24-7.68 248.32-193.024 343.552-341.504 32.768-51.2 73.216-115.2 73.216-205.824 0-152.064-113.152-275.968-252.416-275.968zM821.76 573.44c-87.552 122.88-272.896 263.168-282.112 269.824-8.704 6.656-18.944 10.24-28.672 10.24-10.24 0-19.968-3.072-28.672-10.24-9.216-6.656-190.976-148.48-282.112-274.944-29.184-46.08-75.776-103.424-75.776-184.32 0-136.192 75.776-231.936 200.192-231.936 69.12 0 144.384 66.048 186.368 123.392 42.496-57.344 117.248-123.392 186.368-123.392 124.928 0 205.824 95.744 205.824 231.936 0 80.896-51.712 143.872-81.408 189.44z"
-                                    fill="" p-id="9721"></path>
-                            </svg>
-                        </a>
-                        <a href="" title="分享到微信">
+                        <span v-if="!courseFavoriteStatus" title="收藏" @click="addcourseFavorite">
+                            <i class="el-icon-star-off"></i>
+                        </span>
+                        <span v-else title="取消收藏" @click="delCourseFavorite">
+                            <i class="el-icon-star-on" />
+                        </span>
+                        <span title="分享到微信">
                             <svg t="1581001454217" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="4192" width="35" height="35">
                                 <path
@@ -22,8 +20,8 @@
                                 <path
                                     d="M501.93 360.356c22.523 0 41.828-19.305 41.828-41.828s-19.305-41.828-41.828-41.828c-22.523 0-41.828 19.305-41.828 41.828 0 24.132 19.305 41.828 41.828 41.828zM279.915 360.356c22.523 0 41.828-19.305 41.828-41.828s-19.305-41.828-41.828-41.828c-22.523 0-41.828 19.305-41.828 41.828 0 24.132 17.696 41.828 41.828 41.828z"
                                     fill="" p-id="4194"></path>
-                            </svg></a>
-                        <a href="" title="分享到QQ空间">
+                            </svg></span>
+                        <span title="分享到QQ空间">
                             <svg t="1581001674853" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="5988" width="35" height="35">
                                 <path
@@ -31,8 +29,8 @@
                                     p-id="5989"></path>
                             </svg>
 
-                        </a>
-                        <a href="" title="分享到微博">
+                        </span>
+                        <span title="分享到微博">
                             <svg t="1581001748220" class="icon" viewBox="0 0 1025 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="8131" width="35" height="35">
                                 <path
@@ -49,7 +47,7 @@
                                     p-id="8135"></path>
                             </svg>
 
-                        </a>
+                        </span>
 
                     </div>
 
@@ -110,7 +108,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="课程评论" name="second">
                     <div class="tab-pane-comment"></div>
-                    <CourseComment />
+                    <CourseComment :courseId="$route.params.id" />
                 </el-tab-pane>
 
             </el-tabs>
@@ -118,7 +116,7 @@
                 <div class="course-info-tip">
                     <span>已学 19%</span>
                     <el-progress :percentage="19" :stroke-width="18" :show-text="false" color="#f20d0d"></el-progress>
-                    <el-button type="danger" @click="$router.push({name: 'CourseVideo',params: {id: 11}})">继续学习
+                    <el-button type="danger" @click="learnCourse">继续学习
                     </el-button>
                     <!-- <div class="course-info-btn">
                         <el-button type="success" @click="doTest('选择题.docx')">在线测试</el-button>
@@ -162,10 +160,14 @@
 
                             <el-table-column label="操作" align="right">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">
-                                        下载</el-button>
+                                    <a :href="scope.row.resUrl">
+                                        <el-button type="primary" size="mini">
+                                            下载</el-button>
+                                    </a>
+
                                 </template>
                             </el-table-column>
+
                         </el-table>
                     </el-scrollbar>
                 </div>
@@ -177,14 +179,31 @@
 
 <script>
     import CourseComment from '@/views/CourseComment.vue'
-    import {getCourseInfo} from '@/api/course'
+    import {
+        getCourseInfo
+    } from '@/api/course'
     import {
         findParentChapter,
         findSubChapter
     } from '@/api/course_chapter'
-    import {findQuestionType} from '@/api/question'
-    import {findCourseResource} from '@/api/resource'
-
+    import {
+        findQuestionType
+    } from '@/api/question'
+    import {
+        findCourseResource
+    } from '@/api/resource'
+    import {
+        addUserCourse,
+        getUserCourse
+    } from '@/api/user_course'
+    import {
+        getUserFavorite,
+        addUserFavorite,
+        delUserFavorite
+    } from '@/api/user_favorite'
+    import {
+        getUserInfo
+    } from '@/util/dataStorage'
     export default {
         name: 'CourseInfo',
         components: {
@@ -196,7 +215,9 @@
                 chapter: [],
                 subChapter: [],
                 questionType: [],
-                tableData:[]
+                tableData: [],
+                courseFavorite: [],
+                courseFavoriteStatus: false,
             }
         },
         filters: {
@@ -273,10 +294,115 @@
                         testType: test
                     }
                 })
+            },
+            getUserFavorite() {
+                let user = getUserInfo()
+                getUserFavorite(user.id).then(res => {
+                    if (res.data.code === 20000) {
+                        let userFavorite = res.data.data
+                        for (let i = 0; i < userFavorite.length; i++) {
+                            if (userFavorite[i].type === '课程') {
+                                this.courseFavorite.push(userFavorite[i])
+                            }
+                            if (userFavorite[i].courseId === this.course.id)
+                                this.courseFavoriteStatus = true
+                        }
+                    }
+                })
+            },
+            addcourseFavorite() {
+                let user = getUserInfo()
+                let userFavorite = {
+                    userId: user.id,
+                    courseId: this.course.id,
+                    type: '课程'
+                }
+                addUserFavorite(userFavorite).then(res => {
+                    if (res.data.code === 20000) {
+                        this.courseFavoriteStatus = true
+                        this.courseFavorite.push({
+                            id: res.data.data,
+                            userId: user.id,
+                            courseId: this.course.id,
+                            type: '课程'
+                        })
+                        this.$notify({
+                            title: '收藏成功',
+                            message: '课程已收藏',
+                            type: 'success',
+                            duration: 2000,
+                            offset: 50
+                        })
+                    }
+                })
+            },
+            delCourseFavorite() {
+                let id = ''
+                this.courseFavorite.forEach((item, i) => {
+                    if (item.courseId === this.course.id) {
+                        id = item.id
+                        this.courseFavorite.splice(i, 1)
+                    }
+                })
+                console.log(id);
+                delUserFavorite(id).then(res => {
+                    if (res.data.code === 20000) {
+                        this.courseFavoriteStatus = false
+                        this.$notify({
+                            title: '取消收藏成功',
+                            message: '课程已取消收藏',
+                            type: 'success',
+                            duration: 2000,
+                            offset: 50
+                        })
+                    }
+                })
+            },
+            async learnCourse() {
+                let user = getUserInfo()
+                let userCourse = []
+                let hasUserCourse = false
+                let res = await getUserCourse(user.id)
+                if (res.data.code === 20000) {
+                    userCourse = res.data.data
+                }
+                userCourse.forEach(item => {
+                    if ((item.userId === user.id) && (item.courseId === this.course.id)) {
+                        hasUserCourse = true
+                    }
+                })
+                if (!hasUserCourse) {
+                    let newUserCourse = {
+                        userId: user.id,
+                        courseId: this.course.id
+                    }
+                    addUserCourse(newUserCourse).then(res => {
+                        if (res.data.code === 20000) {
+                            console.log('开始学习课程');
+                        }
+                    })
+                    this.$router.push({
+                        name: 'CourseVideo',
+                        params: {
+                            id: this.course.id
+                        }
+                    })
+                } else {
+                    this.$router.push({
+                        name: 'CourseVideo',
+                        params: {
+                            id: this.course.id
+                        }
+                    })
+                }
+            },
+            handleEdit(index, row) {
+                console.log(index, row);
             }
         },
         created() {
             this.getCourseInfo()
+            this.getUserFavorite()
             this.getCourseChapter()
             this.getQuestionType()
             this.getCourseResource()
@@ -334,10 +460,15 @@
         align-items: center;
     }
 
-    .share a {
+    .share span {
+        cursor: pointer;
         width: 40px;
         height: 40px;
         margin: 0 15px;
+    }
+
+    .share i {
+        font-size: 35px;
     }
 
     .course-info h2 {

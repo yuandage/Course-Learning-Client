@@ -11,6 +11,8 @@ import VideoPlayer from 'vue-video-player'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
 
+import './permission' // permission control
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
@@ -23,8 +25,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
-
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title;
-  next();
-})

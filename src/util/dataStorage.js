@@ -4,7 +4,7 @@ import config from '../config/app.js'
 export function getUserInfo (key = null) {
   let userInfo = Cookies.get(config.userInfoKey)
   if (key) return userInfo.hasOwnProperty(key) ? userInfo[key] : null
-  return userInfo
+  return userInfo?JSON.parse(userInfo):null
 }
 
 export function setUserInfo (user) {

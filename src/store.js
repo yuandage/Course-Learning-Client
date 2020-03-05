@@ -7,14 +7,17 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLogin: dataStorage.isLogin(),
-    username: dataStorage.getUserInfo(),
+    user: dataStorage.getUserInfo(),
   },
   mutations: {
     setUserInfo(state) {
-      state.username = dataStorage.getUserInfo()
+      state.user = dataStorage.getUserInfo()
     },
     setIsLogin(state) {
       state.isLogin = dataStorage.isLogin()
+    },
+    removeUserInfo(state){
+      state.user={}
     }
   },
   actions: {

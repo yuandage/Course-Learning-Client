@@ -20,7 +20,9 @@ export function register(data) {
 export function getUserInfo(data) {
     return request({
         url: '/user',
-        method: 'post',
-        data
+        method: 'get',
+        params: {
+            username: data
+        }
     })
 }
