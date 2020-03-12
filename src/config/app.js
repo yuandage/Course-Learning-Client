@@ -17,6 +17,6 @@ export default {
   requestRetryDelay: 800,
   tokenKey: 'token',
   userInfoKey: 'userInfo',
-  gitHub: 'https://gitee.com/yuandage/Course_Learning_Client',
+  gitHub: 'https://github.com/yuandage/Course-Learning-Client.git',
   ...localKey
 }

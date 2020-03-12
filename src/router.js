@@ -6,47 +6,76 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'home',
-      meta: { title: '在线教育学习平台', icon: 'example' },
+      meta: {
+        title: '在线教育学习平台',
+        icon: 'example'
+      },
       component: () => import('@/layout/App.vue'),
-      children:[
-        {
+      children: [{
           path: 'subject/:id/:subId',
           name: 'Subject',
-          meta: { title: '全部课程-在线教育学习平台', icon: 'example' },
+          meta: {
+            title: '全部课程-在线教育学习平台',
+            icon: 'example'
+          },
           component: () => import('@/views/Subject.vue')
         },
         {
           path: 'course/:id',
           name: 'courseInfo',
-          meta: { title: '课程详情-在线教育学习平台', icon: 'example' },
+          meta: {
+            title: '课程详情-在线教育学习平台',
+            icon: 'example'
+          },
           component: () => import('@/views/CourseInfo.vue')
-        },{
+        }, {
           path: 'video/:id',
           name: 'CourseVideo',
-          meta: { title: '课程视频-在线教育学习平台', icon: 'example' },
+          meta: {
+            title: '课程视频-在线教育学习平台',
+            icon: 'example'
+          },
           component: () => import('@/views/CourseVideo.vue')
-        },{
+        }, {
           path: 'test/:courseId/:testType',
           name: 'CourseTest',
-          meta: { title: '课程试题-在线教育学习平台', icon: 'example' },
+          meta: {
+            title: '课程试题-在线教育学习平台',
+            icon: 'example'
+          },
           component: () => import('@/views/CourseTest.vue')
-        },{
+        }, {
           path: 'doTest',
           name: 'CourseAllTest',
-          meta: { title: '课程试题-在线教育学习平台', icon: 'example' },
+          meta: {
+            title: '课程试题-在线教育学习平台',
+            icon: 'example'
+          },
           component: () => import('@/views/CourseAllTest.vue')
         },
         {
           path: 'user/:username/:userNav',
           name: 'userInfo',
-          meta: { title: '个人中心-在线教育学习平台', icon: 'example' },
+          meta: {
+            title: '个人中心-在线教育学习平台',
+            icon: 'example'
+          },
           component: () => import('@/views/user/UserInfo.vue')
         }
       ]
+    },
+    // 404 page must be placed at the end !!!
+    {
+      path: '*',
+      name: '404',
+      meta: {
+        title: '在线教育学习平台-404',
+        icon: 'example'
+      },
+      component: () => import('@/views/404.vue'),
     }
   ]
 })

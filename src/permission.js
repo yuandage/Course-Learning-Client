@@ -12,12 +12,10 @@ router.beforeEach((to, from, next) => {
   // determine whether the user has logged in
   const hasToken = dataStorage.getToken()
 
-  if (to.name === 'home' || to.name === 'Subject') {
-    next()
-  } else {
-    if (hasToken) {
-      next()
-    } else {
+  if (hasToken||to.name === 'home' || to.name === 'Subject') {
+    next() //已登录,放行
+  } else {//未登录
+    if(from.name === 'Subject'){
       Notification({
         title: '未登录',
         message: '请先登录',
@@ -25,10 +23,16 @@ router.beforeEach((to, from, next) => {
         duration: 2000,
         offset: 50
       })
-      if (to.name != 'courseInfo')
-        next('/')
-
+    }else{
+      Notification({
+        title: '未登录',
+        message: '请先登录',
+        type: 'warning',
+        duration: 2000,
+        offset: 50
+      })
+      next('/')
     }
+      
   }
-
 })

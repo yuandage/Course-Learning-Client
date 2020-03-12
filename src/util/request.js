@@ -12,9 +12,6 @@ let loadingInstance = null // 加载全局的loading
 const service = axios.create({ //创建axios实例，在这里可以设置请求的默认配置
   baseURL: Config.apiUrl + '/' + Config.apiPrefix,
   timeout: Config.timeout,
-  headers: {
-    token: dataStorage.getToken() || ''
-  }
 })
 // 文档中的统一设置post请求头。下面会说到post请求的几种'Content-Type'
 // service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -27,6 +24,9 @@ service.interceptors.request.use(config => {
     text: '拼命加载中...',
     background: 'rgba(255, 255, 255, 0)'
   })
+  if(dataStorage.getToken()){
+    config.headers.Authorization='Bearer '+dataStorage.getToken()
+  }
   // 在这里：可以根据业务需求可以在发送请求之前做些什么:例如我这个是导出文件的接口，因为返回的是二进制流，所以需要设置请求响应类型为blob，就可以在此处设置。
   if (config.url.includes('pur/contract/export')) {
     config.headers['responseType'] = 'blob'
@@ -49,7 +49,7 @@ service.interceptors.response.use(response => {
   } else {
     Notification({
       title: response.data.message,
-      message: '状态码:' + response.data.code,
+      message: '状态码:' + response.data.code+' 详细信息:'+response.data.data,
       type: 'error',
       duration: 2000, //一秒关闭,
       offset: 50
@@ -63,7 +63,7 @@ service.interceptors.response.use(response => {
     // 根据请求失败的http状态码去给用户相应的提示
     Notification({
       title: error.response.data.message,
-      message: '状态码:' + response.data.code,
+      message: '状态码:' + response.data.code+' 详细信息:'+response.data.data,
       type: 'warning',
       duration: 2000, //2秒关闭
       offset:50

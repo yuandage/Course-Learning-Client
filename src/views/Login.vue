@@ -80,12 +80,12 @@
                 loginFormVisible: false,
                 registerFormVisible: false,
                 loginForm: {
-                    username: 'yh',
-                    password: '123'
+                    username: 'admin',
+                    password: '123456'
                 },
                 registerForm: {
                     username: 'yh1',
-                    password: '123'
+                    password: '123456'
                 },
                 formLabelWidth: '60px'
             };
@@ -115,12 +115,13 @@
                     if (res.data.code === 20000) {
                         this.$notify({
                             title: res.data.message,
-                            message: res.data.message,
+                            message: res.data.code,
                             type: 'success',
                             duration: 1000,
                             offset: 50
                         })
-                        dataStorage.setToken("Bearer " + res.data.data.token)
+                        console.log(res.data);
+                        dataStorage.setToken(res.data.data.token)
                         dataStorage.setUserInfo(res.data.data.user)
                         this.$store.commit('setUserInfo')
                         this.$store.commit('setIsLogin')
