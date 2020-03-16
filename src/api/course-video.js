@@ -1,5 +1,6 @@
 import request from '@/util/request'
 
+//测试
 export function getVideo(courseId) {
   return request({
     url: `/video/courseId/${courseId}`,
