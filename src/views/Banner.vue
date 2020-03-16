@@ -11,7 +11,7 @@
                             </el-divider>
                             <div class="subItem">
                                 <router-link :to="{name:'Subject',params:{id:index,subId:subIndex}}"
-                                    v-for="(subItem,subIndex) in item.subjectList" :key="subItem.id"
+                                    v-for="(subItem,subIndex) in item.courseClassificationList" :key="subItem.id"
                                     class="subItemLink">
                                     {{subItem.name}} </router-link>
                             </div>

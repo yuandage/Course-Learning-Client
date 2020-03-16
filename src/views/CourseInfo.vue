@@ -183,8 +183,7 @@
         getCourseInfo
     } from '@/api/course'
     import {
-        findParentChapter,
-        findSubChapter
+        getChapter
     } from '@/api/course_chapter'
     import {
         findQuestionType
@@ -250,11 +249,11 @@
                 // this.getCourseChapter()
             },
             getCourseChapter() {
-                findParentChapter(this.$route.params.id).then(res => {
+                getChapter(this.$route.params.id,0).then(res => {
                     if (res.data.code === 20000) {
                         this.chapter = res.data.data
                         for (let i = 0; i < this.chapter.length; i++) {
-                            findSubChapter(this.$route.params.id, this.chapter[i].id).then(res => {
+                            getChapter(this.$route.params.id, this.chapter[i].id).then(res => {
                                 if (res.data.code === 20000) {
                                     this.subChapter.push(res.data.data)
                                 }

@@ -44,8 +44,7 @@
 <script>
     import CourseComment from '@/views/CourseComment.vue'
     import {
-        findParentChapter,
-        findSubChapter
+        getChapter
     } from '@/api/course_chapter'
     import {
         addComment
@@ -100,11 +99,11 @@
         },
         methods: {
             getCourseChapter() {
-                findParentChapter(6).then(res => {
+                getChapter(6,0).then(res => {
                     if (res.data.code === 20000) {
                         this.chapter = res.data.data
                         for (let i = 0; i < this.chapter.length; i++) {
-                            findSubChapter(6, this.chapter[i].id).then(res => {
+                            getChapter(6, this.chapter[i].id).then(res => {
                                 if (res.data.code === 20000) {
                                     this.subChapter.push(res.data.data)
                                 }

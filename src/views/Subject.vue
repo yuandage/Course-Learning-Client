@@ -31,7 +31,7 @@
                                         </li>
 
                                         <li class="course-nav-item"
-                                            v-for="(item,index) in itemOn==-1?allChildSubject:subject[itemOn].subjectList"
+                                            v-for="(item,index) in itemOn==-1?allChildSubject:subject[itemOn].courseClassificationList"
                                             :key="index">
                                             <router-link :class="{courseNavItem:subItemOn==index}"
                                                 :to="{name:'Subject',params:{id:itemOn,subId:index}}">
@@ -151,7 +151,7 @@
                             }
                         })
                     } else {
-                        let parentId = this.subject[id].subjectList[subId].id
+                        let parentId = this.subject[id].courseClassificationList[subId].id
                         getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
                             if (res.data.code === 20000) {
                                 this.course = res.data.data.rows
