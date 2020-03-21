@@ -32,7 +32,7 @@ export default new Router({
           },
           component: () => import('@/views/CourseInfo.vue')
         }, {
-          path: 'video/:id',
+          path: 'video',
           name: 'CourseVideo',
           meta: {
             title: '课程视频-在线教育学习平台',

@@ -48,8 +48,8 @@
     } from '@/api/course_chapter'
     import {
         addComment
-    } from '@/api/course_comment'
-    
+    } from '@/api/course_comment'   
+
     export default {
         name: 'CourseVideo',
         components: {
@@ -80,7 +80,8 @@
                         //类型
                         type: "video/mp4",
                         //url地址
-                        src: require('@/assets/微机原理与接口技术_1.0 教学安排.mp4')
+                        // src: require('@/assets/微机原理与接口技术_1.0 教学安排.mp4')
+                        src:'http://localhost:9000/video/play?courseId='+this.$route.query.courseId+'&sectionId='+this.$route.query.sectionId
                     }],
                     //你的封面地址
                     poster: '',
@@ -99,11 +100,11 @@
         },
         methods: {
             getCourseChapter() {
-                getChapter(6,0).then(res => {
+                getChapter(this.$route.query.courseId,0).then(res => {
                     if (res.data.code === 20000) {
                         this.chapter = res.data.data
                         for (let i = 0; i < this.chapter.length; i++) {
-                            getChapter(6, this.chapter[i].id).then(res => {
+                            getChapter(this.$route.query.courseId, this.chapter[i].id).then(res => {
                                 if (res.data.code === 20000) {
                                     this.subChapter.push(res.data.data)
                                 }

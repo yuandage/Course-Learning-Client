@@ -91,7 +91,7 @@
                             </p>
                             <ul class="video">
                                 <li v-for="subItem in subChapter[index] " :key="subItem.id">
-                                    <router-link :to="'/video/'+subItem.id">
+                                    <router-link :to="{name:'CourseVideo',query:{courseId:$route.params.id,sectionId:subItem.id}}">
                                         <svg t="1581056346451" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                             xmlns="http://www.w3.org/2000/svg" p-id="2331" width="25" height="25">
                                             <path
