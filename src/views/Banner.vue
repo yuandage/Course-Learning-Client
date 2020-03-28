@@ -2,21 +2,20 @@
     <div id="banner">
         <div class="banner-box">
             <div class="aside-menu">
-                <div class="aside-menu-item" v-for="(item,index) in subject" :key="item.id">
+                <div class="aside-menu-item" v-for="(item,index) in courseCategoryList" :key="item.id">
                     <el-popover placement="right" width="400" trigger="hover">
                         <div class="submenu">
                             <el-divider content-position="left">
-                                <router-link class="divider" :to="{name:'Subject',params:{id:index,subId:-1}}">
+                                <router-link class="divider" :to="{name:'CourseCategory',params:{id:index,subId:-1}}">
                                     {{item.name}}</router-link>
                             </el-divider>
                             <div class="subItem">
-                                <router-link :to="{name:'Subject',params:{id:index,subId:subIndex}}"
-                                    v-for="(subItem,subIndex) in item.courseClassificationList" :key="subItem.id"
-                                    class="subItemLink">
+                                <router-link :to="{name:'CourseCategory',params:{id:index,subId:subIndex}}"
+                                    v-for="(subItem,subIndex) in item.children" :key="subItem.id" class="subItemLink">
                                     {{subItem.name}} </router-link>
                             </div>
                         </div>
-                        <router-link class="popover-a" :to="{name:'Subject',params:{id:index,subId:-1}}"
+                        <router-link class="popover-a" :to="{name:'CourseCategory',params:{id:index,subId:-1}}"
                             slot="reference">
                             <div class="mask"></div>
                             <span>{{item.name}}</span>
@@ -40,27 +39,27 @@
 
 <script>
     import {
-        findAllSubject
-    } from '@/api/subject'
+        getCourseCategory
+    } from '@/api/course-category'
 
     export default {
         name: 'Banner',
         data() {
             return {
-                subject: []
+                courseCategoryList: []
             };
         },
+        created() {
+            this.getCourseCategory()
+        },
         methods: {
-            findAllSubject() {
-                findAllSubject().then(res => {
-                    if (res.data.code === 20000) {
-                        this.subject = res.data.data
-                    }
+            getCourseCategory() {
+                getCourseCategory().then(res => {
+                    if (res.data.code === 20000)
+                        this.courseCategoryList = res.data.data
                 })
             }
-        },
-        created() {
-            this.findAllSubject()
+
         }
     }
 </script>

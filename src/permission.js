@@ -12,10 +12,10 @@ router.beforeEach((to, from, next) => {
   // determine whether the user has logged in
   const hasToken = dataStorage.getToken()
 
-  if (hasToken||to.name === 'home' || to.name === 'Subject') {
+  if (hasToken||to.name === 'home' || to.name === 'CourseCategory') {
     next() //已登录,放行
   } else {//未登录
-    if(from.name === 'Subject'){
+    if(from.name === 'CourseCategory'){
       Notification({
         title: '未登录',
         message: '请先登录',

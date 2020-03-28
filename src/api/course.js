@@ -7,6 +7,20 @@ export function getAllCourse(page,pageSize) {
         method: 'get'
     })
 }
+//查询一级学科分类下的课程
+export function getSubCategoryCourse(subjectId,page,pageSize) {
+    return request({
+        url: '/course/subject/'+subjectId+'/'+page+'/'+pageSize,
+        method: 'get'
+    })
+}
+//查询二级学科分类下的课程
+export function getCourse(parentId,page,pageSize) {
+    return request({
+        url: '/course/parentId/'+parentId+'/'+page+'/'+pageSize,
+        method: 'get'
+    })
+}
 //查询课程详情
 export function getCourseInfo(courseId) {
     return request({

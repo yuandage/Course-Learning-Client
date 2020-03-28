@@ -15,13 +15,13 @@ export default new Router({
       },
       component: () => import('@/layout/App.vue'),
       children: [{
-          path: 'subject/:id/:subId',
-          name: 'Subject',
+          path: 'courseCategory/:id/:subId',
+          name: 'CourseCategory',
           meta: {
             title: '全部课程-在线教育学习平台',
             icon: 'example'
           },
-          component: () => import('@/views/Subject.vue')
+          component: () => import('@/views/CourseCategory.vue')
         },
         {
           path: 'course/:id',

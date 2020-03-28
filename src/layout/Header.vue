@@ -9,7 +9,7 @@
 
     <ul class="nav-item">
       <li>
-        <router-link :to="{name:'Subject',params:{id:-1,subId:-1}}">课程</router-link>
+        <router-link :to="{name:'CourseCategory',params:{id:-1,subId:-1}}">课程</router-link>
       </li>
     </ul>
 
