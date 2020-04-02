@@ -80,7 +80,7 @@
                 loginFormVisible: false,
                 registerFormVisible: false,
                 loginForm: {
-                    username: 'admin',
+                    username: 'student',
                     password: '123456'
                 },
                 registerForm: {

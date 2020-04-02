@@ -1,7 +1,7 @@
 import localKey from './localKey'
 
 const devApiUrl = 'http://localhost:9000/'
-const proApiUrl = 'http://api.youUrl.com'
+const proApiUrl = 'http://34.92.43.113:9000/'
 const nodeDevEnv = process.env.NODE_ENV === 'development'
 
 export default {
