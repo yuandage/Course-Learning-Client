@@ -6,7 +6,7 @@
       <div class="bullshit">
         <div class="bullshit__oops bullshit-margin">OOPS!</div>
        
-        <div class="bullshit__headline bullshit-margin" >{{ message }}</div>
+        <div class="bullshit__headline bullshit-margin">{{ message }}</div>
         <a href="/" class="bullshit__return-home bullshit-margin">Back to home</a>
       </div>
     </div>
@@ -14,14 +14,14 @@
 </template>
 
 <script>
-  export default {
-    name: 'Page404',
-    computed: {
-      message() {
-        return 'The webmaster said that you can not enter this page...'
-      }
+export default {
+  name: 'Page404',
+  computed: {
+    message() {
+      return 'The webmaster said that you can not enter this page...'
     }
   }
+}
 </script>
 
 <style>

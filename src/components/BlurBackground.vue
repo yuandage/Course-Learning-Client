@@ -1,36 +1,36 @@
 <template>
-    <div class="bk" :style="{backgroundImage:bg }"></div>
+  <div class="bk" :style="{backgroundImage:bg }"></div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                timer: null, // 定时器名称  
-                bk: 1,
-            }
-        },
-        computed:{
-            bg(){
-                return 'url(' + require('@/assets/carousel-'+this.bk+'.jpg') + ')' 
-            }
-        },
-        methods: {
-            getBk() {
-                if (this.bk == 6)
-                    this.bk = 1
-                else
-                    this.bk++;
-            }
-        },
-        created() {
-           this.timer = setInterval(this.getBk, 4000);
-        },
-        beforeDestroy() {
-            clearInterval(this.timer);
-            this.timer = null;
-        }
+export default {
+  data() {
+    return {
+      timer: null, // 定时器名称  
+      bk: 1
     }
+  },
+  computed: {
+    bg() {
+      return 'url(' + require('@/assets/carousel-' + this.bk + '.jpg') + ')' 
+    }
+  },
+  created() {
+    this.timer = setInterval(this.getBk, 4000)
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
+    this.timer = null
+  },
+  methods: {
+    getBk() {
+      if (this.bk === 6)
+        this.bk = 1
+      else
+        this.bk++
+    }
+  }
+}
 </script>
 
 <style>

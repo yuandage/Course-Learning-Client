@@ -7,10 +7,14 @@
       <div class="content-left">
         <span class="user-title">个人中心</span>
         <ul class="user-ul">
-          <li class="user-li" v-for="(item,index) in userNav" :key="index" :class="currentUserNav===index?'active':''"
+          <li
+            v-for="(item,index) in userNav"
+            :key="index"
+            class="user-li"
+            :class="currentUserNav===index?'active':''"
             @click="changeUserNav(index)"><i :class="item.icon"></i>
             <span v-if="index===0" class="user-nav-name">首<b style="width:28px; display:inline-block"></b>页</span>
-            <span v-else class="user-nav-name">{{item.title}}</span>
+            <span v-else class="user-nav-name">{{ item.title }}</span>
           </li>
         </ul>
       </div>
@@ -18,7 +22,7 @@
       <div class="content-right">
         <div class="content-right-title">
           <span class="content-right-title-icon"></span>
-          <span class="content-right-title-text">{{userNav[currentUserNav].title}}</span>
+          <span class="content-right-title-text">{{ userNav[currentUserNav].title }}</span>
         </div>
 
         <div v-if="currentUserNav===0" class="user-home">
@@ -29,10 +33,20 @@
               <div class="update-avator">
                 <p @click="dialogVisible = true">更换头像</p>
 
-                <el-dialog v-if="dialogVisible" title="更换头像" :visible.sync="dialogVisible" width="30%" :modal="false"
+                <el-dialog
+                  v-if="dialogVisible"
+                  title="更换头像"
+                  :visible.sync="dialogVisible"
+                  width="30%"
+                  :modal="false"
                   center>
-                  <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-                    :show-file-list="false" drag :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :show-file-list="false"
+                    drag
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
                     <img v-if="imageUrl" :src="imageUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -45,14 +59,14 @@
               </div>
             </div>
             <div class="home-right">
-              <span>{{user.username}}</span>
+              <span>{{ user.username }}</span>
 
             </div>
           </div>
         </div>
         <div v-if="currentUserNav===1" class="user-course">
           <div class="course-content">
-            <div class="course-item" v-for="(item,index) in course" :key="item.id">
+            <div v-for="(item,index) in course" :key="item.id" class="course-item">
               <div class="course-img">
                 <router-link :to="'/course/'+item.id">
                   <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
@@ -60,7 +74,7 @@
               <div class="course-item-info">
                 <div class="course-title course-magrin">
                   <router-link :to="'/course/'+item.id">
-                    <h3>{{item.name}}</h3>
+                    <h3>{{ item.name }}</h3>
                   </router-link>
                 </div>
                 <div class="study-info course-magrin">
@@ -80,7 +94,7 @@
 
         <div v-if="currentUserNav===2" class="user-favorites">
           <div class="course-content">
-            <div class="course-item" v-for="(item,index) in courseFavorite" :key="item.name">
+            <div v-for="(item,index) in courseFavorite" :key="item.name" class="course-item">
               <div class="course-img">
                 <router-link :to="'/course/'+item.id">
                   <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
@@ -88,7 +102,7 @@
               <div class="course-item-info">
                 <div class="course-title course-magrin">
                   <router-link :to="'/course/'+item.id">
-                    <h3>{{item.name}}</h3>
+                    <h3>{{ item.name }}</h3>
                   </router-link>
                 </div>
                 <div class="study-info course-magrin">
@@ -103,11 +117,11 @@
               </div>
             </div>
 
-            <div class="course-item" v-for="(item,index) in questionFavorite" :key="item.content">
+            <div v-for="(item,index) in questionFavorite" :key="item.content" class="course-item">
 
               <div class="course-item-info" style="width:770px">
                 <div class="course-title course-magrin">
-                  <h3>{{item.content}}</h3>
+                  <h3>{{ item.content }}</h3>
                 </div>
 
                 <div class="course-option course-magrin">
@@ -123,7 +137,7 @@
         <div v-if="currentUserNav===3" class="user-setting">
           <el-form ref="form" :model="user" label-width="80px" class="user-setting-form">
             <el-form-item label="用户名">
-              <span>{{user.username}}</span>
+              <span>{{ user.username }}</span>
             </el-form-item>
 
             <el-form-item label="昵称">
@@ -135,7 +149,7 @@
             </el-form-item>
 
             <el-form-item label="角色">
-              <span>{{user.role==1?"学生":"教师"}}</span>
+              <span>{{ user.role==1?"学生":"教师" }}</span>
             </el-form-item>
 
             <el-form-item label="性别">
@@ -158,187 +172,175 @@
 </template>
 
 <script>
-  import dataStorage from '@/util/dataStorage'
-  import {
-    getUserInfo
-  } from '@/api/user'
-  import {
-    getCourseInfo
-  } from '@/api/course'
-  import {
-    getUserCourse,
-    delUserCourse
-  } from '@/api/user_course'
-  import {
-    getUserFavorite,
-    delUserFavorite
-  } from '@/api/user_favorite'
-  import {
-    getQuestion
-  } from '@/api/question'
+import dataStorage from '@/util/dataStorage'
 
-  export default {
-    name: 'UserInfo',
-    data() {
-      return {
-        user: dataStorage.getUserInfo(),
-        userNav: [{
-            id: 1,
-            title: '首页',
-            text: 'home',
-            icon: 'el-icon-discount'
-          }, {
-            id: 2,
-            title: '我的课程',
-            text: 'course',
-            icon: 'el-icon-discount'
-          }, {
-            id: 3,
-            title: '我的收藏',
-            text: 'favorites',
-            icon: 'el-icon-discount'
-          },
-          {
-            id: 4,
-            title: '我的设置',
-            text: 'setting',
-            icon: 'el-icon-discount'
-          },
-        ],
-        currentUserNav: 0,
-        dialogVisible: false,
-        userCourse: [],
-        course: [],
-        userFavorite: [],
-        courseFavorite: [],
-        questionFavorite: []
+import { getCourseInfo } from '@/api/course'
+import { getUserCourse, delUserCourse } from '@/api/user_course'
+import { getUserFavorite, delUserFavorite } from '@/api/user_favorite'
+import { getQuestion } from '@/api/question'
+
+export default {
+  name: 'UserInfo',
+  data() {
+    return {
+      user: dataStorage.getUserInfo(),
+      userNav: [{
+        id: 1,
+        title: '首页',
+        text: 'home',
+        icon: 'el-icon-discount'
+      }, {
+        id: 2,
+        title: '我的课程',
+        text: 'course',
+        icon: 'el-icon-discount'
+      }, {
+        id: 3,
+        title: '我的收藏',
+        text: 'favorites',
+        icon: 'el-icon-discount'
+      },
+      {
+        id: 4,
+        title: '我的设置',
+        text: 'setting',
+        icon: 'el-icon-discount'
+      }
+      ],
+      currentUserNav: 0,
+      dialogVisible: false,
+      userCourse: [],
+      course: [],
+      userFavorite: [],
+      courseFavorite: [],
+      questionFavorite: []
+    }
+  },
+  created() {
+    this.changeRouteUserNav(this.$route)
+    this.getUserNavData()
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.changeRouteUserNav(to)
+    this.getUserNavData()
+    next()
+  },
+  methods: {
+    changeUserNav(index) {
+      if (this.$route.params.userNav !== this.userNav[index].text) {
+        this.$router.push({
+          name: 'userInfo',
+          params: {
+            username: this.user.username,
+            userNav: this.userNav[index].text
+          }
+        })
       }
     },
-    created() {
-      this.changeRouteUserNav(this.$route)
-      this.getUserNavData()
+    changeRouteUserNav(to) {
+      for (let i = 0; i < this.userNav.length; i++) {
+        if (to.params.userNav === this.userNav[i].text) {
+          this.currentUserNav = i
+        }
+
+      }
     },
-    beforeRouteUpdate(to, from, next) {
-      this.changeRouteUserNav(to)
-      this.getUserNavData()
-      next();
+    getUserNavData() {
+      if (this.userNav[this.currentUserNav].text === 'course') {
+        this.getUserCourse()
+      } else if (this.userNav[this.currentUserNav].text === 'favorites') {
+        this.getUserFavorite()
+      }
     },
-    methods: {
-      changeUserNav(index) {
-        if (this.$route.params.userNav != this.userNav[index].text) {
-          this.$router.push({
-            name: 'userInfo',
-            params: {
-              username: this.user.username,
-              userNav: this.userNav[index].text
+    getUserCourse() {
+      getUserCourse(this.user.id).then((res) => {
+        if (res.data.code === 20000) {
+          this.userCourse = res.data.data
+        }
+        const course = []
+        for (let i = 0; i < this.userCourse.length; i++) {
+          getCourseInfo(this.userCourse[i].courseId).then(res => {
+            if (res.data.code === 20000) {
+              const c = {
+                ...res.data.data,
+                userCourseId: this.userCourse[i].id
+              }
+              course.push(c)
             }
           })
         }
-      },
-      changeRouteUserNav(to) {
-        for (let i = 0; i < this.userNav.length; i++) {
-          if (to.params.userNav === this.userNav[i].text) {
-            this.currentUserNav = i
-          }
-
+        this.course = course
+      })
+    },
+    getUserFavorite() {
+      getUserFavorite(this.user.id).then((res) => {
+        if (res.data.code === 20000) {
+          this.userFavorite = res.data.data
         }
-      },
-      getUserNavData() {
-        if (this.userNav[this.currentUserNav].text === 'course') {
-          this.getUserCourse()
-        } else if (this.userNav[this.currentUserNav].text === 'favorites') {
-          this.getUserFavorite()
-        }
-      },
-      getUserCourse() {
-        getUserCourse(this.user.id).then((res) => {
-          if (res.data.code == 20000) {
-            this.userCourse = res.data.data
-          }
-          let course = []
-          for (let i = 0; i < this.userCourse.length; i++) {
-            getCourseInfo(this.userCourse[i].courseId).then(res => {
-              if (res.data.code == 20000) {
-                let c = {
+        const courseFavorite = []
+        const questionFavorite = []
+        for (let i = 0; i < this.userFavorite.length; i++) {
+          if (this.userFavorite[i].type === '课程') {
+            getCourseInfo(this.userFavorite[i].courseId).then(res => {
+              if (res.data.code === 20000) {
+                const cF = {
                   ...res.data.data,
-                  userCourseId: this.userCourse[i].id
+                  userFavoriteId: this.userFavorite[i].id
                 }
-                course.push(c)
+                courseFavorite.push(cF)
+              }
+            })
+          } else if (this.userFavorite[i].type === '试题') {
+            getQuestion(this.userFavorite[i].questionId).then(res => {
+              if (res.data.code === 20000) {
+                const cF = {
+                  ...res.data.data,
+                  userFavoriteId: this.userFavorite[i].id
+                }
+                questionFavorite.push(cF)
               }
             })
           }
-          this.course = course
-        })
-      },
-      getUserFavorite() {
-        getUserFavorite(this.user.id).then((res) => {
-          if (res.data.code == 20000) {
-            this.userFavorite = res.data.data
-          }
-          let courseFavorite = []
-          let questionFavorite = []
-          for (let i = 0; i < this.userFavorite.length; i++) {
-            if (this.userFavorite[i].type === '课程') {
-              getCourseInfo(this.userFavorite[i].courseId).then(res => {
-                if (res.data.code == 20000) {
-                  let cF = {
-                    ...res.data.data,
-                    userFavoriteId: this.userFavorite[i].id
-                  }
-                  courseFavorite.push(cF)
-                }
-              })
-            } else if (this.userFavorite[i].type === '试题') {
-              getQuestion(this.userFavorite[i].questionId).then(res => {
-                if (res.data.code == 20000) {
-                  let cF = {
-                    ...res.data.data,
-                    userFavoriteId: this.userFavorite[i].id
-                  }
-                  questionFavorite.push(cF)
-                }
-              })
-            }
 
-          }
-          this.courseFavorite = courseFavorite
-          this.questionFavorite = questionFavorite
-        })
-      },
-      delFavorite(id, index, type) {
-        delUserFavorite(id).then(res => {
-          if (res.data.code === 20000) {
-            this.$notify({
-              title: '取消收藏成功',
-              message: '已取消收藏',
-              type: 'success',
-              duration: 2000,
-              offset: 50
-            })
-          }
-          if (type === '课程')
-            this.courseFavorite.splice(index, 1);
-          else if (type === '试题')
-            this.questionFavorite.splice(index, 1);
+        }
+        this.courseFavorite = courseFavorite
+        this.questionFavorite = questionFavorite
+      })
+    },
+    delFavorite(id, index, type) {
+      delUserFavorite(id).then(res => {
+        if (res.data.code === 20000) {
+          this.$notify({
+            title: '取消收藏成功',
+            message: '已取消收藏',
+            type: 'success',
+            duration: 2000,
+            offset: 50
+          })
+        }
+        if (type === '课程')
+          this.courseFavorite.splice(index, 1)
+        else if (type === '试题')
+          this.questionFavorite.splice(index, 1)
 
-        })
-      },
-      delCourse(id, index) {
-        delUserCourse(id).then(res => {
-          if (res.data.code === 20000) {
-            this.$notify({
-              title: '删除成功',
-              message: '不再学习该课程',
-              type: 'success',
-              duration: 2000,
-              offset: 50
-            })
-          }
-          this.course.splice(index, 1);
-        })
-      }
+      })
+    },
+    delCourse(id, index) {
+      delUserCourse(id).then(res => {
+        if (res.data.code === 20000) {
+          this.$notify({
+            title: '删除成功',
+            message: '不再学习该课程',
+            type: 'success',
+            duration: 2000,
+            offset: 50
+          })
+        }
+        this.course.splice(index, 1)
+      })
     }
   }
+}
 </script>
 
 <style>

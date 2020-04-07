@@ -1,192 +1,203 @@
 <template>
-    <div id="course-category">
-        <div class="wrap ">
-            <div class="top">
-                <div class="course-content">
-                    <div class="course-nav-box">
-                        <div class="course-nav-row">
-                            <span class="hd l">方向：</span>
-                            <div class="bd">
-                                <ul class="">
-                                    <li class="course-nav-item">
-                                        <router-link :class="{courseNavItem:itemOn==-1}"
-                                            :to="{name:'CourseCategory',params:{id:-1,subId:-1}}">全部</router-link>
-                                    </li>
-                                    <li class="course-nav-item" v-for="(item,index) in courseCategoryList" :key="index">
-                                        <router-link :class="{courseNavItem:itemOn==index}"
-                                            :to="{name:'CourseCategory',params:{id:index,subId:-1}}">{{item.name}}
-                                        </router-link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="course-nav-row course-nav-skills clearfix">
-                            <div class="js-course-skills course-skills-box">
-                                <span class="hd l">分类：</span>
-                                <div class="bd">
-                                    <ul class="">
-                                        <li class="course-nav-item on">
-                                            <router-link :class="{courseNavItem:subItemOn==-1}"
-                                                :to="{name:'CourseCategory',params:{id:itemOn,subId:-1}}">全部
-                                            </router-link>
-                                        </li>
+  <div id="course-category">
+    <div class="wrap ">
+      <div class="top">
+        <div class="course-content">
+          <div class="course-nav-box">
+            <div class="course-nav-row">
+              <span class="hd l">方向：</span>
+              <div class="bd">
+                <ul class="">
+                  <li class="course-nav-item">
+                    <router-link
+                      :class="{courseNavItem:itemOn===1}"
+                      :to="{name:'CourseCategory',params:{id:-1,subId:-1}}">全部</router-link>
+                  </li>
+                  <li v-for="(item,index) in courseCategoryList" :key="index" class="course-nav-item">
+                    <router-link
+                      :class="{courseNavItem:itemOn===index}"
+                      :to="{name:'CourseCategory',params:{id:index,subId:-1}}">{{ item.name }}
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="course-nav-row course-nav-skills clearfix">
+              <div class="js-course-skills course-skills-box">
+                <span class="hd l">分类：</span>
+                <div class="bd">
+                  <ul class="">
+                    <li class="course-nav-item on">
+                      <router-link
+                        :class="{courseNavItem:subItemOn===1}"
+                        :to="{name:'CourseCategory',params:{id:itemOn,subId:-1}}">全部
+                      </router-link>
+                    </li>
 
-                                        <li class="course-nav-item"
-                                            v-for="(item,index) in itemOn==-1?courseSubCategoryList:courseCategoryList[itemOn].children"
-                                            :key="index">
-                                            <router-link :class="{courseNavItem:subItemOn==index}"
-                                                :to="{name:'CourseCategory',params:{id:itemOn,subId:index}}">
-                                                {{item.name}}</router-link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <li
+                      v-for="(item,index) in itemOn===-1?courseSubCategoryList:courseCategoryList[itemOn].children"
+                      :key="index"
+                      class="course-nav-item">
+                      <router-link
+                        :class="{courseNavItem:subItemOn===index}"
+                        :to="{name:'CourseCategory',params:{id:itemOn,subId:index}}">
+                        {{ item.name }}</router-link>
+                    </li>
+                  </ul>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-
-        <!-- 课程展示信息 -->
-        <div class="course-category-course">
-            <div class="course-list">
-                <router-link
-                    v-for="item in ($route.query.courseName != null && $route.query.courseName != '')?course.slice((currentPage-1)*pageSize,currentPage*pageSize):course"
-                    :key="item.id" :to="'/course/'+item.id">
-                    <div class="course-list-top">
-                        <img class="course-cover" :src="item.coverUrl">
-                    </div>
-                    <div class="course-list-content">
-                        <h3 class="course-list-name">{{item.name}}</h3>
-                        <p class="course-list-desc">{{item.summary}}</p>
-                    </div>
-                </router-link>
-            </div>
-        </div>
-
-        <!-- 分页组件 -->
-        <div class="pagination">
-            <el-pagination background @current-change="handleCurrentChange" :current-page="currentPage"
-                :page-size="pageSize" layout="prev, pager, next, total, jumper" :total="totalCount">
-            </el-pagination>
-        </div>
-
+      </div>
     </div>
+
+    <!-- 课程展示信息 -->
+    <div class="course-category-course">
+      <div class="course-list">
+        <router-link
+          v-for="item in ($route.query.courseName != null && $route.query.courseName != '')?course.slice((currentPage-1)*pageSize,currentPage*pageSize):course"
+          :key="item.id"
+          :to="'/course/'+item.id">
+          <div class="course-list-top">
+            <img class="course-cover" :src="item.coverUrl">
+          </div>
+          <div class="course-list-content">
+            <h3 class="course-list-name">{{ item.name }}</h3>
+            <p class="course-list-desc">{{ item.summary }}</p>
+          </div>
+        </router-link>
+      </div>
+    </div>
+
+    <!-- 分页组件 -->
+    <div class="pagination">
+      <el-pagination
+        background
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="prev, pager, next, total, jumper"
+        :total="totalCount"
+        @current-change="handleCurrentChange">
+      </el-pagination>
+    </div>
+
+  </div>
 </template>
 
 <script>
-    import {
-        getAllCourse,
-        getSubCategoryCourse,
-        getCourse,
-        findByNameLike
-    } from '@/api/course'
-    import {
+import {
+  getAllCourse,
+  getSubCategoryCourse,
+  getCourse,
+  findByNameLike
+} from '@/api/course'
+import {
 
-        getCourseCategory,
-        getCourseSubCategory
-    } from '@/api/course-category'
+  getCourseCategory,
+  getCourseSubCategory
+} from '@/api/course-category'
 
-    export default {
-        name: 'CourseCategory',
-        data() {
-            return {
-                itemOn: -1, //方向索引
-                subItemOn: -1, //分类索引
-                courseCategoryList: [], //课程分类树
-                courseSubCategoryList: [], //所有课程子分类
-                course: [], //课程
-                // 默认显示第几页
-                currentPage: 1,
-                // 总条数，根据接口获取数据长度(注意：这里不能为空)
-                totalCount: 0,
-                // 默认每页显示的条数（可修改）
-                pageSize: 30
-            }
-        },
-        async created() {
-            await this.getAllCourseCategory()
-            this.checkArg(this.$route)
-            this.getCourse(this.itemOn, this.subItemOn)
-        },
-        beforeRouteUpdate(to, from, next) {
-            this.currentPage = 1
-            this.checkArg(to)
-            this.getCourse(this.itemOn, this.subItemOn, to.query.courseName)
-            next();
-        },
-        methods: {
-            checkArg(route) { //检查查询参数
-                this.itemOn = parseInt(route.params.id)
-                this.subItemOn = parseInt(route.params.subId)
-                if (this.itemOn < -1 || this.itemOn > this.courseCategoryList.length)
-                    this.itemOn = -1
-                if (this.subItemOn < -1)
-                    this.subItemOn = -1
-            },
-            async getAllCourseCategory() {
-                let res = await getCourseCategory()
-                if (res.data.code === 20000)
-                    this.courseCategoryList = res.data.data
-                getCourseSubCategory().then(res => {
-                    if (res.data.code === 20000) {
-                        this.courseSubCategoryList = res.data.data
-                    }
-                })
-            },
-            getCourse(id, subId, courseName) {
-                if (courseName != null && courseName != '') {
-                    findByNameLike(courseName).then(res => {
-                        if (res.data.code == 20000) {
-                            this.course = res.data.data
-                            this.totalCount = this.course.length
-                        }
-                    })
-                } else {
-                    if (id === -1 && subId == -1) {
-                        getAllCourse(this.currentPage, this.pageSize).then((res) => { //获取全部的课程信息
-                            if (res.data.code === 20000) {
-                                this.course = res.data.data.rows
-                                this.totalCount = res.data.data.total
-                            }
-                        })
-                    } else if (id === -1 && subId != -1) {
-                        let parentId = this.courseSubCategoryList[subId].id
-                        getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
-                            if (res.data.code === 20000) {
-                                this.course = res.data.data.rows
-                                this.totalCount = res.data.data.total
-                            }
-                        })
-                    } else if (id != -1 && subId === -1) {
-                        getSubCategoryCourse(id + 1, this.currentPage, this.pageSize).then((
-                            res) => { //获取一级分类下的全部课程信息
-                            if (res.data.code === 20000) {
-                                this.course = res.data.data.rows
-                                this.totalCount = res.data.data.total
-                            }
-                        })
-                    } else {
-                        let parentId = this.courseCategoryList[id].children[subId].id
-                        console.log(parentId);
-                        getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
-                            if (res.data.code === 20000) {
-                                this.course = res.data.data.rows
-                                this.totalCount = res.data.data.total
-                            }
-                        })
-                    }
-                }
-            },
-            // 显示第几页
-            handleCurrentChange(val) {
-                // 改变默认的页数
-                this.currentPage = val
-                if (this.$route.query.courseName == null || this.$route.query.courseName == "")
-                    this.getCourse(this.itemOn, this.subItemOn)
-            }
-        }
+export default {
+  name: 'CourseCategory',
+  data() {
+    return {
+      itemOn: -1, //方向索引
+      subItemOn: -1, //分类索引
+      courseCategoryList: [], //课程分类树
+      courseSubCategoryList: [], //所有课程子分类
+      course: [], //课程
+      // 默认显示第几页
+      currentPage: 1,
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      totalCount: 0,
+      // 默认每页显示的条数（可修改）
+      pageSize: 30
     }
+  },
+  async created() {
+    await this.getAllCourseCategory()
+    this.checkArg(this.$route)
+    this.getCourse(this.itemOn, this.subItemOn)
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.currentPage = 1
+    this.checkArg(to)
+    this.getCourse(this.itemOn, this.subItemOn, to.query.courseName)
+    next()
+  },
+  methods: {
+    checkArg(route) { //检查查询参数
+      this.itemOn = parseInt(route.params.id)
+      this.subItemOn = parseInt(route.params.subId)
+      if (this.itemOn < -1 || this.itemOn > this.courseCategoryList.length)
+        this.itemOn = -1
+      if (this.subItemOn < -1)
+        this.subItemOn = -1
+    },
+    async getAllCourseCategory() {
+      const res = await getCourseCategory()
+      if (res.data.code === 20000)
+        this.courseCategoryList = res.data.data
+      getCourseSubCategory().then(res => {
+        if (res.data.code === 20000) {
+          this.courseSubCategoryList = res.data.data
+        }
+      })
+    },
+    getCourse(id, subId, courseName) {
+      if (courseName != null && courseName !== '') {
+        findByNameLike(courseName).then(res => {
+          if (res.data.code === 20000) {
+            this.course = res.data.data
+            this.totalCount = this.course.length
+          }
+        })
+      } else {
+        if (id === -1 && subId === -1) {
+          getAllCourse(this.currentPage, this.pageSize).then((res) => { //获取全部的课程信息
+            if (res.data.code === 20000) {
+              this.course = res.data.data.rows
+              this.totalCount = res.data.data.total
+            }
+          })
+        } else if (id === -1 && subId !== -1) {
+          const parentId = this.courseSubCategoryList[subId].id
+          getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
+            if (res.data.code === 20000) {
+              this.course = res.data.data.rows
+              this.totalCount = res.data.data.total
+            }
+          })
+        } else if (id !== -1 && subId === -1) {
+          getSubCategoryCourse(id + 1, this.currentPage, this.pageSize).then((
+            res) => { //获取一级分类下的全部课程信息
+            if (res.data.code === 20000) {
+              this.course = res.data.data.rows
+              this.totalCount = res.data.data.total
+            }
+          })
+        } else {
+          const parentId = this.courseCategoryList[id].children[subId].id
+          console.log(parentId)
+          getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
+            if (res.data.code === 20000) {
+              this.course = res.data.data.rows
+              this.totalCount = res.data.data.total
+            }
+          })
+        }
+      }
+    },
+    // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage = val
+      if (this.$route.query.courseName === null || this.$route.query.courseName === '')
+        this.getCourse(this.itemOn, this.subItemOn)
+    }
+  }
+}
 </script>
 
 <style>

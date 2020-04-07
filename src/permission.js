@@ -2,7 +2,7 @@ import router from './router'
 import dataStorage from '@/util/dataStorage'
 import {
   Notification
-} from 'element-ui';
+} from 'element-ui'
 
 router.beforeEach((to, from, next) => {
 
@@ -12,10 +12,10 @@ router.beforeEach((to, from, next) => {
   // determine whether the user has logged in
   const hasToken = dataStorage.getToken()
 
-  if (hasToken||to.name === 'home' || to.name === 'CourseCategory') {
+  if (hasToken || to.name === 'home' || to.name === 'CourseCategory') {
     next() //已登录,放行
-  } else {//未登录
-    if(from.name === 'CourseCategory'){
+  } else { //未登录
+    if (from.name === 'CourseCategory') {
       Notification({
         title: '未登录',
         message: '请先登录',
@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
         duration: 2000,
         offset: 50
       })
-    }else{
+    } else {
       Notification({
         title: '未登录',
         message: '请先登录',

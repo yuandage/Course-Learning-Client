@@ -7,19 +7,19 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'SearchBar',
-    data() {
-      return {
-        searchText: "",
-      }
-    },
-    methods: {
-      doSearch() {
-          this.$router.push({name:'Subject',params:{id:-1,subId:-1},query:{courseName:this.searchText}})
-      }
+export default {
+  name: 'SearchBar',
+  data() {
+    return {
+      searchText: ''
+    }
+  },
+  methods: {
+    doSearch() {
+      this.$router.push({ name: 'Subject', params: { id: -1, subId: -1 }, query: { courseName: this.searchText }})
     }
   }
+}
 </script>
 
 <style>
@@ -29,7 +29,7 @@
     display: inline-block;
     height: 72px;
     display: flex;
-    align-items: center;
+    align-items:  center;
     ;
   }
 
@@ -60,4 +60,5 @@
     width: 20px;
     height: 20px;
   }
-</style>
+</style
+>
