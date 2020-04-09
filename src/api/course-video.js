@@ -9,7 +9,7 @@ export function getVideo(courseId) {
 }
 
 //获取课程视频信息
-export function getVideoInfo(courseId,sectionId) {
+export function getVideoInfo(courseId, sectionId) {
   return request({
     url: `/video/info/${courseId}/${sectionId}`,
     method: 'get'

@@ -25,23 +25,22 @@
 </template>
 
 <script>
-  import Login from "@/views/Login.vue"
-  import HeaderSearchBar from '@/components/HeaderSearchBar.vue'
+import Login from '@/views/Login.vue'
+import HeaderSearchBar from '@/components/HeaderSearchBar.vue'
 
-  export default {
-    name:'Header',
-    data() {
-      return {
+export default {
+  name: 'Header',
+  components: {
+    Login,
+    HeaderSearchBar
+  },
+  data() {
+    return {
 
-      }
-    },
-    name: 'Header',
-    components: {
-      Login,
-      HeaderSearchBar
     }
-
   }
+
+}
 </script>
 
 <style>

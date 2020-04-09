@@ -1,30 +1,30 @@
 <template>
-    <div>
-        <div class="footer idx-minwidth">
-            <div class="container">
-                <div class="footer-wrap idx-width">
+  <div>
+    <div class="footer idx-minwidth">
+      <div class="container">
+        <div class="footer-wrap idx-width">
 
-                </div>
-                <div class="footer-link">
-                    <a href="/about/us" target="_blank" title="关于我们">关于我们</a>
-
-                    <a href="/about/contact" target="_blank" title="联系我们">联系我们</a>
-
-                    <a href="https://github.com/yuandage/Course-Learning-Client" target="_blank">代码托管</a>
-                </div>
-                <div class="footer-copyright">
-                    <p>©&nbsp;2020&nbsp;&nbsp;&nbsp;版权归属于
-                        YuanHong</p>
-                </div>
-            </div>
         </div>
+        <div class="footer-link">
+          <a href="/about/us" target="_blank" title="关于我们">关于我们</a>
+
+          <a href="/about/contact" target="_blank" title="联系我们">联系我们</a>
+
+          <a href="https://github.com/yuandage/Course-Learning-Client" target="_blank">代码托管</a>
+        </div>
+        <div class="footer-copyright">
+          <p>©&nbsp;2020&nbsp;&nbsp;&nbsp;版权归属于
+            YuanHong</p>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'Footer',
-    }
+export default {
+  name: 'Footer'
+}
 </script>
 
 <style>

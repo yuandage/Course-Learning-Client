@@ -10,7 +10,7 @@
                 <ul class="">
                   <li class="course-nav-item">
                     <router-link
-                      :class="{courseNavItem:itemOn===1}"
+                      :class="{courseNavItem:itemOn===-1}"
                       :to="{name:'CourseCategory',params:{id:-1,subId:-1}}">全部</router-link>
                   </li>
                   <li v-for="(item,index) in courseCategoryList" :key="index" class="course-nav-item">
@@ -29,7 +29,7 @@
                   <ul class="">
                     <li class="course-nav-item on">
                       <router-link
-                        :class="{courseNavItem:subItemOn===1}"
+                        :class="{courseNavItem:subItemOn===-1}"
                         :to="{name:'CourseCategory',params:{id:itemOn,subId:-1}}">全部
                       </router-link>
                     </li>
@@ -179,7 +179,6 @@ export default {
           })
         } else {
           const parentId = this.courseCategoryList[id].children[subId].id
-          console.log(parentId)
           getCourse(parentId, this.currentPage, this.pageSize).then((res) => { //获取二级级分类下的全部课程信息
             if (res.data.code === 20000) {
               this.course = res.data.data.rows

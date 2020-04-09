@@ -27,18 +27,10 @@
 </template>
 
 <script>
-  import Header from '@/layout/Header.vue'
-  import Main from '@/layout/Main.vue'
-  import Footer from '@/layout/Footer.vue'
-
-  export default {
-    name: 'app',
-    components: {
-      Header,
-      Main,
-      Footer
-    }
-  }
+import Header from '@/layout/Header.vue'
+import Main from '@/layout/Main.vue'
+import Footer from '@/layout/Footer.vue'
+export default { name: 'app', components: { Header, Main, Footer }}
 </script>
 
 <style>
@@ -114,4 +106,5 @@
     margin: 0;
     padding: 0;
   }
-</style>
+</style
+>

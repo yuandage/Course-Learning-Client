@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     doSearch() {
-      this.$router.push({ name: 'Subject', params: { id: -1, subId: -1 }, query: { courseName: this.searchText }})
+      this.$router.push({ name: 'CourseCategory', params: { id: -1, subId: -1 }, query: { courseName: this.searchText }})
     }
   }
 }
