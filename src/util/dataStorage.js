@@ -14,6 +14,18 @@ export function setUserInfo(user) {
   return user
 }
 
+export function getUserRole() {
+  const roles = Cookies.get('roles')
+  return roles ? JSON.parse(roles) : null
+}
+
+export function setUserRole(roles) {
+  Cookies.set('roles', roles, {
+    expires: config.cookiesExpires
+  })
+  return roles
+}
+
 export function removeUserInfo() {
   return Cookies.remove(config.userInfoKey)
 }
@@ -45,6 +57,7 @@ export default {
   setToken,
   removeToken,
   removeUserInfo,
-  isLogin
-
+  isLogin,
+  getUserRole,
+  setUserRole
 }

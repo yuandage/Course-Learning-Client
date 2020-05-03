@@ -367,7 +367,6 @@ export default {
           this.courseFavorite.splice(i, 1)
         }
       })
-      console.log(id)
       delUserFavorite(id).then(res => {
         if (res.data.code === 20000) {
           this.courseFavoriteStatus = false
@@ -400,9 +399,8 @@ export default {
           courseId: this.course.id
         }
         addUserCourse(newUserCourse).then(res => {
-          if (res.data.code === 20000) {
-            console.log('开始学习课程')
-          }
+          // if (res.data.code === 20000) {
+          // }
         })
         this.$router.push({
           name: 'CourseVideo',
@@ -420,7 +418,6 @@ export default {
       }
     },
     handleEdit(index, row) {
-      console.log(index, row)
     }
   }
 }

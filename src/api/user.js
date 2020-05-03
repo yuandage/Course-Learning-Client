@@ -26,3 +26,12 @@ export function getUserInfo(data) {
     }
   })
 }
+
+//编辑用户信息
+export function editUser(id, data) {
+  return request({
+    url: `/user/${id}`,
+    method: 'put',
+    data
+  })
+}

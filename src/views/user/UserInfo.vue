@@ -31,7 +31,7 @@
               <el-avatar :size="92" src="http://localhost:8000/img/avatar.ecba1844.gif">
               </el-avatar>
               <div class="update-avator">
-                <p @click="dialogVisible = true">更换头像</p>
+                <p style="text-align: center;" @click="dialogVisible = true">更换头像</p>
 
                 <el-dialog
                   v-if="dialogVisible"
@@ -69,7 +69,7 @@
             <div v-for="(item,index) in course" :key="item.id" class="course-item">
               <div class="course-img">
                 <router-link :to="'/course/'+item.id">
-                  <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
+                  <img width="200" height="116" :src="item.coverUrl" alt=""></router-link>
               </div>
               <div class="course-item-info">
                 <div class="course-title course-magrin">
@@ -97,7 +97,7 @@
             <div v-for="(item,index) in courseFavorite" :key="item.name" class="course-item">
               <div class="course-img">
                 <router-link :to="'/course/'+item.id">
-                  <img width="200" height="116" :src="item.coverUrl" alt=""> </router-link>
+                  <img width="200" height="116" :src="item.coverUrl" alt=""></router-link>
               </div>
               <div class="course-item-info">
                 <div class="course-title course-magrin">
@@ -135,7 +135,7 @@
           </div>
         </div>
         <div v-if="currentUserNav===3" class="user-setting">
-          <el-form ref="form" :model="user" label-width="80px" class="user-setting-form">
+          <el-form ref="form" :model="user" label-position="left" label-width="80px" class="user-setting-form">
             <el-form-item label="用户名">
               <span>{{ user.username }}</span>
             </el-form-item>
@@ -149,7 +149,7 @@
             </el-form-item>
 
             <el-form-item label="角色">
-              <span>{{ user.role==1?"学生":"教师" }}</span>
+              <el-tag v-for="item in roles" :key="item">{{ item }}</el-tag>
             </el-form-item>
 
             <el-form-item label="性别">
@@ -178,33 +178,35 @@ import { getCourseInfo } from '@/api/course'
 import { getUserCourse, delUserCourse } from '@/api/user_course'
 import { getUserFavorite, delUserFavorite } from '@/api/user_favorite'
 import { getQuestion } from '@/api/question'
+import { editUser } from '@/api/user'
 
 export default {
   name: 'UserInfo',
   data() {
     return {
       user: dataStorage.getUserInfo(),
+      roles: dataStorage.getUserRole(),
       userNav: [{
         id: 1,
         title: '首页',
         text: 'home',
-        icon: 'el-icon-discount'
+        icon: 'el-icon-user-solid'
       }, {
         id: 2,
         title: '我的课程',
         text: 'course',
-        icon: 'el-icon-discount'
+        icon: 'el-icon-s-cooperation'
       }, {
         id: 3,
         title: '我的收藏',
         text: 'favorites',
-        icon: 'el-icon-discount'
+        icon: 'el-icon-star-on'
       },
       {
         id: 4,
         title: '我的设置',
         text: 'setting',
-        icon: 'el-icon-discount'
+        icon: 'el-icon-s-tools'
       }
       ],
       currentUserNav: 0,
@@ -226,6 +228,12 @@ export default {
     next()
   },
   methods: {
+    onSubmit() {
+      editUser(this.user.id, this.user).then(res => {
+        if (res.data.code === 20000)
+          this.$message.success('修改成功')
+      })
+    },
     changeUserNav(index) {
       if (this.$route.params.userNav !== this.userNav[index].text) {
         this.$router.push({
@@ -348,7 +356,7 @@ export default {
   @import "../../views/user/user-course.css";
 
   .user {
-    text-align: center;
+    /* text-align: center; */
   }
 
   .top-img {
@@ -385,6 +393,7 @@ export default {
   }
 
   .user-li {
+    text-align: center;
     width: 150px;
     height: 48px;
     line-height: 48px;
@@ -435,6 +444,10 @@ export default {
     color: #00a1d6;
     font-size: 14px;
     cursor: default;
+  }
+
+  .user-setting {
+    padding: 20px 32px;
   }
 
   .user-setting-form {

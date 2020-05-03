@@ -117,9 +117,9 @@ export default {
             duration: 1000,
             offset: 50
           })
-          console.log(res.data)
           dataStorage.setToken(res.data.data.token)
           dataStorage.setUserInfo(res.data.data.user)
+          dataStorage.setUserRole(res.data.data.roles)
           this.$store.commit('setUserInfo')
           this.$store.commit('setIsLogin')
           this.loginFormVisible = false
