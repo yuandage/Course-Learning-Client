@@ -59,8 +59,7 @@
               </div>
             </div>
             <div class="home-right">
-              <span>{{ user.username }}</span>
-
+              <span>{{ user.nickname }}</span>
             </div>
           </div>
         </div>

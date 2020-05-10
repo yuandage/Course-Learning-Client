@@ -18,7 +18,7 @@
       <el-button type="primary" @click="sendComment">发表评论</el-button>
     </div>
     <div v-if="comment.length>0">
-      <div :key="item.id" class="comment-box" v -for="it      em in comment">
+      <div :key="item.id" class="comment-box" v-for="item in comment">
         <div class="profile-picture">
           <router-link :to="{ name: 'userInfo',params: {username: item.username,userNav: 'home'}}">
             <img width="50" height="50" src="@/assets/avatar.gif">
@@ -28,7 +28,7 @@
           <router-link
             class="mg"
             :to="{ name: 'userInfo',params: {username: item.username,userNav: 'home'}}">
-            {{ item.username }}
+            {{ item.nickname }}
           </router-link>
           <p class="mg">{{ item.content }}</p>
           <span class="mg">6小时前</span>
@@ -81,7 +81,8 @@ export default {
         userId: this.user.id,
         courseId: this.courseId,
         questionId: this.questionId,
-        username: this.user.username,
+        nickname: this.user.nickname,
+        createUser: this.user.username,
         content: this.textarea
       }
       this.comment.unshift(comment)

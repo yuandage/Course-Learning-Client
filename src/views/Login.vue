@@ -8,7 +8,7 @@
           <img width="50" height="50" src="@/assets/avatar.gif">
         </router-link>
         <el-dropdown-menu slot="dropdown" class="user-popover">
-          <h3>{{ user.username }}</h3>
+          <h3>{{ user.nickname }}</h3>
           <el-dropdown-item icon="el-icon-plus" command="home">个人中心</el-dropdown-item>
           <el-dropdown-item icon="el-icon-circle-plus" command="course">我的课程</el-dropdown-item>
           <el-dropdown-item icon="el-icon-check" command="favorites">我的收藏</el-dropdown-item>

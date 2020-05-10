@@ -28,7 +28,7 @@
           <router-link
             class="mg"
             :to="{ name: 'userInfo',params: {username: item.username,userNav: 'home'}}">
-            {{ item.username }}
+            {{ item.nickname }}
           </router-link>
           <p class="mg">{{ item.content }}</p>
           <span class="mg">6小时前</span>
@@ -71,7 +71,8 @@ export default {
       const comment = {
         userId: this.user.id,
         courseId: this.courseId,
-        username: this.user.username,
+        nickname: this.user.nickname,
+        createUser: this.user.username,
         content: this.textarea
       }
       this.comment.unshift(comment)
