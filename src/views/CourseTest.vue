@@ -47,7 +47,7 @@
             v-for="(item,index) in question[currentTopic].optionContent.split('#')"
             :key="index"
             v-model="question[currentTopic].checkedOption"
-            :label="index+1"
+            :label="index+1+''"
             @change="radioChange"
             @click="check(index+1)">
             {{ item }}</el-radio>
@@ -93,7 +93,7 @@
         <span class="left">答错：{{ wrongCount }}</span>
 
         <span
-          class="gray">正确率：{{ Math.round(rightCount/((rightCount+wrongCount)==0?1:(rightCount+wrongCount))*100) }}%</span>
+          class="gray">正确率：{{ Math.round(rightCount/((rightCount+wrongCount)===0?1:(rightCount+wrongCount))*100) }}%</span>
         <a ref="loadYundata" class="right blue2">云同步做题进度</a>
 
       </div>

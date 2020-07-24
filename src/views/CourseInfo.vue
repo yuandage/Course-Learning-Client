@@ -114,7 +114,7 @@
               </p>
               <ul class="video">
                 <li v-for="subItem in subChapter[index] " :key="subItem.id">
-                  <router-link :to="{name:'CourseVideo',query:{courseId:$route.params.id,sectionId:subItem.id}}">
+                  <router-link :to="{name:'CourseVideo',query:{courseId:$route.params.id,sectionId:subItem.id,title:subItem.title}}">
                     <svg
                       t="1581056346451"
                       class="icon"
@@ -168,7 +168,7 @@
               <li>
                 <i class="el-icon-document"></i>
                 <span style="margin-left: 10px">暂无试题资源</span>
-                <el-button type="primary" size="mini">上传</el-button>
+                <!--                <el-button type="primary" size="mini">上传</el-button>-->
               </li>
             </ul>
           </div>
@@ -404,15 +404,17 @@ export default {
         })
         this.$router.push({
           name: 'CourseVideo',
-          params: {
-            id: this.course.id
+          query: {
+            courseId: this.course.id,
+            sectionId: 31
           }
         })
       } else {
         this.$router.push({
           name: 'CourseVideo',
-          params: {
-            id: this.course.id
+          query: {
+            courseId: this.course.id,
+            sectionId: 31
           }
         })
       }
@@ -630,7 +632,7 @@ export default {
         padding: 10px 20px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-around;
     }
 
     .course-info-res {

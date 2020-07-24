@@ -83,7 +83,7 @@
                 </div>
                 <div class="course-option course-magrin">
                   <el-button @click="delCourse(item.userCourseId,index)">删除课程</el-button>
-                  <el-button type="danger">继续学习</el-button>
+                  <el-button type="danger" @click="learnCourse(index)">继续学习</el-button>
                 </div>
               </div>
             </div>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="course-option course-magrin">
                   <el-button @click="delFavorite(item.userFavoriteId,index,'课程')">取消收藏</el-button>
-                  <el-button type="danger">继续学习</el-button>
+                  <el-button type="danger" @click="learnCourse(index)">继续学习</el-button>
                 </div>
               </div>
             </div>
@@ -125,7 +125,7 @@
 
                 <div class="course-option course-magrin">
                   <el-button @click="delFavorite(item.userFavoriteId,index,'试题')">取消收藏</el-button>
-                  <el-button type="danger">继续做题</el-button>
+                  <el-button type="danger" @click="learnCourseTest(index)">继续做题</el-button>
                 </div>
               </div>
             </div>
@@ -227,6 +227,33 @@ export default {
     next()
   },
   methods: {
+    learnCourseTest(index) {
+      this.$router.push({
+        name: 'CourseTest',
+        params: {
+          courseId: this.userFavorite[index].courseId,
+          testType: '单选题'
+        }
+      })
+      this.$router.push({
+        name: 'CourseVideo',
+        query: {
+          courseId: this.userCourse[index].courseId,
+          sectionId: this.userCourse[index].sectionId,
+          title: '1.1 发展概况'
+        }
+      })
+    },
+    learnCourse(index) {
+      this.$router.push({
+        name: 'CourseVideo',
+        query: {
+          courseId: this.userCourse[index].courseId,
+          sectionId: this.userCourse[index].sectionId,
+          title: '1.1 发展概况'
+        }
+      })
+    },
     onSubmit() {
       editUser(this.user.id, this.user).then(res => {
         if (res.data.code === 20000)

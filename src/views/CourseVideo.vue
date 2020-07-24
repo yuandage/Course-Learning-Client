@@ -1,6 +1,6 @@
 <template>
   <div class="video">
-    <h2>正在学习视频:{{ chapterTitle }}</h2>
+    <h2>正在学习视频:{{ $route.query.title }}</h2>
 
     <div class="video-box">
       <video-player
@@ -16,7 +16,7 @@
 
             <ul class="video-ul">
               <li v-for="subItem in subChapter[index] " :key="subItem.id">
-                <router-link :to="'/video/'+subItem.id">
+                <router-link :to="{ name: 'CourseVideo',query: {courseId: subItem.courseId,sectionId: subItem.id,title:subItem.title}}">
                   <svg
                     t="1581056346451"
                     class="icon"
@@ -43,7 +43,7 @@
       <div class="course-info-menu">
         <el-tabs value="first" class="menu-tab">
           <el-tab-pane label="评论" name="first">
-            <CourseComment />
+            <CourseComment :course-id="$route.query.courseId" />
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -64,7 +64,7 @@ export default {
     return {
       chapter: [],
       subChapter: [],
-      chapterTitle: '1-1 Java简介',
+      chapterTitle: this.$route.query.title,
       playerOptions: {
         //播放速度
         playbackRates: [0.5, 1.0, 1.5, 2.0],
@@ -86,7 +86,7 @@ export default {
           type: 'video/mp4',
           //url地址
           // src: require('@/assets/微机原理与接口技术_1.0 教学安排.mp4')
-          src: 'http://localhost:9000/video/play?courseId=' + this.$route.query.courseId + '&sectionId=' + this.$route.query.sectionId
+          src: process.env.VUE_APP_BASE_API + '/video/play?courseId=' + this.$route.query.courseId + '&sectionId=' + this.$route.query.sectionId
         }],
         //你的封面地址
         poster: '',
@@ -103,7 +103,13 @@ export default {
 
     }
   },
-
+  watch: {
+    '$route.query.sectionId': {
+      handler(newVal, oldVal) {
+        this.playerOptions.sources[0].src = process.env.VUE_APP_BASE_API + '/video/play?courseId=' + this.$route.query.courseId + '&sectionId=' + this.$route.query.sectionId
+      }
+    }
+  },
   created() {
     this.getCourseChapter()
   },
